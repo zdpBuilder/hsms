@@ -1,0 +1,15 @@
+[
+   {
+    "title": "订单管理",
+    "icon": "fa fa-list-alt",
+    "spread": true,
+    "children": [
+      {
+        "title": "订单新增/查看", 
+        "icon": "fa fa-eye",
+        "href": "admin/salespersonBillList.jsp",
+        "spread": false
+      }
+    ]
+  }
+  ]

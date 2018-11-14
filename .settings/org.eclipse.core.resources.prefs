@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/hsms/common/ResponseJsonPageListBean.java=UTF-8
+encoding//src/main/java/com/hsms/inteceptor/LoginInteceptor.java=UTF-8
+encoding//src/main/java/com/hsms/model/BaseExample.java=UTF-8
+encoding//src/main/java/com/hsms/utils/Const.java=UTF-8
+encoding//src/main/java/com/hsms/utils/JsonDateTimeValueProcessor.java=UTF-8
+encoding//src/main/java/com/hsms/utils/JsonDateValueProcessor.java=UTF-8
+encoding//src/main/java/com/hsms/utils/JsonPrintUtil.java=UTF-8
+encoding//src/main/java/com/hsms/utils/JsonUtils.java=UTF-8
+encoding//src/main/java/com/hsms/utils/SNUtil.java=UTF-8
