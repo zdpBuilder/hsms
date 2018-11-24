@@ -20,7 +20,6 @@ public class JsonDateValueProcessor implements JsonValueProcessor {
         this.format = format;
     }
 
-   
     public Object processArrayValue(Object paramObject, JsonConfig paramJsonConfig) {
         return process(paramObject);
     }
@@ -28,7 +27,6 @@ public class JsonDateValueProcessor implements JsonValueProcessor {
     public Object processObjectValue(String paramString, Object paramObject, JsonConfig paramJsonConfig) {
         return process(paramObject);
     }
-
 
     private Object process(Object value) {
         if (value instanceof Date) {
