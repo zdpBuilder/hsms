@@ -80,10 +80,10 @@
 			    ,cols: [[ 
 			       //{type:'numbers' ,title: '序号'},
 			       {type: 'checkbox'}
-				      ,{field: 'goodsCode', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center'}
-			      ,{field: 'name', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
-			      ,{field: 'braName', title: '<span style="color:#000;font-weight:bold;">所属品牌名称</span>',align: 'center'}
-			      ,{field: 'typeTitle', title: '<span style="color:#000;font-weight:bold;">所属种类名称</span>',align: 'center'}
+				   ,{field: 'code', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center'}
+			      ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
+			      ,{field: 'brandTitle', title: '<span style="color:#000;font-weight:bold;">所属品牌名称</span>',align: 'center'}
+			      ,{field: 'specification', title: '<span style="color:#000;font-weight:bold;"><规格/span>',align: 'center'}
 			      ,{field: 'creater', title: '<span style="color:#000;font-weight:bold;">创建者</span>',align: 'center'}
 			      ,{field: 'createTime', title: '<span style="color:#000;font-weight:bold;">创建时间</span>',align: 'center'}
 			      ,{field: 'updater', title: '<span style="color:#000;font-weight:bold;">更新者</span>',align: 'center'}

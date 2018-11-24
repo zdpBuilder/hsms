@@ -84,6 +84,7 @@
 				  ,{field: 'loginId', title: '<span style="color:#000;font-weight:bold;">账号</span>',align: 'center'}
 			      ,{field: 'name', title: '<span style="color:#000;font-weight:bold;">姓名</span>',align: 'center'}
 			      ,{field: 'status', title: '<span style="color:#000;font-weight:bold;">管理员角色</span>',align: 'center',templet: "#status"}
+			      ,{field: 'phone', title: '<span style="color:#000;font-weight:bold;">电话</span>',align: 'center'}
 			      ,{field: 'creater', title: '<span style="color:#000;font-weight:bold;">创建者</span>',align: 'center'}
 			      ,{field: 'createTime', title: '<span style="color:#000;font-weight:bold;">创建时间</span>',align: 'center'}
 			      ,{field: 'updater', title: '<span style="color:#000;font-weight:bold;">更新者</span>',align: 'center'}
@@ -127,7 +128,7 @@
 	      	$("#btn-add").click(function(){
 	      		layer.open({
 	      		  type: 2 //Page层类型
-	      		  ,area: ['388px', '300px']
+	      		  ,area: ['388px', '350px']
 	      		  ,title:  ['新增用户信息', '']
 	      		  ,shade: 0.6 //遮罩透明度
 	      		  ,fixed: true //位置固定
@@ -284,7 +285,7 @@
 	      	  	  //layer.msg('ID：'+ data.id + ' 的编辑操作');
 	      	      layer.open({
 	        		  type: 2 //Page层类型
-	        		  ,area: ['388px', '300px']
+	        		  ,area: ['388px', '310px']
 	        		  ,title: ['编辑用户信息', '']
 	        		  ,shade: 0.6 //遮罩透明度
 	        		  ,fixed: true //位置固定

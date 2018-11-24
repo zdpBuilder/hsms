@@ -25,7 +25,7 @@ public class UsersController {
 	private  UsersService usersService;
 	
 
-	  // ÓÃ»§ÁÐ±í·ÖÒ³²éÑ¯
+	  // ï¿½Ã»ï¿½ï¿½Ð±ï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
 	 	@RequestMapping("list")
 	 	@ResponseBody
 	 	public void equipmentList(HttpServletRequest request, HttpServletResponse response, String keywords, int limit,
@@ -33,7 +33,7 @@ public class UsersController {
 	 			JsonPrintUtil.printObjDataWithoutKey(response, usersService.list(request, response, keywords, limit, page)); 		
 	 	}
 	 	
-	 // ÓÃ»§ÐÂÔö ±à¼­
+	 // ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½à¼­
 	 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	 	@ResponseBody
 	 	public void save(SysUser sysUser, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
@@ -41,7 +41,7 @@ public class UsersController {
  				JsonPrintUtil.printObjDataWithKey(response, usersService.save(sysUser, request, response, session), "data");		
 	 	}
 
-	 	// ÓÃ»§ÅúÁ¿É¾³ý
+	 	// ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½É¾ï¿½ï¿½
 	 	@RequestMapping(value = "deleteBatch", method = RequestMethod.POST)
 	 	@ResponseBody
 	 	public void deleteBatch(String idStr, HttpServletRequest request, HttpServletResponse response,
@@ -51,13 +51,15 @@ public class UsersController {
 	 		
 	 	}
 
-	 	// ÓÃ»§²é¿´
+	 	// ï¿½Ã»ï¿½ï¿½é¿´
 	 	@RequestMapping(value = "show", method = RequestMethod.POST)
 	 	@ResponseBody
 	 	public void showWH(int id, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-	 		
+ 			
+	 		JsonPrintUtil.printObjDataWithKey(response, usersService.show(id, request, response, session), "data");
+
 	 	}	
-		// µÇÂ¼ÃûÐ£Ñé
+		// ï¿½ï¿½Â¼ï¿½ï¿½Ð£ï¿½ï¿½
 	 	@RequestMapping(value = "loginIdCheck", method = RequestMethod.POST)
 	 	@ResponseBody
 	 	public boolean loginIdCheck(String loginId, HttpServletRequest request, HttpServletResponse response, HttpSession session) {

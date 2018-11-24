@@ -45,7 +45,15 @@
 	        
 	        <label class="layui-form-label" style="font-size:12px;line-height:10px;">真实姓名</label>
 	         <div class="layui-input-block">
-	            <input type="text" name="name" id="userName" lay-verify="required|username" placeholder="必填项" autocomplete="off"
+	            <input type="text" name="name" id="name" lay-verify="required|name" placeholder="必填项" autocomplete="off"
+	                   class="layui-input layui-form-danger" style="height:26px;font-size:12px;">
+	        </div>
+        </div>
+         <div class="layui-form-item" style="margin-bottom:3px;">
+	        
+	        <label class="layui-form-label" style="font-size:12px;line-height:10px;">电话</label>
+	         <div class="layui-input-block">
+	            <input type="text" name="phone" id="phone" lay-verify="required|phone" placeholder="必填项" autocomplete="off"
 	                   class="layui-input layui-form-danger" style="height:26px;font-size:12px;">
 	        </div>
         </div>
@@ -80,7 +88,8 @@
      });
     //自定义表单验证
     form.verify({  
-    	username:[/^.{0,6}$/,'姓名输入过长！'],
+    	phone:[/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,'输入的手机号码不合法！'],
+    	name:[/^.{0,6}$/,'姓名输入过长！'],
     	nameLength:[/^.{0,30}$/,'登录名输入过长！'],
     	nameformat:[/^[0-9A-Za-z]+$/,'登录名只能是字母或者数字'],
     	loginIdCheck: function(value, item){ //value：表单的值、item：表单的DOM对象   

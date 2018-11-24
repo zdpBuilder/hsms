@@ -1,4 +1,4 @@
-<%@ page language="java" import ="yamp.com.model.SysUser" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" import ="com.hsms.model.SysUser" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%
 //flag==0代表 修改用户的信息  flag==1代表修改当前用户的信息
 int flag=0;
@@ -58,7 +58,7 @@ if(id==currId){
 	        
 	        <label class="layui-form-label" style="font-size:12px;line-height:10px;">真实姓名</label>
 	         <div class="layui-input-block">
-	            <input type="text" name="name" id="userName" lay-verify="required|username" placeholder="必填项" autocomplete="off"
+	            <input type="text" name="name" id="name" lay-verify="required|name" placeholder="必填项" autocomplete="off"
 	                   class="layui-input layui-form-danger" style="height:26px;font-size:12px;">
 	        </div>
         </div>
@@ -104,7 +104,7 @@ if(id==currId){
       //自定义表单验证
       form.verify({  
     	phone:[/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,'输入的手机号码不合法！'],
-      	username:[/^.{0,6}$/,'姓名输入过长！'],
+      	name:[/^.{0,6}$/,'姓名输入过长！'],
       });
       //表单元素赋值
       var userId = <%=id %>;
@@ -117,9 +117,9 @@ if(id==currId){
 				result = result.data;
 				if(result){
 					$("#loginId").val(result.loginId);
-					$("#userName").val(result.name);
-					$("#loginPassword").val(result.loginPassword);
-					$("#phone").phone(result.phone);
+					$("#name").val(result.name);
+					$("#loginloginPassword").val(result.loginPassword);
+					$("#phone").val(result.phone);
 					$("#status").val(result.status);
 					renderForm();
 				}

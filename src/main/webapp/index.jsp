@@ -106,7 +106,7 @@ SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo"
 			      	$("#editSysUserDatas").click(function(){
 			      		layer.open({
 			      		  type: 2 //Page层类型
-			      		  ,area: ['388px', '300px']
+			      		  ,area: ['388px', '310px']
 			      		  ,title:  ['个人资料', '']
 			      		  ,shade: 0.6 //遮罩透明度
 			      		  ,fixed: true //位置固定

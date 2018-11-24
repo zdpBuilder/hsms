@@ -1,4 +1,4 @@
-<%@ page language="java" import ="yamp.com.model.SysUser" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" import ="com.hsms.model.SysUser" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%
 //flag==0代表 修改用户的信息  flag==1代表修改当前用户的信息
 int flag=0;
@@ -114,7 +114,7 @@ if(id==currId){
                                 
                 	          var statusRole=<%=flag%>;          
                 	             if(statusRole==1){     	          
-                	            	 top.location.href='/yamp/logout';  
+                	            	 top.location.href='/hsms/logout';  
                             	}else{
                             		 parent.reloadTable(1);
                             	}
