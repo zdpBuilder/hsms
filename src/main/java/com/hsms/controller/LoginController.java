@@ -10,40 +10,54 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hsms.model.SysUser;
+import com.hsms.pojo.ResultPojo;
 import com.hsms.service.UsersService;
 import com.hsms.utils.Const;
+import com.hsms.utils.Empty4jUtils;
 import com.hsms.utils.JsonPrintUtil;
 
-
-
-
+/**
+ * 登陆、退出逻辑
+ *
+ */
 @Controller
 public class LoginController {
 
 	@Autowired
 	private UsersService usersService;
-	
-     //�û���¼
+
+	/**
+	 * 
+	 * @Description: 登陆
+	 * @param loginId  登陆id
+	 * @param password 密码
+	 * @param response
+	 * @param request
+	 * @param session
+	 */
 	@RequestMapping("login")
 	@ResponseBody
-	public void login(String loginId, String password, HttpServletResponse response,
-			HttpServletRequest request, HttpSession session) {	
-		SysUser sysUser= usersService.login(loginId, password);	
-	  if(null!=sysUser) {
-		// ��½�ɹ�
-		  JsonPrintUtil.printObjDataWithKey(response, 1, "data");
-		  session.setAttribute(Const.SESSION_USER, sysUser);
-	  }else{
-		  session.setAttribute(Const.SESSION_USER, null);
-		  JsonPrintUtil.printObjDataWithKey(response, 0, "data");
-	  }	  
-}
+	public ResultPojo login(String loginId, String password, HttpServletResponse response, HttpServletRequest request,
+			HttpSession session) {
+		
+		//数据校验
+		if(Empty4jUtils.stringIsEmpty(loginId) || Empty4jUtils.stringIsEmpty(password)) {
+			return new ResultPojo(0, "数据不合法");
+		}
+		return usersService.login(session, loginId.trim(), password);
+	}
 
-	// �˳�
-	@RequestMapping(value = "logout")
-	public String logout(HttpServletRequest request,HttpServletResponse response) {
-		request.getSession().invalidate();
+	/**
+	 * 
+	 * @Description: 退出
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
 		return "login";
-	}	
-	 
+	}
+
 }

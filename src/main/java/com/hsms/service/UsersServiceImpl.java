@@ -1,8 +1,5 @@
 package com.hsms.service;
 
-
-
-
 import java.util.Date;
 import java.util.List;
 
@@ -20,132 +17,141 @@ import com.hsms.mapper.SysUserMapper;
 import com.hsms.model.SysUser;
 import com.hsms.model.SysUserExample;
 import com.hsms.model.SysUserExample.Criteria;
+import com.hsms.pojo.ResultPojo;
+import com.hsms.utils.Const;
 import com.hsms.utils.DateUtil;
 import com.hsms.utils.Empty4jUtils;
-import com.hsms.utils.JsonPrintUtil;
-
-
-
-
-
 
 @Service
 public class UsersServiceImpl implements UsersService {
 
 	@Autowired
-	SysUserMapper sysUserMapper; 
-	public SysUser login(String loginId, String password) {
+	SysUserMapper sysUserMapper;
+
+	public ResultPojo login(HttpSession session, String loginId, String password) {
+
+		password = DigestUtils.md5DigestAsHex(password.getBytes());
 		
-			if (StringUtils.isNotBlank(loginId) && StringUtils.isNotBlank(password)) {
-				password = DigestUtils.md5DigestAsHex(password.getBytes());		
-					SysUserExample example = new SysUserExample();
-					Criteria criteria = example.createCriteria();
-					criteria.andLoginPasswordEqualTo(password).andLoginIdEqualTo(loginId);
-					List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
-			  if(sysUsers.size()>0&&sysUsers!=null) {
-				  return sysUsers.get(0);
-			  }
-			
-			}	
-		return null;
+		//æ‹¼è£…sql
+		SysUserExample example = new SysUserExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andLoginIdEqualTo(loginId);
+		
+		List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+		
+		if(Empty4jUtils.listIsNotEmpty(sysUsers)) {
+			SysUser sysUser = sysUsers.get(0);
+			if(password.equals(sysUser.getLoginPassword())) {
+				session.setAttribute(Const.SESSION_USER, sysUser);
+				return new ResultPojo(1, "ç™»é™†æˆåŠŸ");
+			}
+			if(!password.equals(sysUser.getLoginPassword())) {
+				return new ResultPojo(0, "è¯·è¾“å…¥æ­£ç¡®å¯†ç ");
+			}
+		}
+		return new ResultPojo(0, "æœªæ‰¾åˆ°æ­¤ç”¨æˆ·");
+
 	}
+
 	public ResponseJsonPageListBean list(HttpServletRequest request, HttpServletResponse response, String keywords,
 			int limit, int page) {
-		// limit Ã¿Ò³ÏÔÊ¾ÊıÁ¿
- 		// page µ±Ç°Ò³Âë
- 		SysUserExample example = new SysUserExample();
- 		// ÉèÖÃ·ÖÒ³²éÑ¯²ÎÊı
- 		example.setStartRow((page - 1) * limit);
- 		example.setPageSize(limit);
- 		example.setOrderByClause("create_time desc,update_time desc");
- 		Criteria criteria = example.createCriteria();
- 		if (keywords!=null&&keywords!="") {
- 			keywords = keywords.trim();
- 			keywords = "%" + keywords + "%";
- 			// and orÁªºÏ²éÑ¯
- 			example.or().andNameLike(keywords).andStatusNotEqualTo(0);
- 			example.or().andLoginIdLike(keywords).andStatusNotEqualTo(0);
- 		} else {
- 			criteria.andStatusNotEqualTo(0);// Õı³£×´Ì¬
- 		}
- 		// ·ÖÒ³²éÑ¯
- 		List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
- 		int count = (int) sysUserMapper.countByExample(example);
+		// limit Ã¿Ò³ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
+		// page ï¿½ï¿½Ç°Ò³ï¿½ï¿½
+		SysUserExample example = new SysUserExample();
+		// ï¿½ï¿½ï¿½Ã·ï¿½Ò³ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
+		example.setStartRow((page - 1) * limit);
+		example.setPageSize(limit);
+		example.setOrderByClause("create_time desc,update_time desc");
+		Criteria criteria = example.createCriteria();
+		if (keywords != null && keywords != "") {
+			keywords = keywords.trim();
+			keywords = "%" + keywords + "%";
+			// and orï¿½ï¿½ï¿½Ï²ï¿½Ñ¯
+			example.or().andNameLike(keywords).andStatusNotEqualTo(0);
+			example.or().andLoginIdLike(keywords).andStatusNotEqualTo(0);
+		} else {
+			criteria.andStatusNotEqualTo(0);// ï¿½ï¿½ï¿½ï¿½×´Ì¬
+		}
+		// ï¿½ï¿½Ò³ï¿½ï¿½Ñ¯
+		List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+		int count = (int) sysUserMapper.countByExample(example);
 
- 		ResponseJsonPageListBean listBean = new ResponseJsonPageListBean();
- 		listBean.setCode(0);
- 		listBean.setCount(count);
- 		listBean.setMsg("ÓÃ»§ÁĞ±í");
- 		listBean.setData(sysUsers);
- 		if(Empty4jUtils.listIsNotEmpty(sysUsers)) {
- 			return  listBean;
- 		}
+		ResponseJsonPageListBean listBean = new ResponseJsonPageListBean();
+		listBean.setCode(0);
+		listBean.setCount(count);
+		listBean.setMsg("ï¿½Ã»ï¿½ï¿½Ğ±ï¿½");
+		listBean.setData(sysUsers);
+		if (Empty4jUtils.listIsNotEmpty(sysUsers)) {
+			return listBean;
+		}
 		return null;
 	}
+
 	public int save(SysUser sysUser, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		int count = 0;
- 		SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo");
- 		// ±à¼­ÓÃ»§
- 		if (null != sysUser.getId()&& sysUser.getId() > 0) {
- 			SysUser userOld = sysUserMapper.selectByPrimaryKey(sysUser.getId());
- 			sysUser.setUpdater(currentLoginUser.getLoginId() + "");
- 			sysUser.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
- 			if (!userOld.getLoginPassword().equals(sysUser.getLoginPassword())) {
- 				sysUser.setLoginPassword(DigestUtils.md5DigestAsHex(sysUser.getLoginPassword().getBytes()));
- 			}
- 			count = sysUserMapper.updateByPrimaryKeySelective(sysUser);
+		SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo");
+		// ï¿½à¼­ï¿½Ã»ï¿½
+		if (null != sysUser.getId() && sysUser.getId() > 0) {
+			SysUser userOld = sysUserMapper.selectByPrimaryKey(sysUser.getId());
+			sysUser.setUpdater(currentLoginUser.getLoginId() + "");
+			sysUser.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
+			if (!userOld.getLoginPassword().equals(sysUser.getLoginPassword())) {
+				sysUser.setLoginPassword(DigestUtils.md5DigestAsHex(sysUser.getLoginPassword().getBytes()));
+			}
+			count = sysUserMapper.updateByPrimaryKeySelective(sysUser);
 
- 			
- 		} else {
- 			// ĞÂÔöÓÃ»§
- 			sysUser.setCreater(currentLoginUser.getLoginId() + "");
- 			sysUser.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
- 			sysUser.setLoginPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
- 			count = sysUserMapper.insert(sysUser);
- 			//Êä³öÇ°Ì¨Json
- 			
- 		} 		
- 		
+		} else {
+			// ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
+			sysUser.setCreater(currentLoginUser.getLoginId() + "");
+			sysUser.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
+			sysUser.setLoginPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+			count = sysUserMapper.insert(sysUser);
+			// ï¿½ï¿½ï¿½Ç°Ì¨Json
+
+		}
+
 		return count;
 	}
+
 	public int deleteBatch(String idStr, HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) {
- 		SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo");
+		SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo");
 		if (StringUtils.isNotBlank(idStr)) {
- 			String[] idArr = idStr.split(",");
- 			for (int i = 0; i < idArr.length; i++) {
- 				// ¸üĞÂËùÑ¡Éè±¸·ÖÀàÎªÉ¾³ı×´Ì¬
- 				int id = Integer.parseInt(idArr[i]);
- 				SysUser user = sysUserMapper.selectByPrimaryKey(id);
- 				user.setStatus(0);// 1Õı³£ 0ÒÑÉ¾³ı
- 				user.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
- 				user.setUpdater(currentLoginUser.getLoginId() + "");
- 				sysUserMapper.updateByPrimaryKeySelective(user);
- 			}
- 			// Êä³öÇ°Ì¨Json
- 			return 1;
- 		} 
+			String[] idArr = idStr.split(",");
+			for (int i = 0; i < idArr.length; i++) {
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½è±¸ï¿½ï¿½ï¿½ï¿½ÎªÉ¾ï¿½ï¿½×´Ì¬
+				int id = Integer.parseInt(idArr[i]);
+				SysUser user = sysUserMapper.selectByPrimaryKey(id);
+				user.setStatus(0);// 1ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½É¾ï¿½ï¿½
+				user.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
+				user.setUpdater(currentLoginUser.getLoginId() + "");
+				sysUserMapper.updateByPrimaryKeySelective(user);
+			}
+			// ï¿½ï¿½ï¿½Ç°Ì¨Json
+			return 1;
+		}
 		return 0;
 	}
+
 	public SysUser show(int id, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 		SysUser user = sysUserMapper.selectByPrimaryKey(id);
- 		if (null != user) {		
-         return user;
- 		}
+		if (null != user) {
+			return user;
+		}
 		return null;
 	}
+
 	public boolean loginIdCheck(String loginId, HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) {
-		
-		SysUserExample example=  new SysUserExample();
- 		SysUserExample.Criteria criteria = example.createCriteria();
- 		criteria.andLoginIdEqualTo(loginId);
- 		List<SysUser> list =sysUserMapper.selectByExample(example);
- 		if(list.size()>0&&list!=null) {
- 			return false;
- 		}
- 		return true;
+
+		SysUserExample example = new SysUserExample();
+		SysUserExample.Criteria criteria = example.createCriteria();
+		criteria.andLoginIdEqualTo(loginId);
+		List<SysUser> list = sysUserMapper.selectByExample(example);
+		if (list.size() > 0 && list != null) {
+			return false;
+		}
+		return true;
 	}
 
-	
 }
