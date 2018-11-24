@@ -53,7 +53,7 @@ SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo"
 									<a  id="editSysUserPassword"><i class="fa fa-user-circle" aria-hidden="true"></i>修改密码</a>
 								</dd>						
 								<dd>
-									<a href="/yamp/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
+									<a href="/hsms/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
 								</dd>
 							</dl>
 						</li>

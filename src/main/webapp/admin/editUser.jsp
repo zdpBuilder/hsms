@@ -62,6 +62,14 @@ if(id==currId){
 	                   class="layui-input layui-form-danger" style="height:26px;font-size:12px;">
 	        </div>
         </div>
+        <div class="layui-form-item" style="margin-bottom:3px;">
+	        
+	        <label class="layui-form-label" style="font-size:12px;line-height:10px;">电话</label>
+	         <div class="layui-input-block">
+	            <input type="text" name="phone" id="phone" lay-verify="required|phone" placeholder="必填项" autocomplete="off"
+	                   class="layui-input layui-form-danger" style="height:26px;font-size:12px;">
+	        </div>
+        </div>
          <div class="layui-form-item" style="margin-bottom:3px;text-align:center">
 	        
 	        <label style="font-size:12px;line-height:10px;color:red">&gt;&gt;默认登录密码是：123456&lt;&lt; </label>   
@@ -111,6 +119,7 @@ if(id==currId){
 					$("#loginId").val(result.loginId);
 					$("#userName").val(result.name);
 					$("#loginPassword").val(result.loginPassword);
+					$("#phone").phone(result.phone);
 					$("#status").val(result.status);
 					renderForm();
 				}
