@@ -1,28 +1,18 @@
 package com.hsms.controller;
 
 
-import java.util.Date;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hsms.common.ResponseJsonPageListBean;
-import com.hsms.mapper.SysUserMapper;
 import com.hsms.model.SysUser;
-import com.hsms.model.SysUserExample;
-import com.hsms.model.SysUserExample.Criteria;
 import com.hsms.service.UsersService;
-import com.hsms.utils.DateUtil;
 import com.hsms.utils.JsonPrintUtil;
 
 
