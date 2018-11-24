@@ -23,7 +23,7 @@ SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo"
 	</head>
 
 	<body>
-	<input  type="hidden"  value="${loginStatus}" id="roleStatus"/>
+	<input  type="hidden"  value="${CurrentLoginUserInfo.status}" id="roleStatus"/>
 		<div class="layui-layout layui-layout-admin" style="border-bottom: solid 5px #1aa094;">
 			<div class="layui-header header header-demo" style="background-color: #393D49">
 				<div class="layui-main">

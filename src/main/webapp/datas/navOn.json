@@ -9,11 +9,6 @@
         "icon": "fa fa-user-circle-o",
         "href": "admin/usersList.jsp",
         "spread": false
-      }, {
-        "title": "客户管理",
-        "icon": "fa fa-user-circle-o",
-        "href": "admin/CustomerList.jsp",
-        "spread": false
       }
       ]
   },{
@@ -35,11 +30,6 @@
         "title": "品牌管理",
         "icon": "fa fa-bandcamp",
         "href": "admin/braAgnTypList.jsp?roleStatus=1",
-        "spread": false
-      },{
-        "title": "种类管理",
-        "icon": "fa fa-list-ul",
-        "href": "admin/braAgnTypList.jsp?roleStatus=3",
         "spread": false
       }
     ]
@@ -82,4 +72,11 @@
         "spread": false
       }
     ]
-  }]
+  },
+  {
+    "title": "数据库备份",
+    "icon": "fa fa-pie-chart",
+    "spread": true,
+     "href": "admin/outIntoCount.jsp"
+  }
+  ]
