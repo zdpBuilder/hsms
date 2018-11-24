@@ -2,42 +2,48 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 
-  <!-- 引入jdbc配置文件 -->  
-  <properties resource="resource/db.properties" />
-  <!-- 指定数据连接驱动jar地址 -->
-  <classPathEntry location="C:\Users\zdp\.m2\repository\mysql\mysql-connector-java\5.1.32\mysql-connector-java-5.1.32.jar" />  
+	<!-- 引入jdbc配置文件 -->
+	<properties resource="resource/db.properties" />
+	<!-- 指定数据连接驱动jar地址 -->
+	<classPathEntry
+		location="C:\Users\zdp\.m2\repository\mysql\mysql-connector-java\5.1.32\mysql-connector-java-5.1.32.jar" />
 
-   
-  <context id="oaContext" targetRuntime="MyBatis3" defaultModelType="flat">
-  	
-  	<property name="suppressDate" value="true"/> 		
-  	<property name="suppressAllComments" value="true" />
-    <property name="beginningDelimiter" value="'"/>
-	<property name="endingDelimiter" value="'"/>  
-    <!--数据库链接URL 用户名 密码 -->  
-    <jdbcConnection driverClass="${jdbc.driver}" connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}"></jdbcConnection>
-        
-    <!-- 生成模型的包名和位置-->  
-    <javaModelGenerator targetPackage="yamp.com.model" targetProject="yamp">  
-        <property name="enableSubPackages" value="false"/>
-        <!-- 是否针对string类型的字段在set的时候进行trim调用 -->
-        <property name="trimStrings" value="true"/>  
-    </javaModelGenerator>  
-    
-    <!-- 生成映射文件的包名和位置-->  
-    <sqlMapGenerator targetPackage="yamp.com.mapper" targetProject="yamp">  
-        <property name="enableSubPackages" value="false"/>  
-    </sqlMapGenerator>  
-    
-    <!-- 生成DAO的包名和位置-->
-    <javaClientGenerator type="XMLMAPPER" targetPackage="yamp.com.mapper" targetProject="yamp">  
-        <property name="enableSubPackages" value="false"/>  
-    </javaClientGenerator>
-    
-    <table schema="yamp"  tableName="bill" domainObjectName="Bill"
-           enableCountByExample="true" enableUpdateByExample="true"
-           enableDeleteByExample="true" enableSelectByExample="true"
-           selectByExampleQueryId="true">
-    </table>
-  </context>
+
+	<context id="oaContext" targetRuntime="MyBatis3"
+		defaultModelType="flat">
+
+		<property name="suppressDate" value="true" />
+		<property name="suppressAllComments" value="true" />
+		<property name="beginningDelimiter" value="'" />
+		<property name="endingDelimiter" value="'" />
+		<!--数据库链接URL 用户名 密码 -->
+		<jdbcConnection driverClass="${jdbc.driver}"
+			connectionURL="${jdbc.url}" userId="${jdbc.username}" password="${jdbc.password}"></jdbcConnection>
+
+		<!-- 生成模型的包名和位置 -->
+		<javaModelGenerator targetPackage="com.hsms.model"
+			targetProject="hsms">
+			<property name="enableSubPackages" value="false" />
+			<!-- 是否针对string类型的字段在set的时候进行trim调用 -->
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- 生成映射文件的包名和位置 -->
+		<sqlMapGenerator targetPackage="com.hsms.mapper"
+			targetProject="hsms">
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+
+		<!-- 生成DAO的包名和位置 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.hsms.mapper" targetProject="hsms">
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<table schema="hsms" tableName="supplier" domainObjectName="Supplier"
+			enableCountByExample="true" enableUpdateByExample="true"
+			enableDeleteByExample="true" enableSelectByExample="true"
+			selectByExampleQueryId="true">
+		</table>
+	</context>
 </generatorConfiguration>
