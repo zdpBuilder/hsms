@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import com.hsms.mapper.SysUserMapper;
-import com.hsms.model.SysUser;
-import com.hsms.model.SysUserExample;
-import com.hsms.model.SysUserExample.Criteria;
+import com.hsms.mapper.AdminMapper;
+import com.hsms.model.Admin;
+import com.hsms.model.AdminExample;
+import com.hsms.model.AdminExample.Criteria;
+
+
 
 
 
@@ -22,15 +24,15 @@ import com.hsms.model.SysUserExample.Criteria;
 public class UsersServiceImpl implements UsersService {
 
 	@Autowired
-	SysUserMapper sysUserMapper; 
-	public SysUser login(String loginId, String password,Integer roleStatus) {
+	AdminMapper sysUserMapper; 
+	public Admin login(String loginId, String password,String roleStatus) {
 		
 			if (StringUtils.isNotBlank(loginId) && StringUtils.isNotBlank(password)&&roleStatus!=null) {
 				password = DigestUtils.md5DigestAsHex(password.getBytes());		
-					SysUserExample example = new SysUserExample();
+					AdminExample example = new AdminExample();
 					Criteria criteria = example.createCriteria();
 					criteria.andLoginPasswordEqualTo(password).andLoginIdEqualTo(loginId).andStatusEqualTo(roleStatus);
-					List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
+					List<Admin> sysUsers = sysUserMapper.selectByExample(example);
 			  if(sysUsers.size()>0&&sysUsers!=null) {
 				  return sysUsers.get(0);
 			  }

@@ -1,10 +1,7 @@
 package com.hsms.service;
 
-
-
-import com.hsms.model.SysUser;
-
+import com.hsms.model.Admin;
 
 public interface UsersService {
-	 public SysUser login(String loginId , String password,Integer roleStatus);	
+	 public Admin login(String loginId , String password,String roleStatus);	
 }

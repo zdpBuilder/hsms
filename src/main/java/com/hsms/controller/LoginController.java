@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.hsms.model.SysUser;
+import com.hsms.model.Admin;
 import com.hsms.service.UsersService;
 import com.hsms.utils.Const;
 import com.hsms.utils.JsonPrintUtil;
@@ -24,9 +24,9 @@ public class LoginController {
      //用户登录
 	@RequestMapping("login")
 	@ResponseBody
-	public void login(String loginId, String password,Integer roleStatus, HttpServletResponse response,
+	public void login(String loginId, String password,String roleStatus, HttpServletResponse response,
 			HttpServletRequest request, HttpSession session) {	
-		SysUser sysUser= usersService.login(loginId, password,roleStatus);	
+		Admin sysUser= usersService.login(loginId, password,roleStatus);	
 	  if(null!=sysUser) {
 		// 登陆成功
 		  JsonPrintUtil.printObjDataWithKey(response, 1, "data");
