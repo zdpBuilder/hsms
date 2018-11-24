@@ -40,7 +40,7 @@
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 
-		<table schema="hsms" tableName="supplier" domainObjectName="Supplier"
+		<table schema="hsms" tableName="store" domainObjectName="Store"
 			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="true">

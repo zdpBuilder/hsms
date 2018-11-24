@@ -25,9 +25,12 @@ import com.hsms.utils.JsonPrintUtil;
 
 
 
+
+
+
 @Controller
 @RequestMapping("goods")
-public class GoodsController extends UploadController {
+public class GoodsController  {
   @Autowired
   private GoodsMapper goodsMapper;
 
@@ -48,8 +51,8 @@ public class GoodsController extends UploadController {
  			keywords = keywords.trim();
  			keywords = "%" + keywords + "%";
  			// and or联合查询
- 			example.or().andNameLike(keywords).andStatusEqualTo(1);
- 			example.or().andGoodsCodeLike(keywords).andStatusEqualTo(1);
+ 			example.or().andTitleEqualTo(keywords).andStatusEqualTo(1);
+ 			example.or().andCodeLike(keywords).andStatusEqualTo(1);
  		} else {
  			criteria.andStatusEqualTo(1);// 正常状态
  		}
@@ -133,13 +136,4 @@ public class GoodsController extends UploadController {
  		}
  	}	
   
-
-    @RequestMapping("uploadPhoto")
-    @ResponseBody
-    public void uploadPhoto( HttpServletRequest request, HttpServletResponse response,MultipartFile file) {
-            // 照片保存目录
-            String photoUrl = "";  	
-        	photoUrl = super.uploadToFileUrl("goods_photo", file, request);
-        	JsonPrintUtil.printObjDataWithKey(response, photoUrl, "data");
-    } 
 }
