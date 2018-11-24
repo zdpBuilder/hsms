@@ -4,7 +4,7 @@
 <html> 
 <head>
 	<meta charset="utf-8">
-	<title>冰糕厂后台管理系统</title>
+	<title>开心超市管理系统</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -83,7 +83,7 @@
 				   ,{field: 'code', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center'}
 			      ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
 			      ,{field: 'brandTitle', title: '<span style="color:#000;font-weight:bold;">所属品牌名称</span>',align: 'center'}
-			      ,{field: 'specification', title: '<span style="color:#000;font-weight:bold;"><规格/span>',align: 'center'}
+			      ,{field: 'specification', title: '<span style="color:#000;font-weight:bold;">规格</span>',align: 'center'}
 			      ,{field: 'creater', title: '<span style="color:#000;font-weight:bold;">创建者</span>',align: 'center'}
 			      ,{field: 'createTime', title: '<span style="color:#000;font-weight:bold;">创建时间</span>',align: 'center'}
 			      ,{field: 'updater', title: '<span style="color:#000;font-weight:bold;">更新者</span>',align: 'center'}
@@ -126,7 +126,7 @@
 	      	$("#btn-add").click(function(){
 	      		layer.open({
 	      		  type: 2 //Page层类型
-	      		  ,area: ['650px', '490px']
+	      		  ,area: ['350px', '410px']
 	      		  ,title:  ['新增信息', '']
 	      		  ,shade: 0.6 //遮罩透明度
 	      		  ,fixed: true //位置固定
@@ -261,7 +261,7 @@
 	      	  	  //layer.msg('ID：'+ data.id + ' 的编辑操作');
 	      	      layer.open({
 	        		  type: 2 //Page层类型
-	        		  ,area: ['650px', '490px']
+	        		  ,area: ['300px', '490px']
 	        		  ,title: ['编辑信息', '']
 	        		  ,shade: 0.6 //遮罩透明度
 	        		  ,fixed: true //位置固定

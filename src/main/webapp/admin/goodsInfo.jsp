@@ -1,11 +1,12 @@
-<%@ page language="java" import="yamp.com.util.SNUtil"
+<%@page import="com.hsms.utils.Const"%>
+<%@ page language="java" import="com.hsms.utils.SNUtil"
 	contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
-String goodsCode="";
+String code="";
 String  id=request.getParameter("id");
 if(id==null){
-	goodsCode =SNUtil.getSNNumber("GO");	
+	code =SNUtil.getSNNumber(Const.SUN_GOODS_CODE);	
 	}
 %>
 <!DOCTYPE html>
@@ -58,13 +59,12 @@ dd {
 		</c:if>
 		<fieldset class="layui-elem-field">
 			<legend>基本信息</legend>
-			<div class="layui-row">
-				<div class="layui-col-xs6">
+			
 				<div class="layui-form-item" style="margin-bottom: 3px;">
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品编码</label>
 						<div class="layui-input-block">
-							<input type="text" name="goodsCode" disabled id="goodsCode"  value="<%=goodsCode %>" lay-verify="required"
+							<input type="text" name="code" disabled id="code"  value="<%=code %>" lay-verify="required"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -74,7 +74,7 @@ dd {
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品名称</label>
 						<div class="layui-input-block">
-							<input type="text" name="name" id="name" lay-verify="required|username"
+							<input type="text" name="title" id="title" lay-verify="required|username"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -84,25 +84,17 @@ dd {
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">品牌名称</label>
 						 <div class="layui-input-block">
-					           <select name="braId" id="braId" lay-verify="required" lay-filter="braIdSel">
+					           <select name="brandId" id="brandId" lay-verify="required" lay-filter="braIdSel">
 					            <option value="" selected >请选择</option>	            
 					           </select>
 	                     </div>
 					</div>
+					
 					<div class="layui-form-item" style="margin-bottom: 3px;">
 						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">种类名称</label>
+							style="font-size: 12px; line-height: 10px;">商品进价</label>
 						<div class="layui-input-block">
-					           <select name="typeId" id="typeId" lay-verify="required" lay-filter="typIdSel">
-					            <option value="" selected >请选择</option>            
-					           </select>
-	                     </div>
-					</div>
-				<!-- 	<div class="layui-form-item" style="margin-bottom: 3px;">
-						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">商品支进价</label>
-						<div class="layui-input-block">
-							<input type="text" name="branchBidPrice" id="branchBidPrice" lay-verify="required"
+							<input type="text" name="purchasePrice" id="purchasePrice" lay-verify="required"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -110,9 +102,9 @@ dd {
 					</div>
 					<div class="layui-form-item" style="margin-bottom: 3px;">
 						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">商品箱进价</label>
+							style="font-size: 12px; line-height: 10px;">商品支售价</label>
 						<div class="layui-input-block">
-							<input type="text" name="boxBidPrice" id="boxBidPrice" lay-verify="required"
+							<input type="text" name="saleBranchPrice" id="saleBranchPrice" lay-verify="required"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -120,9 +112,9 @@ dd {
 					</div>
 					<div class="layui-form-item" style="margin-bottom: 3px;">
 						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">商品支单价</label>
+							style="font-size: 12px; line-height: 10px;">商品箱售价</label>
 						<div class="layui-input-block">
-							<input type="text" name="branchPrice" id="branchPrice" lay-verify="required"
+							<input type="text" name="saleBoxPrice" id="saleBoxPrice" lay-verify="required"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -130,61 +122,15 @@ dd {
 					</div>
 					<div class="layui-form-item" style="margin-bottom: 3px;">
 						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">商品箱单价</label>
+							style="font-size: 12px; line-height: 10px;">商品规格</label>
 						<div class="layui-input-block">
-							<input type="text" name="boxPrice" id="boxPrice" lay-verify="required"
+							<input type="text" name="specification" id="specification" lay-verify="required"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
-						</div>
-					</div>
-					<div class="layui-form-item" style="margin-bottom: 3px;">
-						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">商品箱个数</label>
-						<div class="layui-input-block">
-							<input type="text" name="eachBoxNum" id="eachBoxNum" lay-verify="required"
-								placeholder="必填项" autocomplete="off"
-								class="layui-input layui-form-danger"
-								style="height: 26px; font-size: 12px;">
-						</div>
-					</div>
-					<div class="layui-form-item" style="margin-bottom: 3px;">
-						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">商品支数量</label>
-						<div class="layui-input-block">
-							<input type="text" name="branchCount" id="branchCount" lay-verify="required"
-								placeholder="必填项" autocomplete="off"
-								class="layui-input layui-form-danger"
-								style="height: 26px; font-size: 12px;">
-						</div>
-					</div>
-					<div class="layui-form-item" style="margin-bottom: 3px;">
-						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">商品箱数量</label>
-						<div class="layui-input-block">
-							<input type="text" name="boxCount" id="boxCount" lay-verify="required"
-								placeholder="必填项" autocomplete="off"
-								class="layui-input layui-form-danger"
-								style="height: 26px; font-size: 12px;">
-						</div>
-					</div>	 -->
-					<div class="layui-form-item" style="margin-bottom: 3px;">
-						<label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">商品描述</label>
-						<div class="layui-input-block">
-								         <textarea  name="note" id="note" lay-verify="nameLength" class="layui-input layui-form-danger"  style="height:50px;font-size:12px;" ></textarea>    
-
 						</div>
 					</div>
 				</div>
-				<div class="layui-col-xs6">
-					<div class="layui-upload-drag" id="imgUrl">
-						<i class="layui-icon"></i>
-						<p>点击上传，或将图片拖拽到此处</p>
-					</div>
-					<div id="preImg"></div>
-				</div>
-			</div>
 		</fieldset>
 		<div class="layui-form-item"
 			style="text-align: center; margin-top: 10px;">
@@ -210,26 +156,14 @@ dd {
 
       //自定义表单验证
         form.verify({  
-        	username:[/^.{0,30}$/,'请输入小于30个字的名称！'],
+        	title:[/^.{0,30}$/,'请输入小于30个字的名称！'],
         	nameLength:[/^.{0,100}$/,'请输入小于100个字的描述！'],
         });
       //重新渲染表单
       function renderForm(){
     	  form.render();
       }
-      
-      //拖拽上传
-      upload.render({
-        elem: '#imgUrl'
-        ,url: '../goods/uploadPhoto'
-        ,done: function(res){
-        	if(res){
-        		$("#imgUrlIntoSql").val(res.data);
-        		pohotoUrl='${pageContext.request.contextPath}/upload_files/goods_photo/'+res.data;
-            	$("#preImg").html('<img style=" margin:20px 10px 0 10px;"src="'+pohotoUrl +'" width="240" height="250"/>');	
-        	}
-        }
-      });
+     
       
       function getBraOrTyp(isId,roleStatus){
     	   $.ajax({
@@ -281,8 +215,8 @@ dd {
   			success:function(result){
   				result = result.data;
   				if(result){
-  					$("#name").val(result.name);
-  					$("#typeId").val(result.typeId);
+  					$("#title").val(result.title);
+  					$("#brandId").val(result.brandId);
   					$("#typeTitle").val(result.typeTitle);
   					$("#branchPrice").val(result.branchPrice);
   					$("#boxPrice").val(result.boxPrice);
@@ -295,7 +229,7 @@ dd {
   					$("#braId").val(result.braId);
   					$("#braName").val(result.braName);
   					$("#note").val(result.note);
-  					$("#goodsCode").val(result.goodsCode);
+  					$("#code").val(result.code);
   					pohotoUrl='${pageContext.request.contextPath}/upload_files/goods_photo/'+result.imgUrl;
   	            	$("#preImg").html('<img style=" margin:20px 10px 0 10px;"src="'+pohotoUrl +'" width="240" height="250"/>');	
   					renderForm();

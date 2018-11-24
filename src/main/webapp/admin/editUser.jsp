@@ -92,7 +92,7 @@ if(id==currId){
                 , layer = layui.layer
                 , layedit = layui.layedit
                 , laydate = layui.laydate
-                , element = layui.element
+                , element = layui.element             
                 , upload = layui.upload;
         var $ = layui.jquery;
 
@@ -103,7 +103,7 @@ if(id==currId){
       
       //自定义表单验证
       form.verify({  
-    	phone:[/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,'输入的手机号码不合法！'],
+    	phone:ecc.phone,
       	name:[/^.{0,6}$/,'姓名输入过长！'],
       });
       //表单元素赋值
