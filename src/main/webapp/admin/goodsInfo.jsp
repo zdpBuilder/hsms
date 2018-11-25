@@ -85,7 +85,8 @@ dd {
 							style="font-size: 12px; line-height: 10px;">品牌名称</label>
 						 <div class="layui-input-block">
 					           <select name="brandId" id="brandId" lay-verify="required" lay-filter="braIdSel">
-					            <option value="" selected >请选择</option>	            
+					            <option value="" selected >请选择</option>	
+					            <option value="0">测试</option>            
 					           </select>
 	                     </div>
 					</div>
@@ -211,30 +212,35 @@ dd {
     	  $.ajax({
   			method: "post",
   			data : {"id":goodsId},
-  			url:"../goods/show",
+  			url:"${pageContext.request.contextPath}/goods/show",
   			success:function(result){
-  				result = result.data;
-  				if(result){
-  					$("#title").val(result.title);
-  					$("#brandId").val(result.brandId);
-  					$("#typeTitle").val(result.typeTitle);
-  					$("#branchPrice").val(result.branchPrice);
-  					$("#boxPrice").val(result.boxPrice);
-  					$("#branchCount").val(result.branchCount);
-  					$("#boxCount").val(result.boxCount);
-  					$("#eachBoxNum").val(result.eachBoxNum);
-  					$("#branchBidPrice").val(result.branchBidPrice);
-  					$("#boxBidPrice").val(result.boxBidPrice);
-  					$("#imgUrlIntoSql").val(result.imgUrl);
-  					$("#braId").val(result.braId);
-  					$("#braName").val(result.braName);
-  					$("#note").val(result.note);
-  					$("#code").val(result.code);
-  					pohotoUrl='${pageContext.request.contextPath}/upload_files/goods_photo/'+result.imgUrl;
-  	            	$("#preImg").html('<img style=" margin:20px 10px 0 10px;"src="'+pohotoUrl +'" width="240" height="250"/>');	
-  					renderForm();
+  				if(null != result){
+  					if(1 == result.status){
+  						result = result.data;
+  	 					$("#title").val(result.title);
+  	 					$("#brandId").val(result.brandId);
+  	 					$("#typeTitle").val(result.typeTitle);
+  	 					$("#branchPrice").val(result.branchPrice);
+  	 					$("#boxPrice").val(result.boxPrice);
+  	 					$("#branchCount").val(result.branchCount);
+  	 					$("#boxCount").val(result.boxCount);
+  	 					$("#eachBoxNum").val(result.eachBoxNum);
+  	 					$("#branchBidPrice").val(result.branchBidPrice);
+  	 					$("#boxBidPrice").val(result.boxBidPrice);
+  	 					$("#imgUrlIntoSql").val(result.imgUrl);
+  	 					$("#braId").val(result.braId);
+  	 					$("#braName").val(result.braName);
+  	 					$("#note").val(result.note);
+  	 					$("#code").val(result.code);
+  	 					pohotoUrl='${pageContext.request.contextPath}/upload_files/goods_photo/'+result.imgUrl;
+  	 	            	$("#preImg").html('<img style=" margin:20px 10px 0 10px;"src="'+pohotoUrl +'" width="240" height="250"/>');	
+  	 					renderForm();
+  					} else{
+  						parent.layer.msg(result.msg, {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
+  					}
   					
   				}
+  				
   			}
         });   
       }
@@ -244,27 +250,29 @@ dd {
             var formJson = data.field;
             	$.ajax({
         			method: "post",
-        			url:"../goods/save",
+        			url:"${pageContext.request.contextPath}/goods/save",
         			data: formJson,
         			async:false,
         			success:function(result){
-        				if(result==null){
-                            parent.layer.msg('保存失败！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-                            return;
-    					}
-        				if(result){
-        					var data = result.data;
-        					if(data<=0){
-                                parent.layer.msg('保存失败！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-	                            return;
-        					}
-                        		//关闭窗口 并给父页面传值
+        				if(null != result){
+        					if(1 == result.status){
+        						//关闭窗口 并给父页面传值
                                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                                 parent.layer.msg('保存成功！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);                 
                                  parent.reloadTable(1);         	                       
-                                parent.layer.close(index); 		
+                                parent.layer.close(index); 
+        					}else{
+        						parent.layer.msg(result.msg, {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
+                                return;
+        					}
+        				}else{
+        					parent.layer.msg('保存失败！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
+                            return;
         				}
         			},
+        			error:function(){
+        				parent.layer.msg('服务器异常！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
+        			}
                 });      
         });
         

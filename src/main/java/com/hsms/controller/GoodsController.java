@@ -1,7 +1,6 @@
 package com.hsms.controller;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,127 +12,103 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.mapper.GoodsMapper;
 import com.hsms.model.Goods;
-import com.hsms.model.GoodsExample;
 import com.hsms.model.SysUser;
+import com.hsms.pojo.ResultPojo;
+import com.hsms.service.GoodService;
 import com.hsms.utils.DateUtil;
+import com.hsms.utils.Empty4jUtils;
 import com.hsms.utils.JsonPrintUtil;
 
-
-
-
-
-
+/**
+ * å•†å“ç®¡ç†
+ *
+ */
 @Controller
 @RequestMapping("goods")
 public class GoodsController  {
   @Autowired
+  private GoodService goodService;
+  
+  @Autowired
   private GoodsMapper goodsMapper;
 
-  // ÉÌÆ·ÁĞ±í·ÖÒ³²éÑ¯
+  /**
+   * 
+   * @Description: è·å–å•†å“åˆ—è¡¨
+   * @param limit
+   * @param page
+   * @param keywords
+   */
  	@RequestMapping("list")
  	@ResponseBody
- 	public void getList(HttpServletRequest request, HttpServletResponse response, String keywords,int limit,
- 			int page) {
- 		// limit Ã¿Ò³ÏÔÊ¾ÊıÁ¿
- 		// page µ±Ç°Ò³Âë
- 		GoodsExample example = new GoodsExample();
- 		// ÉèÖÃ·ÖÒ³²éÑ¯²ÎÊı
- 		example.setStartRow((page - 1) * limit);
- 		example.setPageSize(limit);
- 		example.setOrderByClause("create_time desc,update_time desc");
- 		GoodsExample.Criteria criteria = example.createCriteria();
- 		if (keywords!=null&&keywords!="") {
- 			keywords = keywords.trim();
- 			keywords = "%" + keywords + "%";
- 			// and orÁªºÏ²éÑ¯
- 			example.or().andTitleEqualTo(keywords).andStatusEqualTo(1);
- 			example.or().andCodeLike(keywords).andStatusEqualTo(1);
- 		} else {
- 			criteria.andStatusEqualTo(1);// Õı³£×´Ì¬
- 		}
- 		// ·ÖÒ³²éÑ¯
- 		List<Goods> goodsList = goodsMapper.selectByExample(example);
- 		int count = (int) goodsMapper.countByExample(example);
-
- 		ResponseJsonPageListBean listBean = new ResponseJsonPageListBean();
- 		listBean.setCode(0);
- 		listBean.setCount(count);
- 		listBean.setMsg("ÉÌÆ·ÁĞ±í");
- 		listBean.setData(goodsList);
-
- 		// ÈÕÖ¾¼ÇÂ¼¼°Êä³öÇ°Ì¨Json
- 		if (null != goodsList && goodsList.size() > 0) {
- 			JsonPrintUtil.printObjDataWithoutKey(response, listBean);
- 		} else {
- 			JsonPrintUtil.printObjDataWithoutKey(response, null);
- 		}
+ 	public ResponseJsonPageListBean getList(int limit, int page, String keywords) {
+ 		return goodService.getList(limit, page, keywords);
  	}
  	
- // ÉÌÆ·ĞÂÔö ±à¼­
- 	@RequestMapping(value = "save", method = RequestMethod.POST)
+ 	/**
+ 	 * 
+ 	 * @Description: æ–°å¢å’Œç¼–è¾‘
+ 	 * @param session
+ 	 * @param goods
+ 	 * @return
+ 	 */
+ 	@RequestMapping("save")
  	@ResponseBody
- 	public void save(Goods goods, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
- 		
- 		int count = 0;
- 		SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo");
- 		// ±à¼­ÉÌÆ·
- 		if (null != goods.getId()&& goods.getId() > 0) {		
- 			goods.setUpdater(currentLoginUser.getLoginId() + "");
- 			goods.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
- 			count = goodsMapper.updateByPrimaryKeySelective(goods);
-
- 			
- 		} else {
- 			// ĞÂÔöÉÌÆ·
- 			goods.setStatus(1);
- 			goods.setCreater(currentLoginUser.getLoginId()+ "");
- 			goods.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
- 			count = goodsMapper.insertSelective(goods);
- 			//Êä³öÇ°Ì¨Json
- 			
- 		} 		
- 			JsonPrintUtil.printObjDataWithKey(response, count, "data");		
+ 	public ResultPojo save(HttpSession session, Goods goods) {
+ 		int count = goodService.save(session, goods);
+ 		if(1 == count)
+ 			return new ResultPojo(1, "æ“ä½œæˆåŠŸ");
+ 		else 
+ 			return new ResultPojo(0, "æ“ä½œå¤±è´¥");
  	}
 
- 	// ÉÌÆ·ÅúÁ¿É¾³ı
- 	@RequestMapping(value = "deleteBatch", method = RequestMethod.POST)
+ 	/**
+ 	 * 
+ 	 * @Description: åˆ é™¤
+ 	 * @param idStr
+ 	 * @param request
+ 	 * @param response
+ 	 * @param session
+ 	 * @return
+ 	 */
+ 	@RequestMapping("deleteBatch")
  	@ResponseBody
- 	public void deleteBatch(String idStr, HttpServletRequest request, HttpServletResponse response,
+ 	public ResultPojo deleteBatch(String idStr, HttpServletRequest request, HttpServletResponse response,
  			HttpSession session) {
- 		SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo");
- 		if (StringUtils.isNotBlank(idStr)) {
- 			String[] idArr = idStr.split(",");
- 			for (int i = 0; i < idArr.length; i++) {
- 				// ¸üĞÂËùÑ¡Éè±¸·ÖÀàÎªÉ¾³ı×´Ì¬
- 				int id = Integer.parseInt(idArr[i]);
- 				Goods goods = goodsMapper.selectByPrimaryKey(id);
- 				goods.setStatus(0);//  0ÒÑÉ¾³ı
- 				goods.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
- 				goods.setUpdater(currentLoginUser.getLoginId() + "");
- 				goodsMapper.updateByPrimaryKeySelective(goods);
+ 		if(Empty4jUtils.stringIsNotEmpty(idStr)) {
+ 			try {
+ 				int count = goodService.deleteBatch(session, idStr);
+ 				if(1 == count) {
+ 					return new ResultPojo(1, "æ“ä½œæˆåŠŸ");
+ 				}
+ 				return new ResultPojo(0, "æ“ä½œå¤±è´¥");
+ 			}catch(RuntimeException e) {
+ 				e.printStackTrace();
+ 				return new ResultPojo(0, "æ“ä½œå¤±è´¥");
  			}
- 			// Êä³öÇ°Ì¨Json
- 			JsonPrintUtil.printObjDataWithKey(response, 1, "data");
- 		} else {
- 			JsonPrintUtil.printObjDataWithKey(response, 0, "data");
+ 			
  		}
+ 		return new ResultPojo(0, "æ•°æ®å¼‚å¸¸");
  	}
 
- 	// ÉÌÆ·²é¿´
+ 	/**
+ 	 * 
+ 	 * @Description: å±•ç¤ºå•†å“ä¿¡æ¯
+ 	 * @param id
+ 	 * @return
+ 	 */
  	@RequestMapping("show")
  	@ResponseBody
- 	public void showWH(int id, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
- 		Goods goods= goodsMapper.selectByPrimaryKey(id);
- 		if (null != goods) {		
- 			JsonPrintUtil.printObjDataWithKey(response, goods, "data");
- 		} else {
- 			JsonPrintUtil.printObjDataWithKey(response, null, "data");
+ 	public ResultPojo show(int id) {
+ 		Goods goods = goodService.getOneByPrimaryKey(id);
+ 		if(null != goods) {
+ 			return new ResultPojo(1, goods);
  		}
+ 		return new ResultPojo(0, "æœªæ‰¾åˆ°æ­¤å•†å“ä¿¡æ¯");
  	}	
   
 }

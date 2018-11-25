@@ -28,6 +28,7 @@ public class UsersServiceImpl implements UsersService {
 	@Autowired
 	SysUserMapper sysUserMapper;
 
+	@Override
 	public ResultPojo login(HttpSession session, String loginId, String password) {
 
 		password = DigestUtils.md5DigestAsHex(password.getBytes());

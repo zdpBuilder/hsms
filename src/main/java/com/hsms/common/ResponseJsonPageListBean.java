@@ -12,5 +12,17 @@ public class ResponseJsonPageListBean {
 	private String msg;
 	private int count;
 	private List<?> data;
+	
+	public ResponseJsonPageListBean() {
+		super();
+	}
+	
+	public ResponseJsonPageListBean(int code, String msg, int count, List<?> data) {
+		super();
+		this.code = code;
+		this.msg = msg;
+		this.count = count;
+		this.data = data;
+	}
 
 }

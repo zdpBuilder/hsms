@@ -105,6 +105,7 @@
 			        //console.log(res);
 			        //得到当前页码
 			        //console.log(curr);
+			        console.info(res);
 			        currPageNum = curr;
 			        //得到数据总量
 			       // console.log(count);
@@ -230,24 +231,24 @@
 	        	  			url:"${pageContext.request.contextPath}/goods/deleteBatch",
 	        	  			data:{"idStr":data.id},
 	        	  			success:function(result){
-	        	  				if(result.data==1){
-	        		  				layer.msg('删除成功！', {time: 1000}); //1s后自动关闭
-	      	    					//console.info(obj);
-	        		  				//$(obj.tr).fadeOut();
-	        		  				//刷新表格内容
-	        		  		        table.reload('goodsListTable', {
-	        		  		          page: {
-	        		  		            curr: currPageNum //从当前页开始
-	        		  		          }
-	        		  		          ,where: {
-	        		  		        	//传参
-	        		  		            keywords: $("#keywords").val()
-	        		  		          }
-	        		  		        });
-	        		  				
-	        	  				}else{
-	        	  					layer.msg('删除失败！', {time: 1000}); //1s后自动关闭
+	        	  				if(null != result){
+	        	  					if(1 == result.status){
+		        		  				layer.msg('删除成功！', {time: 1000}); //1s后自动关闭
+		        		  				//刷新表格内容
+		        		  		        table.reload('goodsListTable', {
+		        		  		          page: {
+		        		  		            curr: currPageNum //从当前页开始
+		        		  		          }
+		        		  		          ,where: {
+		        		  		        	//传参
+		        		  		            keywords: $("#keywords").val()
+		        		  		          }
+		        		  		        });
+		        	  				}else{
+		        	  					layer.msg('删除失败！', {time: 1000}); //1s后自动关闭
+		        	  				}
 	        	  				}
+	        	  				
 	        	  	        }
 	        			});
 	      	    	   
