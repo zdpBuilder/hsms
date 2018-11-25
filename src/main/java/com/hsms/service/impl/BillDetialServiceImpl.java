@@ -60,9 +60,10 @@ public class BillDetialServiceImpl implements BillDetialService {
 		if(Empty4jUtils.intIsNotEmpty(billDetial.getId())) {
 			billDetial.setUpdater(currentLoginUser.getLoginId());
 			billDetial.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result  = billDetialMapper.updateByPrimaryKey(billDetial);
+			result  = billDetialMapper.updateByPrimaryKeySelective(billDetial);
 		}//新增账单明细信息
 		else{
+			billDetial.setStatus(1);
 			billDetial.setCreater(currentLoginUser.getLoginPassword());
 			billDetial.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
 	        result = billDetialMapper.insert(billDetial);

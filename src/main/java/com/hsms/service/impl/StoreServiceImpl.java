@@ -55,7 +55,7 @@ public class StoreServiceImpl implements StoreService {
 		if(Empty4jUtils.intIsNotEmpty(store.getId())) {
 			store.setUpdater(currentLoginUser.getLoginId());
 			store.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result  = storeMapper.updateByPrimaryKey(store);
+			result  = storeMapper.updateByPrimaryKeySelective(store);
 		}//新增库存信息
 		else{
 			store.setCreater(currentLoginUser.getLoginPassword());

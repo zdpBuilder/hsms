@@ -60,9 +60,10 @@ public class BrandServiceImpl implements BrandService {
 		if(Empty4jUtils.intIsNotEmpty(brand.getId())) {
 			brand.setUpdater(currentLoginUser.getLoginId());
 			brand.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result  = brandMapper.updateByPrimaryKey(brand);
+			result  = brandMapper.updateByPrimaryKeySelective(brand);
 		}//新增品牌信息
 		else{
+			brand.setStatus(1);
 			brand.setCreater(currentLoginUser.getLoginPassword());
 			brand.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
 	        result = brandMapper.insert(brand);

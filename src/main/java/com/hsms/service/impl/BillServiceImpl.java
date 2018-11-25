@@ -60,9 +60,10 @@ public class BillServiceImpl implements BillService {
 		if(Empty4jUtils.intIsNotEmpty(bill.getId())) {
 			bill.setUpdater(currentLoginUser.getLoginId());
 			bill.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result  = billMapper.updateByPrimaryKey(bill);
+			result  = billMapper.updateByPrimaryKeySelective(bill);
 		}//新增账单信息
 		else{
+			bill.setStatus(1);
 			bill.setCreater(currentLoginUser.getLoginPassword());
 			bill.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
 	        result = billMapper.insert(bill);
