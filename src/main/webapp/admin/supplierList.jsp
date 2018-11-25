@@ -156,7 +156,7 @@
 		        	  			url:"${pageContext.request.contextPath}/supplier/deleteBatch",
 		        	  			data:{"idStr":idStr},
 		        	  			success:function(result){
-		        	  				if(result.data==1){
+		        	  				if(1 == result.status){
 		        		  				layer.msg('删除 '+data.length+' 条成功！', {time: 1000}); //1s后自动关闭
 		      	    					
 		        		  				//刷新表格内容

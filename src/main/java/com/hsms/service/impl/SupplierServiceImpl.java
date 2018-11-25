@@ -25,26 +25,26 @@ public class SupplierServiceImpl implements SupplierService {
 
 	@Autowired
 	private SupplierMapper supplierMapper;
-	
+
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
 		// TODO Auto-generated method stub
-		SupplierExample  example = new SupplierExample();
-		//分页配置
+		SupplierExample example = new SupplierExample();
+		// 分页配置
 		example.setStartRow((page - 1) * limit);
 		example.setPageSize(limit);
 		example.setOrderByClause("create_time desc,update_time desc");
-		Criteria criteria  =example.createCriteria();
-		//条件查询 参数配置
-		if(Empty4jUtils.stringIsNotEmpty(keywords)) {
+		Criteria criteria = example.createCriteria();
+		// 条件查询 参数配置
+		if (Empty4jUtils.stringIsNotEmpty(keywords)) {
 			keywords = keywords.trim();
 			keywords = "%" + keywords + "%";
 			example.or().andNameLike(keywords).andStatusEqualTo(1);
-		}else {
+		} else {
 			criteria.andStatusEqualTo(1);
 		}
-		//结果处理
-		List<Supplier> list =supplierMapper.selectByExample(example);
-		int count =(int) supplierMapper.countByExample(example);
+		// 结果处理
+		List<Supplier> list = supplierMapper.selectByExample(example);
+		int count = (int) supplierMapper.countByExample(example);
 		ResponseJsonPageListBean listBean = new ResponseJsonPageListBean();
 		listBean.setCode(0);
 		listBean.setCount(count);
@@ -54,49 +54,47 @@ public class SupplierServiceImpl implements SupplierService {
 	}
 
 	public int save(Supplier supplier, HttpSession session) {
-		int result=0;
-		SysUser currentLoginUser =(SysUser)session.getAttribute(Const.SESSION_USER);
-		//修改供应商信息
-		if(Empty4jUtils.intIsNotEmpty(supplier.getId())) {
+		int result = 0;
+		SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
+		// 修改供应商信息
+		if (Empty4jUtils.intIsNotEmpty(supplier.getId())) {
 			supplier.setUpdater(currentLoginUser.getLoginId());
 			supplier.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result  = supplierMapper.updateByPrimaryKeySelective(supplier);
-		}//新增供应商信息
-		else{
+			result = supplierMapper.updateByPrimaryKeySelective(supplier);
+		} // 新增供应商信息
+		else {
 			supplier.setStatus(1);
 			supplier.setCreater(currentLoginUser.getLoginId());
 			supplier.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-	        result = supplierMapper.insert(supplier);
+			result = supplierMapper.insert(supplier);
 		}
 		return result;
 	}
 
 	@Transactional(readOnly = false)
 	public int deleteBatch(String idStr, HttpSession session) throws RuntimeException {
-		SysUser currentLoginUser =(SysUser)session.getAttribute(Const.SESSION_USER);
-        int result=0;
+		SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
+		int result = 0;
 		if (Empty4jUtils.stringIsNotEmpty(idStr)) {
 			String[] idArr = idStr.split(",");
 			for (int i = 0; i < idArr.length; i++) {
-				//更新供应商状态
+				result = 0;
+				// 更新供应商状态
 				int id = Integer.parseInt(idArr[i]);
 				Supplier supplier = supplierMapper.selectByPrimaryKey(id);
 				supplier.setStatus(0);
 				supplier.setUpdater(currentLoginUser.getLoginId());
 				supplier.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-				supplierMapper.updateByPrimaryKeySelective(supplier);			
-			 }	
-			result=1;
+				result = supplierMapper.updateByPrimaryKeySelective(supplier);
 			}
+		}
 		return result;
 	}
 
 	public Supplier Show(int id, HttpSession session) {
-		
-	    return supplierMapper.selectByPrimaryKey(id);
-	    
+
+		return supplierMapper.selectByPrimaryKey(id);
+
 	}
 
-      
-	
 }
