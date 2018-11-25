@@ -38,9 +38,9 @@ public class SupplierServiceImpl implements SupplierService {
 		if(Empty4jUtils.stringIsNotEmpty(keywords)) {
 			keywords = keywords.trim();
 			keywords = "%" + keywords + "%";
-			example.or().andNameLike(keywords).andStatusNotEqualTo(0);
+			example.or().andNameLike(keywords).andStatusEqualTo(1);
 		}else {
-			criteria.andStatusNotEqualTo(0);
+			criteria.andStatusEqualTo(1);
 		}
 		//结果处理
 		List<Supplier> list =supplierMapper.selectByExample(example);
@@ -60,10 +60,11 @@ public class SupplierServiceImpl implements SupplierService {
 		if(Empty4jUtils.intIsNotEmpty(supplier.getId())) {
 			supplier.setUpdater(currentLoginUser.getLoginId());
 			supplier.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result  = supplierMapper.updateByPrimaryKey(supplier);
+			result  = supplierMapper.updateByPrimaryKeySelective(supplier);
 		}//新增供应商信息
 		else{
-			supplier.setCreater(currentLoginUser.getLoginPassword());
+			supplier.setStatus(1);
+			supplier.setCreater(currentLoginUser.getLoginId());
 			supplier.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
 	        result = supplierMapper.insert(supplier);
 		}

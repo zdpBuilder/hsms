@@ -24,7 +24,7 @@
       },{
         "title": "供应商管理",
         "icon": "fa fa-user-circle-o",
-        "href": "admin/braAgnTypList.jsp?roleStatus=2",
+        "href": "admin/supplierList.jsp",
         "spread": false
       },{
         "title": "品牌管理",

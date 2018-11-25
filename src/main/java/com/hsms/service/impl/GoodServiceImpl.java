@@ -38,7 +38,8 @@ public class GoodServiceImpl implements GoodService {
 			keywords = keywords.trim();
 			keywords = "%" + keywords + "%";
 			// and or拼装
-			example.or().andTitleLike(keywords).andCodeLike(keywords).andStatusEqualTo(1);
+			example.or().andTitleLike(keywords).andStatusEqualTo(1);
+			example.or().andCodeLike(keywords).andStatusEqualTo(1);
 		} else {
 			criteria.andStatusEqualTo(1);
 		}
