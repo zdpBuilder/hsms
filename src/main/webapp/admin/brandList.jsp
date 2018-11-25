@@ -124,7 +124,7 @@
 	      	$("#btn-add").click(function(){
 	      		layer.open({
 	      		  type: 2 //Page层类型
-	      		  ,area: ['350px', '410px']
+	      		  ,area: ['350px', '180px']
 	      		  ,title:  ['新增信息', '']
 	      		  ,shade: 0.6 //遮罩透明度
 	      		  ,fixed: true //位置固定
@@ -154,7 +154,8 @@
 		        	  			url:"${pageContext.request.contextPath}/brand/deleteBatch",
 		        	  			data:{"idStr":idStr},
 		        	  			success:function(result){
-		        	  				if(result.data==1){
+		        	  	
+		        	  				if(result.status==1){
 		        		  				layer.msg('删除 '+data.length+' 条成功！', {time: 1000}); //1s后自动关闭
 		      	    					
 		        		  				//刷新表格内容
@@ -259,7 +260,7 @@
 	      	  	  //layer.msg('ID：'+ data.id + ' 的编辑操作');
 	      	      layer.open({
 	        		  type: 2 //Page层类型
-	        		  ,area: ['300px', '490px']
+	        		  ,area: ['350px', '180px']
 	        		  ,title: ['编辑信息', '']
 	        		  ,shade: 0.6 //遮罩透明度
 	        		  ,fixed: true //位置固定

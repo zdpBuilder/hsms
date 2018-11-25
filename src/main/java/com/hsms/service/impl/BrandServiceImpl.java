@@ -64,7 +64,7 @@ public class BrandServiceImpl implements BrandService {
 		}//新增品牌信息
 		else{
 			brand.setStatus(1);
-			brand.setCreater(currentLoginUser.getLoginPassword());
+			brand.setCreater(currentLoginUser.getLoginId());
 			brand.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
 	        result = brandMapper.insert(brand);
 		}

@@ -4,7 +4,7 @@
 <html> 
 <head>
 	<meta charset="utf-8">
-	<title>冷食城后台管理系统</title>
+	<title>开心超市管理系统</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -35,7 +35,7 @@
 		            <div class="fr" >
 		                <span class="layui-form-label" style=" margin-top:5px;font-size:12px;vertical-align: top;line-height:10px;">搜索条件：</span>
 		                <div class="layui-input-inline">
-		                    <input type="text" autocomplete="off" id="keywords" name="keywords" placeholder="名称" class="layui-input " style="height:26px;font-size:12px;"/>
+		                    <input type="text" autocomplete="off" id="keywords" name="keywords" placeholder="商品名称" class="layui-input " style="height:26px;font-size:12px;"/>
 		                </div> 
 		                <button class="layui-btn layui-btn-sm" id="btn-search" style="font-size: 10px;"><i class="layui-icon" style="font-size: 14px;">&#xe615;</i>&nbsp;查询</button>
 		            </div>
@@ -56,7 +56,7 @@
 
 	function reloadTable(pageNum){
 		//刷新表格内容
-		table.reload('goodsListTable', {
+		table.reload('storeListTable', {
 		  page: {
 		    curr: pageNum //当前页开始
 		  } 
@@ -78,16 +78,14 @@
 			    ,cols: [[ 
 			       //{type:'numbers' ,title: '序号'},
 				  {field: 'goodsCode', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center',width:160}
-			      ,{field: 'name', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
-			      ,{field: 'branchBidPrice', title: '<span style="color:#000;font-weight:bold;">商品支进价</span>',align: 'center'}
-			      ,{field: 'boxBidPrice', title: '<span style="color:#000;font-weight:bold;">商品箱进价</span>',align: 'center'}
-			      ,{field: 'branchPrice', title: '<span style="color:#000;font-weight:bold;">商品支单价</span>',align: 'center'}
-			      ,{field: 'boxPrice', title: '<span style="color:#000;font-weight:bold;">商品箱单价</span>',align: 'center'}		  
-			      ,{field: 'branchCount', title: '<span style="color:#000;font-weight:bold;">商品支数量</span>',align: 'center',templet:'#branchCountTpl'}		  
-			      ,{field: 'boxCount', title: '<span style="color:#000;font-weight:bold;">商品箱数量</span>',align: 'center',templet:'#boxCountTpl'}		  
+			      ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}		
+			      ,{field: 'purchaseTransaction', title: '<span style="color:#000;font-weight:bold;">商品进货总额(元)</span>',align: 'center'}
+			      ,{field: 'saleTransaction', title: '<span style="color:#000;font-weight:bold;">商品销售总额(元)</span>',align: 'center'}		  
+			      ,{field: 'branchNum', title: '<span style="color:#000;font-weight:bold;">商品支数量</span>',align: 'center',templet:'#branchCountTpl'}		  
+			      ,{field: 'boxNum', title: '<span style="color:#000;font-weight:bold;">商品箱数量</span>',align: 'center',templet:'#boxCountTpl'}		  
 			      ]]
-	        	,url:'${pageContext.request.contextPath}/goods/list'
-	        	,id: 'goodsListTable'
+	        	,url:'${pageContext.request.contextPath}/store/list'
+	        	,id: 'storeListTable'
 	        	,where: {
 	        		keywords: $("#keywords").val()
 	        	}//查询传参
@@ -117,7 +115,7 @@
 	      		//清空页面刷新条件
 	      		$("#keywords").val("");
 	      		//页面刷新
-	      		table.reload('goodsListTable', {
+	      		table.reload('storeListTable', {
 	      		  page: {
 	      		    curr: 1 //重新从第 1 页开始
 	      		  }
@@ -126,7 +124,7 @@
 	      	//多条件查询
 	      	$("#btn-search").click(function(){
 	      		//表格查询
-	      		table.reload('goodsListTable', {
+	      		table.reload('storeListTable', {
 	      		  page: {
 	      		    curr: 1 //重新从第 1 页开始
 	      		  }
@@ -142,16 +140,16 @@
 </body>
 </html>
 <script type="text/html" id="branchCountTpl">
-  {{#  if(d.branchCount <=5){ }}
-    <span style="color: red;">{{ d.branchCount }}</span>
+  {{#  if(d.branchNum <=5){ }}
+    <span style="color: red;">{{ d.branchNum }}</span>
   {{#  } else { }}
-    {{ d.branchCount }}
+    {{ d.branchNum }}
   {{#  } }}
 </script>
 <script type="text/html" id="boxCountTpl">
-  {{#  if(d.boxCount <=5){ }}
-    <span style="color: red;">{{ d.boxCount }}</span>
+  {{#  if(d.boxNum <=5){ }}
+    <span style="color: red;">{{ d.boxNum }}</span>
   {{#  } else { }}
-    {{ d.boxCount}}
+    {{ d.boxNum}}
   {{#  } }}
 </script>
