@@ -33,8 +33,6 @@ public class GoodsController  {
   @Autowired
   private GoodService goodService;
   
-  @Autowired
-  private GoodsMapper goodsMapper;
 
   /**
    * 

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Supplier;
@@ -19,12 +20,14 @@ public class SuppilerController {
 	private SupplierService supplierService;
 	
 	@RequestMapping("list")
+	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer  page) {
 		
 		return supplierService.list(keywords, limit, page);
 		
 	}
 	@RequestMapping("save")
+	@ResponseBody
 	public ResultPojo save(Supplier supplier, HttpSession session) {
 		int count=supplierService.save(supplier, session);
 		
@@ -35,6 +38,7 @@ public class SuppilerController {
 		
 	}
 	@RequestMapping("show")
+	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {
 		Supplier supplier = supplierService.Show(id, session);
 		 
@@ -46,6 +50,7 @@ public class SuppilerController {
 		
 	}
 	@RequestMapping("deleteBatch")
+	@ResponseBody
 	public ResultPojo deleteBatch(String idStr,HttpSession session) {
 	    int result = supplierService.deleteBatch(idStr, session);
 		

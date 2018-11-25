@@ -29,7 +29,7 @@
       },{
         "title": "品牌管理",
         "icon": "fa fa-bandcamp",
-        "href": "admin/braAgnTypList.jsp?roleStatus=1",
+        "href": "admin/brandList.jsp",
         "spread": false
       }
     ]

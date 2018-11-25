@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Store;
@@ -19,12 +20,14 @@ public class StoreController {
 	private StoreService storeService;
 	
 	@RequestMapping("list")
+	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer  page) {
 		
 		return storeService.list(keywords, limit, page);
 		
 	}
 	@RequestMapping("save")
+	@ResponseBody
 	public ResultPojo save(Store store, HttpSession session) {
 		int count=storeService.save(store, session);
 		
@@ -35,6 +38,7 @@ public class StoreController {
 		
 	}
 	@RequestMapping("show")
+	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {
 		 Store store = storeService.Show(id, session);
 		 

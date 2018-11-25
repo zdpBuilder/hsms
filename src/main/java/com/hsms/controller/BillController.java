@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Bill;
@@ -19,12 +20,14 @@ public class BillController {
 	private BillService billService;
 	
 	@RequestMapping("list")
+	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer  page) {
 		
 		return billService.list(keywords, limit, page);
 		
 	}
 	@RequestMapping("save")
+	@ResponseBody
 	public ResultPojo save(Bill bill, HttpSession session) {
 		int count=billService.save(bill, session);
 		
@@ -35,6 +38,7 @@ public class BillController {
 		
 	}
 	@RequestMapping("show")
+	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {
 		 Bill bill = billService.Show(id, session);
 		 
@@ -46,6 +50,7 @@ public class BillController {
 		
 	}
 	@RequestMapping("deleteBatch")
+	@ResponseBody
 	public ResultPojo deleteBatch(String idStr,HttpSession session) {
 	    int result = billService.deleteBatch(idStr, session);
 		
