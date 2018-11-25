@@ -147,7 +147,7 @@
 			    	for(var i=0;i<data.length;i++){	
 			    		idStr = data[i].id + "," + idStr;
 			    	}
-			    	layer.confirm('确认删除 '+data.length+' 条用户信息？', {
+			    	layer.confirm('确认删除 '+data.length+' 条信息？', {
 		      	    	  title: "确认消息", //标题
 		      	    	  btn: ['确认','取消'] //按钮
 		      	    	}, function(){
@@ -220,7 +220,7 @@
 	      	    if(obj.event === 'del'){
 	      	    
 	      	      //layer.msg('ID：'+ data.id + ' 的删除操作');
-	      	    	layer.confirm('确认删除用户信息？', {
+	      	    	layer.confirm('确认删除？', {
 	      	    	  title: "确认消息", //标题
 	      	    	  btnAlign: 'c',
 	      	    	  btn: ['确认','取消'] //按钮
