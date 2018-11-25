@@ -5,11 +5,11 @@ package com.hsms.service;
 import javax.servlet.http.HttpSession;
 
 import com.hsms.common.ResponseJsonPageListBean;
-import com.hsms.model.Brand;
+import com.hsms.model.Supplier;
 
-public interface BrandService {
+public interface SupplierService {
    /**
-    * 品牌列表查询
+    * 供应商列表查询
     * @param keywords
     * @param limit
     * @param page
@@ -17,24 +17,24 @@ public interface BrandService {
     */
 	ResponseJsonPageListBean list(String keywords, int limit,int page);
 	/**
-	 * 品牌 新增 编辑
-	 * @param brand
+	 * 供应商 新增 编辑
+	 * @param supplier
 	 * @param session
 	 * @return
 	 */
-	int save(Brand brand,HttpSession session);
+	int save(Supplier supplier,HttpSession session);
 	/**
-	 * 品牌批量删除
+	 * 供应商批量删除
 	 * @param idStr
 	 * @param session
 	 * @return
 	 */
 	int deleteBatch(String idStr,HttpSession session);
 	/**
-	 * 根据id 查询某个品牌的详细信息
+	 * 根据id 查询某个供应商的详细信息
 	 * @param id
 	 * @param session
 	 * @return
 	 */
-	Brand Show(int id,HttpSession session);
+	Supplier Show(int id,HttpSession session);
 }
