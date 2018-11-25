@@ -55,7 +55,7 @@
       {
         "title": "库存查看", 
         "icon": "fa fa-database",
-        "href": "admin/stockList.jsp",
+        "href": "admin/storeList.jsp",
         "spread": false
       }
     ]
@@ -77,6 +77,6 @@
     "title": "数据库备份",
     "icon": "fa fa-pie-chart",
     "spread": true,
-     "href": "admin/outIntoCount.jsp"
+     "href": "admin/dbBackup.jsp"
   }
   ]
