@@ -26,8 +26,8 @@ public class SupplierServiceImpl implements SupplierService {
 	@Autowired
 	private SupplierMapper supplierMapper;
 
+	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
-		// TODO Auto-generated method stub
 		SupplierExample example = new SupplierExample();
 		// 分页配置
 		example.setStartRow((page - 1) * limit);
@@ -53,6 +53,7 @@ public class SupplierServiceImpl implements SupplierService {
 		return listBean;
 	}
 
+	@Override
 	public int save(Supplier supplier, HttpSession session) {
 		int result = 0;
 		SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
@@ -71,6 +72,7 @@ public class SupplierServiceImpl implements SupplierService {
 		return result;
 	}
 
+	@Override
 	@Transactional(readOnly = false)
 	public int deleteBatch(String idStr, HttpSession session) throws RuntimeException {
 		SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
@@ -91,7 +93,8 @@ public class SupplierServiceImpl implements SupplierService {
 		return result;
 	}
 
-	public Supplier Show(int id, HttpSession session) {
+	@Override
+	public Supplier getOneById(int id) {
 
 		return supplierMapper.selectByPrimaryKey(id);
 

@@ -9,7 +9,7 @@ import com.hsms.model.SysUser;
 import com.hsms.pojo.ResultPojo;
 
 public interface UsersService {
-	
+
 	/**
 	 * 
 	 * @Description: 登陆
@@ -20,14 +20,47 @@ public interface UsersService {
 	 */
 	ResultPojo login(HttpSession session, String loginId, String password);
 
-	ResponseJsonPageListBean list(HttpServletRequest request, HttpServletResponse response, String keywords, int limit,
-			int page);
+	/**
+	 * 
+	 * @Description: 分页数据
+	 * @param keywords
+	 * @param limit
+	 * @param page
+	 * @return
+	 */
+	ResponseJsonPageListBean list(String keywords, int limit, int page);
 
-	boolean loginIdCheck(String loginId, HttpServletRequest request, HttpServletResponse response, HttpSession session);
+	/**
+	 * 
+	 * @Description: 登陆账号是否存在
+	 * @param loginId
+	 * @return
+	 */
+	boolean loginIdCheck(String loginId);
 
-	int save(SysUser sysUser, HttpServletRequest request, HttpServletResponse response, HttpSession session);
+	/**
+	 * 
+	 * @Description: 新增用户
+	 * @param sysUser
+	 * @param session
+	 * @return
+	 */
+	int save(SysUser sysUser, HttpSession session);
 
-	int deleteBatch(String idStr, HttpServletRequest request, HttpServletResponse response, HttpSession session);
+	/**
+	 * 
+	 * @Description: 批量删除
+	 * @param idStr
+	 * @param session
+	 * @return
+	 */
+	int deleteBatch(String idStr, HttpSession session);
 
-	SysUser show(int id, HttpServletRequest request, HttpServletResponse response, HttpSession session);
+	/**
+	 * 
+	 * @Description: 获取用户信息
+	 * @param id
+	 * @return
+	 */
+	SysUser getOneById(int id);
 }

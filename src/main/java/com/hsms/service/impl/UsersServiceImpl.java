@@ -33,21 +33,21 @@ public class UsersServiceImpl implements UsersService {
 	public ResultPojo login(HttpSession session, String loginId, String password) {
 
 		password = DigestUtils.md5DigestAsHex(password.getBytes());
-		
-		//拼装sql
+
+		// 拼装sql
 		SysUserExample example = new SysUserExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andLoginIdEqualTo(loginId);
-		
+
 		List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
-		
-		if(Empty4jUtils.listIsNotEmpty(sysUsers)) {
+
+		if (Empty4jUtils.listIsNotEmpty(sysUsers)) {
 			SysUser sysUser = sysUsers.get(0);
-			if(password.equals(sysUser.getLoginPassword())) {
+			if (password.equals(sysUser.getLoginPassword())) {
 				session.setAttribute(Const.SESSION_USER, sysUser);
 				return new ResultPojo(1, "登陆成功");
 			}
-			if(!password.equals(sysUser.getLoginPassword())) {
+			if (!password.equals(sysUser.getLoginPassword())) {
 				return new ResultPojo(0, "请输入正确密码");
 			}
 		}
@@ -55,12 +55,9 @@ public class UsersServiceImpl implements UsersService {
 
 	}
 
-	public ResponseJsonPageListBean list(HttpServletRequest request, HttpServletResponse response, String keywords,
-			int limit, int page) {
-		// limit ÿҳ��ʾ����
-		// page ��ǰҳ��
+	@Override
+	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
 		SysUserExample example = new SysUserExample();
-		// ���÷�ҳ��ѯ����
 		example.setStartRow((page - 1) * limit);
 		example.setPageSize(limit);
 		example.setOrderByClause("create_time desc,update_time desc");
@@ -68,13 +65,11 @@ public class UsersServiceImpl implements UsersService {
 		if (keywords != null && keywords != "") {
 			keywords = keywords.trim();
 			keywords = "%" + keywords + "%";
-			// and or���ϲ�ѯ
 			example.or().andNameLike(keywords).andStatusNotEqualTo(0);
 			example.or().andLoginIdLike(keywords).andStatusNotEqualTo(0);
 		} else {
-			criteria.andStatusNotEqualTo(0);// ����״̬
+			criteria.andStatusNotEqualTo(0);
 		}
-		// ��ҳ��ѯ
 		List<SysUser> sysUsers = sysUserMapper.selectByExample(example);
 		int count = (int) sysUserMapper.countByExample(example);
 
@@ -89,10 +84,10 @@ public class UsersServiceImpl implements UsersService {
 		return null;
 	}
 
-	public int save(SysUser sysUser, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+	@Override
+	public int save(SysUser sysUser, HttpSession session) {
 		int count = 0;
 		SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo");
-		// �༭�û�
 		if (null != sysUser.getId() && sysUser.getId() > 0) {
 			SysUser userOld = sysUserMapper.selectByPrimaryKey(sysUser.getId());
 			sysUser.setUpdater(currentLoginUser.getLoginId() + "");
@@ -103,48 +98,40 @@ public class UsersServiceImpl implements UsersService {
 			count = sysUserMapper.updateByPrimaryKeySelective(sysUser);
 
 		} else {
-			// �����û�
 			sysUser.setCreater(currentLoginUser.getLoginId() + "");
 			sysUser.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
 			sysUser.setLoginPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
 			count = sysUserMapper.insert(sysUser);
-			// ���ǰ̨Json
-
 		}
 
 		return count;
 	}
 
-	public int deleteBatch(String idStr, HttpServletRequest request, HttpServletResponse response,
-			HttpSession session) {
+	@Override
+	public int deleteBatch(String idStr, HttpSession session) {
 		SysUser currentLoginUser = (SysUser) session.getAttribute("CurrentLoginUserInfo");
 		if (StringUtils.isNotBlank(idStr)) {
 			String[] idArr = idStr.split(",");
 			for (int i = 0; i < idArr.length; i++) {
-				// ������ѡ�豸����Ϊɾ��״̬
 				int id = Integer.parseInt(idArr[i]);
 				SysUser user = sysUserMapper.selectByPrimaryKey(id);
-				user.setStatus(0);// 1���� 0��ɾ��
+				user.setStatus(0);
 				user.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
 				user.setUpdater(currentLoginUser.getLoginId() + "");
 				sysUserMapper.updateByPrimaryKeySelective(user);
 			}
-			// ���ǰ̨Json
 			return 1;
 		}
 		return 0;
 	}
 
-	public SysUser show(int id, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		SysUser user = sysUserMapper.selectByPrimaryKey(id);
-		if (null != user) {
-			return user;
-		}
-		return null;
+	@Override
+	public SysUser getOneById(int id) {
+		return sysUserMapper.selectByPrimaryKey(id);
 	}
 
-	public boolean loginIdCheck(String loginId, HttpServletRequest request, HttpServletResponse response,
-			HttpSession session) {
+	@Override
+	public boolean loginIdCheck(String loginId) {
 
 		SysUserExample example = new SysUserExample();
 		SysUserExample.Criteria criteria = example.createCriteria();

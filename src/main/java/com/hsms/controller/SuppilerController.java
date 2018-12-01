@@ -15,48 +15,51 @@ import com.hsms.service.SupplierService;
 @Controller
 @RequestMapping("supplier")
 public class SuppilerController {
-  
+
 	@Autowired
 	private SupplierService supplierService;
-	
+
 	@RequestMapping("list")
 	@ResponseBody
-	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer  page) {
-		
+	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page) {
+
 		return supplierService.list(keywords, limit, page);
-		
+
 	}
+
 	@RequestMapping("save")
 	@ResponseBody
 	public ResultPojo save(Supplier supplier, HttpSession session) {
-		int count=supplierService.save(supplier, session);
-		
-		if(count==1) {
-			return  new ResultPojo(1,"操作成功");
+		int count = supplierService.save(supplier, session);
+
+		if (count == 1) {
+			return new ResultPojo(1, "操作成功");
 		}
-			return  new ResultPojo(0,"操作失败");
-		
+		return new ResultPojo(0, "操作失败");
+
 	}
+
 	@RequestMapping("show")
 	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {
-		Supplier supplier = supplierService.Show(id, session);
-		 
-		 if(supplier!=null) {
-			 return  new ResultPojo(1,supplier);
-		 }
-		 
-		 return  new ResultPojo(0,"操作失败");
-		
+		Supplier supplier = supplierService.getOneById(id);
+
+		if (supplier != null) {
+			return new ResultPojo(1, supplier);
+		}
+
+		return new ResultPojo(0, "操作失败");
+
 	}
+
 	@RequestMapping("deleteBatch")
 	@ResponseBody
-	public ResultPojo deleteBatch(String idStr,HttpSession session) {
-	    int result = supplierService.deleteBatch(idStr, session);
-		
-	    if(result==1) {
-			 return  new ResultPojo(1,"操作成功");	
-	    }
-		 return  new ResultPojo(0,"操作失败");
+	public ResultPojo deleteBatch(String idStr, HttpSession session) {
+		int result = supplierService.deleteBatch(idStr, session);
+
+		if (result == 1) {
+			return new ResultPojo(1, "操作成功");
+		}
+		return new ResultPojo(0, "操作失败");
 	}
 }

@@ -39,8 +39,8 @@ public class LoginController {
 	@ResponseBody
 	public ResultPojo login(String loginId, String password, HttpServletResponse response, HttpServletRequest request,
 			HttpSession session) {
-		//数据校验
-		if(Empty4jUtils.stringIsEmpty(loginId) || Empty4jUtils.stringIsEmpty(password)) {
+		// 数据校验
+		if (Empty4jUtils.stringIsEmpty(loginId) || Empty4jUtils.stringIsEmpty(password)) {
 			return new ResultPojo(0, "数据不合法");
 		}
 		return usersService.login(session, loginId.trim(), password);

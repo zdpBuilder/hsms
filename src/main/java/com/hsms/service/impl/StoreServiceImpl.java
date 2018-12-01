@@ -23,23 +23,23 @@ public class StoreServiceImpl implements StoreService {
 
 	@Autowired
 	private StoreMapper storeMapper;
-	
+
+	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
-		// TODO Auto-generated method stub
-		StoreExample  example = new StoreExample();
-		//分页配置
+		StoreExample example = new StoreExample();
+		// 分页配置
 		example.setStartRow((page - 1) * limit);
 		example.setPageSize(limit);
 		example.setOrderByClause("create_time desc,update_time desc");
-		//条件查询 参数配置
-		if(Empty4jUtils.stringIsNotEmpty(keywords)) {
+		// 条件查询 参数配置
+		if (Empty4jUtils.stringIsNotEmpty(keywords)) {
 			keywords = keywords.trim();
 			keywords = "%" + keywords + "%";
 			example.or().andTitleLike(keywords);
 		}
-		//结果处理
-		List<Store> list =storeMapper.selectByExample(example);
-		int count =(int) storeMapper.countByExample(example);
+		// 结果处理
+		List<Store> list = storeMapper.selectByExample(example);
+		int count = (int) storeMapper.countByExample(example);
 		ResponseJsonPageListBean listBean = new ResponseJsonPageListBean();
 		listBean.setCode(0);
 		listBean.setCount(count);
@@ -48,31 +48,29 @@ public class StoreServiceImpl implements StoreService {
 		return listBean;
 	}
 
+	@Override
 	public int save(Store store, HttpSession session) {
-		int result=0;
-		SysUser currentLoginUser =(SysUser)session.getAttribute(Const.SESSION_USER);
-		//修改库存信息
-		if(Empty4jUtils.intIsNotEmpty(store.getId())) {
+		int result = 0;
+		SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
+		// 修改库存信息
+		if (Empty4jUtils.intIsNotEmpty(store.getId())) {
 			store.setUpdater(currentLoginUser.getLoginId());
 			store.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result  = storeMapper.updateByPrimaryKeySelective(store);
-		}//新增库存信息
-		else{
+			result = storeMapper.updateByPrimaryKeySelective(store);
+		} // 新增库存信息
+		else {
 			store.setCreater(currentLoginUser.getLoginPassword());
 			store.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-	        result = storeMapper.insert(store);
+			result = storeMapper.insert(store);
 		}
 		return result;
 	}
 
-	
+	@Override
+	public Store getOneById(int id) {
 
-	public Store Show(int id, HttpSession session) {
-		
-	    return storeMapper.selectByPrimaryKey(id);
-	    
+		return storeMapper.selectByPrimaryKey(id);
+
 	}
 
-      
-	
 }

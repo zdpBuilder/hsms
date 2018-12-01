@@ -29,84 +29,83 @@ import com.hsms.utils.JsonPrintUtil;
  */
 @Controller
 @RequestMapping("goods")
-public class GoodsController  {
-  @Autowired
-  private GoodService goodService;
-  
+public class GoodsController {
+	@Autowired
+	private GoodService goodService;
 
-  /**
-   * 
-   * @Description: 获取商品列表
-   * @param limit
-   * @param page
-   * @param keywords
-   */
- 	@RequestMapping("list")
- 	@ResponseBody
- 	public ResponseJsonPageListBean getList(int limit, int page, String keywords) {
- 		return goodService.getList(limit, page, keywords);
- 	}
- 	
- 	/**
- 	 * 
- 	 * @Description: 新增和编辑
- 	 * @param session
- 	 * @param goods
- 	 * @return
- 	 */
- 	@RequestMapping("save")
- 	@ResponseBody
- 	public ResultPojo save(HttpSession session, Goods goods) {
- 		int count = goodService.save(session, goods);
- 		if(1 == count)
- 			return new ResultPojo(1, "操作成功");
- 		else 
- 			return new ResultPojo(0, "操作失败");
- 	}
+	/**
+	 * 
+	 * @Description: 获取商品列表
+	 * @param limit
+	 * @param page
+	 * @param keywords
+	 */
+	@RequestMapping("list")
+	@ResponseBody
+	public ResponseJsonPageListBean getList(int limit, int page, String keywords) {
+		return goodService.getList(limit, page, keywords);
+	}
 
- 	/**
- 	 * 
- 	 * @Description: 删除
- 	 * @param idStr
- 	 * @param request
- 	 * @param response
- 	 * @param session
- 	 * @return
- 	 */
- 	@RequestMapping("deleteBatch")
- 	@ResponseBody
- 	public ResultPojo deleteBatch(String idStr, HttpServletRequest request, HttpServletResponse response,
- 			HttpSession session) {
- 		if(Empty4jUtils.stringIsNotEmpty(idStr)) {
- 			try {
- 				int count = goodService.deleteBatch(session, idStr);
- 				if(1 == count) {
- 					return new ResultPojo(1, "操作成功");
- 				}
- 				return new ResultPojo(0, "操作失败");
- 			}catch(RuntimeException e) {
- 				e.printStackTrace();
- 				return new ResultPojo(0, "操作失败");
- 			}
- 			
- 		}
- 		return new ResultPojo(0, "数据异常");
- 	}
+	/**
+	 * 
+	 * @Description: 新增和编辑
+	 * @param session
+	 * @param goods
+	 * @return
+	 */
+	@RequestMapping("save")
+	@ResponseBody
+	public ResultPojo save(HttpSession session, Goods goods) {
+		int count = goodService.save(session, goods);
+		if (1 == count)
+			return new ResultPojo(1, "操作成功");
+		else
+			return new ResultPojo(0, "操作失败");
+	}
 
- 	/**
- 	 * 
- 	 * @Description: 展示商品信息
- 	 * @param id
- 	 * @return
- 	 */
- 	@RequestMapping("show")
- 	@ResponseBody
- 	public ResultPojo show(int id) {
- 		Goods goods = goodService.getOneByPrimaryKey(id);
- 		if(null != goods) {
- 			return new ResultPojo(1, goods);
- 		}
- 		return new ResultPojo(0, "未找到此商品信息");
- 	}	
-  
+	/**
+	 * 
+	 * @Description: 删除
+	 * @param idStr
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("deleteBatch")
+	@ResponseBody
+	public ResultPojo deleteBatch(String idStr, HttpServletRequest request, HttpServletResponse response,
+			HttpSession session) {
+		if (Empty4jUtils.stringIsNotEmpty(idStr)) {
+			try {
+				int count = goodService.deleteBatch(session, idStr);
+				if (1 == count) {
+					return new ResultPojo(1, "操作成功");
+				}
+				return new ResultPojo(0, "操作失败");
+			} catch (RuntimeException e) {
+				e.printStackTrace();
+				return new ResultPojo(0, "操作失败");
+			}
+
+		}
+		return new ResultPojo(0, "数据异常");
+	}
+
+	/**
+	 * 
+	 * @Description: 展示商品信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("show")
+	@ResponseBody
+	public ResultPojo show(int id) {
+		Goods goods = goodService.getOneById(id);
+		if (null != goods) {
+			return new ResultPojo(1, goods);
+		}
+		return new ResultPojo(0, "未找到此商品信息");
+	}
+
 }

@@ -13,6 +13,7 @@ import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.mapper.GoodsMapper;
 import com.hsms.model.Goods;
 import com.hsms.model.GoodsExample;
+import com.hsms.model.GoodsExample.Criteria;
 import com.hsms.model.SysUser;
 import com.hsms.service.GoodService;
 import com.hsms.utils.DateUtil;
@@ -92,8 +93,20 @@ public class GoodServiceImpl implements GoodService {
 	}
 
 	@Override
-	public Goods getOneByPrimaryKey(int goodsId) {
+	public Goods getOneById(int goodsId) {
 		return goodsMapper.selectByPrimaryKey(goodsId);
+	}
+
+	@Override
+	public Goods getOneByCode(String code) {
+		GoodsExample example = new  GoodsExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andCodeEqualTo(code).andStatusEqualTo(1);
+		List<Goods> goodsList = goodsMapper.selectByExample(example);
+		if(Empty4jUtils.listIsNotEmpty(goodsList)) {
+			return goodsList.get(0);
+		}
+		return null;
 	}
 
 }
