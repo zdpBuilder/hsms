@@ -24,7 +24,7 @@ import com.hsms.utils.Empty4jUtils;
 import com.hsms.utils.JsonPrintUtil;
 
 /**
- * 商品管理
+ * 商品处理
  *
  */
 @Controller

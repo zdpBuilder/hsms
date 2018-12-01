@@ -11,7 +11,10 @@ import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Supplier;
 import com.hsms.pojo.ResultPojo;
 import com.hsms.service.SupplierService;
-
+/**
+ * 
+ *供应商处理
+ */
 @Controller
 @RequestMapping("supplier")
 public class SuppilerController {
@@ -19,6 +22,14 @@ public class SuppilerController {
 	@Autowired
 	private SupplierService supplierService;
 
+	/**
+	 * 
+	 * @Description: 分页数据
+	 * @param keywords
+	 * @param limit
+	 * @param page
+	 * @return
+	 */
 	@RequestMapping("list")
 	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page) {
@@ -27,6 +38,13 @@ public class SuppilerController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 保存
+	 * @param supplier
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("save")
 	@ResponseBody
 	public ResultPojo save(Supplier supplier, HttpSession session) {
@@ -39,6 +57,13 @@ public class SuppilerController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 获取供应商信息
+	 * @param id
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("show")
 	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {
@@ -52,6 +77,13 @@ public class SuppilerController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 批量删除
+	 * @param idStr
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("deleteBatch")
 	@ResponseBody
 	public ResultPojo deleteBatch(String idStr, HttpSession session) {

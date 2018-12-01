@@ -12,6 +12,10 @@ import com.hsms.model.Store;
 import com.hsms.pojo.ResultPojo;
 import com.hsms.service.StoreService;
 
+/**
+ * 
+ *仓库处理
+ */
 @Controller
 @RequestMapping("store")
 public class StoreController {
@@ -19,6 +23,14 @@ public class StoreController {
 	@Autowired
 	private StoreService storeService;
 
+	/**
+	 * 
+	 * @Description: 分页数据
+	 * @param keywords
+	 * @param limit
+	 * @param page
+	 * @return
+	 */
 	@RequestMapping("list")
 	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page) {
@@ -27,6 +39,13 @@ public class StoreController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 保存
+	 * @param store
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("save")
 	@ResponseBody
 	public ResultPojo save(Store store, HttpSession session) {
@@ -39,6 +58,13 @@ public class StoreController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 获取某项商品的仓储信息
+	 * @param id
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("show")
 	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {

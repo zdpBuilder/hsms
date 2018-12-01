@@ -12,6 +12,10 @@ import com.hsms.model.Bill;
 import com.hsms.pojo.ResultPojo;
 import com.hsms.service.BillService;
 
+/**
+ * 
+ * 订单处理
+ */
 @Controller
 @RequestMapping("bill")
 public class BillController {
@@ -19,6 +23,14 @@ public class BillController {
 	@Autowired
 	private BillService billService;
 
+	/**
+	 * 
+	 * @Description: 获取订单分页数据
+	 * @param keywords
+	 * @param limit
+	 * @param page
+	 * @return
+	 */
 	@RequestMapping("list")
 	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page) {
@@ -27,6 +39,13 @@ public class BillController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 保存订单
+	 * @param bill
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("save")
 	@ResponseBody
 	public ResultPojo save(Bill bill, HttpSession session) {
@@ -39,6 +58,12 @@ public class BillController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 获取订单信息
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("show")
 	@ResponseBody
 	public ResultPojo show(Integer id) {
@@ -52,6 +77,13 @@ public class BillController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 批量删除
+	 * @param idStr
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("deleteBatch")
 	@ResponseBody
 	public ResultPojo deleteBatch(String idStr, HttpSession session) {

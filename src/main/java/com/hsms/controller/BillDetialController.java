@@ -12,13 +12,25 @@ import com.hsms.model.BillDetial;
 import com.hsms.pojo.ResultPojo;
 import com.hsms.service.BillDetialService;
 
+/**
+ * 订单明细处理
+ *
+ */
 @Controller
-@RequestMapping("billDetialDetial")
+@RequestMapping("billDetial")
 public class BillDetialController {
 
 	@Autowired
 	private BillDetialService billDetialService;
 
+	/**
+	 * 
+	 * @Description: 获取分页数据
+	 * @param keywords
+	 * @param limit
+	 * @param page
+	 * @return
+	 */
 	@RequestMapping("list")
 	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page) {
@@ -27,6 +39,13 @@ public class BillDetialController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 保存
+	 * @param billDetial
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("save")
 	@ResponseBody
 	public ResultPojo save(BillDetial billDetial, HttpSession session) {
@@ -39,6 +58,13 @@ public class BillDetialController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 获取明细信息
+	 * @param id
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("show")
 	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {
@@ -52,6 +78,13 @@ public class BillDetialController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 批量删除
+	 * @param idStr
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("deleteBatch")
 	@ResponseBody
 	public ResultPojo deleteBatch(String idStr, HttpSession session) {

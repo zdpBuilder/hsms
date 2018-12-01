@@ -13,6 +13,10 @@ import com.hsms.pojo.ResultPojo;
 import com.hsms.service.BrandService;
 import com.hsms.utils.Empty4jUtils;
 
+/**
+ * 品牌处理
+ *
+ */
 @Controller
 @RequestMapping("brand")
 public class BrandController {
@@ -20,6 +24,14 @@ public class BrandController {
 	@Autowired
 	private BrandService brandService;
 
+	/**
+	 * 
+	 * @Description: 获取分页数据
+	 * @param keywords
+	 * @param limit
+	 * @param page
+	 * @return
+	 */
 	@RequestMapping("list")
 	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page) {
@@ -28,6 +40,13 @@ public class BrandController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 保存
+	 * @param brand
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("save")
 	@ResponseBody
 	public ResultPojo save(Brand brand, HttpSession session) {
@@ -40,6 +59,13 @@ public class BrandController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 获取品牌信息
+	 * @param id
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("show")
 	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {
@@ -53,6 +79,13 @@ public class BrandController {
 
 	}
 
+	/**
+	 * 
+	 * @Description: 批量删除
+	 * @param idStr
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping("deleteBatch")
 	@ResponseBody
 	public ResultPojo deleteBatch(String idStr, HttpSession session) {
