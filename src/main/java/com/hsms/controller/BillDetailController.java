@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hsms.common.ResponseJsonPageListBean;
-import com.hsms.model.BillDetial;
+import com.hsms.model.BillDetail;
 import com.hsms.pojo.ResultPojo;
-import com.hsms.service.BillDetialService;
+import com.hsms.service.BillDetailService;
 
 /**
  * 订单明细处理
  *
  */
 @Controller
-@RequestMapping("billDetial")
-public class BillDetialController {
+@RequestMapping("billDetail")
+public class BillDetailController {
 
 	@Autowired
-	private BillDetialService billDetialService;
+	private BillDetailService billDetailService;
 
 	/**
 	 * 
@@ -35,21 +35,21 @@ public class BillDetialController {
 	@ResponseBody
 	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page) {
 
-		return billDetialService.list(keywords, limit, page);
+		return billDetailService.list(keywords, limit, page);
 
 	}
 
 	/**
 	 * 
 	 * @Description: 保存
-	 * @param billDetial
+	 * @param billDetail
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping("save")
 	@ResponseBody
-	public ResultPojo save(BillDetial billDetial, HttpSession session) {
-		int count = billDetialService.save(billDetial, session);
+	public ResultPojo save(BillDetail billDetail, HttpSession session) {
+		int count = billDetailService.save(billDetail, session);
 
 		if (count == 1) {
 			return new ResultPojo(1, "操作成功");
@@ -68,10 +68,10 @@ public class BillDetialController {
 	@RequestMapping("show")
 	@ResponseBody
 	public ResultPojo show(Integer id, HttpSession session) {
-		BillDetial billDetial = billDetialService.getOneById(id);
+		BillDetail billDetail = billDetailService.getOneById(id);
 
-		if (billDetial != null) {
-			return new ResultPojo(1, billDetial);
+		if (billDetail != null) {
+			return new ResultPojo(1, billDetail);
 		}
 
 		return new ResultPojo(0, "操作失败");
@@ -88,7 +88,7 @@ public class BillDetialController {
 	@RequestMapping("deleteBatch")
 	@ResponseBody
 	public ResultPojo deleteBatch(String idStr, HttpSession session) {
-		int result = billDetialService.deleteBatch(idStr, session);
+		int result = billDetailService.deleteBatch(idStr, session);
 
 		if (result == 1) {
 			return new ResultPojo(1, "操作成功");

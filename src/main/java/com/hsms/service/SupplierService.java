@@ -1,5 +1,7 @@
 package com.hsms.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.hsms.common.ResponseJsonPageListBean;
@@ -38,4 +40,11 @@ public interface SupplierService {
 	 * @return
 	 */
 	Supplier getOneById(int id);
+
+	/**
+	 * 
+	 * @Description: 获取所有供应商
+	 * @return
+	 */
+	List<Supplier> getList();
 }

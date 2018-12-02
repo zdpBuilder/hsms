@@ -10,26 +10,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hsms.common.ResponseJsonPageListBean;
-import com.hsms.mapper.BillDetialMapper;
-import com.hsms.model.BillDetial;
-import com.hsms.model.BillDetialExample;
-import com.hsms.model.BillDetialExample.Criteria;
+import com.hsms.mapper.BillDetailMapper;
+import com.hsms.model.BillDetail;
+import com.hsms.model.BillDetailExample;
+import com.hsms.model.BillDetailExample.Criteria;
 import com.hsms.model.SysUser;
-import com.hsms.service.BillDetialService;
+import com.hsms.service.BillDetailService;
 import com.hsms.utils.Const;
 import com.hsms.utils.DateUtil;
 import com.hsms.utils.Empty4jUtils;
 
 @Service
-public class BillDetialServiceImpl implements BillDetialService {
+public class BillDetailServiceImpl implements BillDetailService {
 
 	@Autowired
-	private BillDetialMapper billDetialMapper;
+	private BillDetailMapper billDetailMapper;
 
 	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
 		// TODO Auto-generated method stub
-		BillDetialExample example = new BillDetialExample();
+		BillDetailExample example = new BillDetailExample();
 		// 分页配置
 		example.setStartRow((page - 1) * limit);
 		example.setPageSize(limit);
@@ -44,8 +44,8 @@ public class BillDetialServiceImpl implements BillDetialService {
 			criteria.andStatusNotEqualTo(0);
 		}
 		// 结果处理
-		List<BillDetial> list = billDetialMapper.selectByExample(example);
-		int count = (int) billDetialMapper.countByExample(example);
+		List<BillDetail> list = billDetailMapper.selectByExample(example);
+		int count = (int) billDetailMapper.countByExample(example);
 		ResponseJsonPageListBean listBean = new ResponseJsonPageListBean();
 		listBean.setCode(0);
 		listBean.setCount(count);
@@ -55,20 +55,20 @@ public class BillDetialServiceImpl implements BillDetialService {
 	}
 
 	@Override
-	public int save(BillDetial billDetial, HttpSession session) {
+	public int save(BillDetail billDetail, HttpSession session) {
 		int result = 0;
 		SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
 		// 修改账单明细信息
-		if (Empty4jUtils.intIsNotEmpty(billDetial.getId())) {
-			billDetial.setUpdater(currentLoginUser.getLoginId());
-			billDetial.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result = billDetialMapper.updateByPrimaryKeySelective(billDetial);
+		if (Empty4jUtils.intIsNotEmpty(billDetail.getId())) {
+			billDetail.setUpdater(currentLoginUser.getLoginId());
+			billDetail.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+			result = billDetailMapper.updateByPrimaryKeySelective(billDetail);
 		} // 新增账单明细信息
 		else {
-			billDetial.setStatus(1);
-			billDetial.setCreater(currentLoginUser.getLoginPassword());
-			billDetial.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result = billDetialMapper.insert(billDetial);
+			billDetail.setStatus(1);
+			billDetail.setCreater(currentLoginUser.getLoginPassword());
+			billDetail.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+			result = billDetailMapper.insert(billDetail);
 		}
 		return result;
 	}
@@ -83,11 +83,11 @@ public class BillDetialServiceImpl implements BillDetialService {
 			for (int i = 0; i < idArr.length; i++) {
 				// 更新账单明细状态
 				int id = Integer.parseInt(idArr[i]);
-				BillDetial billDetial = billDetialMapper.selectByPrimaryKey(id);
-				billDetial.setStatus(0);
-				billDetial.setUpdater(currentLoginUser.getLoginId());
-				billDetial.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-				billDetialMapper.updateByPrimaryKeySelective(billDetial);
+				BillDetail billDetail = billDetailMapper.selectByPrimaryKey(id);
+				billDetail.setStatus(0);
+				billDetail.setUpdater(currentLoginUser.getLoginId());
+				billDetail.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+				billDetailMapper.updateByPrimaryKeySelective(billDetail);
 			}
 			result = 1;
 		}
@@ -95,9 +95,9 @@ public class BillDetialServiceImpl implements BillDetialService {
 	}
 
 	@Override
-	public BillDetial getOneById(int id) {
+	public BillDetail getOneById(int id) {
 
-		return billDetialMapper.selectByPrimaryKey(id);
+		return billDetailMapper.selectByPrimaryKey(id);
 
 	}
 

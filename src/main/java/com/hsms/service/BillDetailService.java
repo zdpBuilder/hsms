@@ -3,9 +3,9 @@ package com.hsms.service;
 import javax.servlet.http.HttpSession;
 
 import com.hsms.common.ResponseJsonPageListBean;
-import com.hsms.model.BillDetial;
+import com.hsms.model.BillDetail;
 
-public interface BillDetialService {
+public interface BillDetailService {
 
 	/**
 	 * 
@@ -20,11 +20,11 @@ public interface BillDetialService {
 	/**
 	 * 
 	 * @Description: 账单明细 新增 编辑
-	 * @param billDetial
+	 * @param BillDetail
 	 * @param session
 	 * @return
 	 */
-	int save(BillDetial billDetial, HttpSession session);
+	int save(BillDetail BillDetail, HttpSession session);
 
 	/**
 	 * @Description: 账单明细批量删除
@@ -40,5 +40,5 @@ public interface BillDetialService {
 	 * @param session
 	 * @return
 	 */
-	BillDetial getOneById(int id);
+	BillDetail getOneById(int id);
 }

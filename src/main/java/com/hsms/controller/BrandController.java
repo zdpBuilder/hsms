@@ -1,5 +1,7 @@
 package com.hsms.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,5 +97,19 @@ public class BrandController {
 			return new ResultPojo(1, "操作成功");
 		}
 		return new ResultPojo(0, "操作失败");
+	}
+	
+	/**
+	 * 
+	 * @Description: 获取所有品牌
+	 * @return
+	 */
+	@RequestMapping("getList")
+	@ResponseBody
+	public ResultPojo getList() {
+		List<Brand> brandList = brandService.getList();
+		if(Empty4jUtils.listIsNotEmpty(brandList))
+			return new ResultPojo(1, brandList);
+		return new ResultPojo(0, "未找到品牌信息"); 
 	}
 }

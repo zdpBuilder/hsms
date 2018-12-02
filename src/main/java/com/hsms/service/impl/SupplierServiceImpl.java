@@ -100,4 +100,12 @@ public class SupplierServiceImpl implements SupplierService {
 
 	}
 
+	@Override
+	public List<Supplier> getList() {
+		SupplierExample example = new SupplierExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andStatusEqualTo(1);
+		return supplierMapper.selectByExample(example);
+	}
+
 }

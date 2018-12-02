@@ -1,5 +1,7 @@
 package com.hsms.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hsms.common.ResponseJsonPageListBean;
+import com.hsms.model.Brand;
 import com.hsms.model.Supplier;
 import com.hsms.pojo.ResultPojo;
 import com.hsms.service.SupplierService;
+import com.hsms.utils.Empty4jUtils;
 /**
  * 
  *供应商处理
@@ -93,5 +97,19 @@ public class SuppilerController {
 			return new ResultPojo(1, "操作成功");
 		}
 		return new ResultPojo(0, "操作失败");
+	}
+	
+	/**
+	 * 
+	 * @Description: 获取所有供应商
+	 * @return
+	 */
+	@RequestMapping("getList")
+	@ResponseBody
+	public ResultPojo getList() {
+		List<Supplier> supplierList = supplierService.getList();
+		if(Empty4jUtils.listIsNotEmpty(supplierList))
+			return new ResultPojo(1, supplierList);
+		return new ResultPojo(0, "未找到供应商信息"); 
 	}
 }

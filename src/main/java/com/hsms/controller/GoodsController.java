@@ -107,5 +107,23 @@ public class GoodsController {
 		}
 		return new ResultPojo(0, "未找到此商品信息");
 	}
+	
+	/**
+	 * 
+	 * @Description: 根据商品编码，获取商品信息
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping("getOneByCode")
+	@ResponseBody
+	public ResultPojo getOneByCode(String code) {
+		if(Empty4jUtils.stringIsNotEmpty(code)) {
+			Goods goods = goodService.getOneByCode(code);
+			if(null != goods)
+				return new ResultPojo(1, goods);
+		}
+		return new ResultPojo(0, "未找到此商品信息");
+			
+	}
 
 }
