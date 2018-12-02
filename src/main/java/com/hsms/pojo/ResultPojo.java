@@ -30,5 +30,12 @@ public class ResultPojo {
 		this.status = status;
 		this.msg = msg;
 	}
+
+	public ResultPojo(Integer status, Object data, String msg) {
+		super();
+		this.status = status;
+		this.data = data;
+		this.msg = msg;
+	}
 	
 }

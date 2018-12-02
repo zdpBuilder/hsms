@@ -55,7 +55,7 @@ public class BrandController {
 		int count = brandService.save(brand, session);
 
 		if (count == 1) {
-			return new ResultPojo(1, "操作成功");
+			return new ResultPojo(1, brand.getId(), "操作成功");
 		}
 		return new ResultPojo(0, "操作失败");
 
