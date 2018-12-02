@@ -9,6 +9,7 @@ public class Const {
 		public static ApplicationContext WEB_APP_CONTEXT = null; 
 		public static final String SUN_GOODS_CODE="GO";
 		public static final String SUN_SALE_CODE="SA";
+		public static final String SUN_PURCHASE_CODE="PU";
 	}
 
 

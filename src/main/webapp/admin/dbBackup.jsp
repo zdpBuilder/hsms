@@ -1,172 +1,190 @@
-<%@page import="com.hsms.utils.Const"%>
-<%@ page language="java" import="com.hsms.utils.SNUtil"
-	contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%> 
 <!DOCTYPE html>
-<html lang="en">
+<html> 
 <head>
-<meta charset="UTF-8">
-<meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>数据备份</title>
-<link rel="stylesheet" href="../plugins/layui2.x/css/layui.css">
-<link rel="stylesheet" href="../css/style.css">
-<style>
-.layui-input {
-	height: 26px;
-	font-size: 12px;
-	width: 180px;
-}
-
-.layui-form-select {
-	font-size: 12px;
-	width: 180px;
-}
-
-dd {
-	line-height: 26px;
-	font-size: 12px;
-	width: 140px;
-}
-
-.layui-elem-field legend {
-	font-size: 12px;
-}
-
-.layui-form-radio * {
-	line-height: 26px;
-	font-size: 12px;
-}
-</style>
+	<meta charset="utf-8">
+	<title>开心超市管理系统</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../plugins/layui2.x/css/layui.css" media="all" />
+    <link rel="stylesheet" href="../css/global.css" media="all">
+    <link rel="stylesheet" href="../css/style.css" media="all">
+	<link rel="stylesheet" href="../plugins/font-awesome/css/font-awesome.min.css">
+</head>
+  <style>
+    	body{overflow-y: scroll;}
+    </style>
 </head>
 <body class="body">
-<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-  <legend>动画过程演示</legend>
-</fieldset>
- 
-<ul class="site-doc-icon site-doc-anim">
-  <li>
-    <div class="layui-anim" data-anim="layui-anim-up">从最底部往上滑入</div>
-    <div class="code">layui-anim-up</div>
-  </li>
-  <li>
-    <div class="layui-anim" data-anim="layui-anim-upbit">微微往上滑入</div>
-    <div class="code">layui-anim-upbit</div>
-  </li>
-  <li>
-    <div class="layui-anim" data-anim="layui-anim-scale">平滑放大</div>
-    <div class="code">layui-anim-scale</div>
-  </li>
-   <li>
-    <div class="layui-anim" data-anim="layui-anim-scaleSpring">弹簧式放大</div>
-    <div class="code">layui-anim-scaleSpring</div>
-  </li>
-</ul>
-<ul class="site-doc-icon site-doc-anim">
-  <li>
-    <div class="layui-anim" data-anim="layui-anim-fadein">渐现</div>
-    <div class="code">layui-anim-fadein</div>
-  </li>
-  <li>
-    <div class="layui-anim" data-anim="layui-anim-fadeout">渐隐</div>
-    <div class="code">layui-anim-fadeout</div>
-  </li>
-  <li>
-    <div class="layui-anim" data-anim="layui-anim-rotate">360度旋转</div>
-    <div class="code">layui-anim-rotate</div>
-  </li>
-  <li>
-    <div class="layui-anim" data-anim="layui-anim-rotate layui-anim-loop">循环动画</div>
-    <div class="code">追加：layui-anim-loop</div>
-  </li>
-</ul>  
 
-	<script src="../plugins/layui2.x/layui.js" charset="utf-8"></script>
-	<script type="text/javascript">
-
-    layui.use(['form', 'upload','layedit', 'laydate', 'element'], function () {
-    	
-        var form = layui.form
-                , layer = layui.layer
-                , layedit = layui.layedit
-                , laydate = layui.laydate
-                , element = layui.element
-                , upload = layui.upload;
-        var $ = layui.jquery;
-
-      //自定义表单验证
-        form.verify({  
-        	title:[/^.{0,30}$/,'请输入小于30个字的名称！'],
-        	nameLength:[/^.{0,100}$/,'请输入小于100个字的描述！'],
-        });
-      //重新渲染表单
-      function renderForm(){
-    	  form.render();
-      }
+<div class="layui-fluid">  
+  <div class="layui-row layui-col-space10">
     
-      //表单元素赋值
-      var goodsId = <%=id %>;
-      if(goodsId!=null){
-    	  $.ajax({
-  			method: "post",
-  			data : {"id":goodsId},
-  			url:"${pageContext.request.contextPath}/brand/show",
-  			success:function(result){
-  				if(null != result){
-  					if(1 == result.status){
-  						result = result.data;
-  	 					$("#title").val(result.title);
-  	 					renderForm();
-  					} else{
-  						parent.layer.msg(result.msg, {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-  					}
-  					
-  				}
-  				
-  			}
-        });   
-      }
-       
-        //保存按钮
-          form.on('submit(addForm)', function (data) {
-            var formJson = data.field;
-            	$.ajax({
-        			method: "post",
-        			url:"${pageContext.request.contextPath}/brand/save",
-        			data: formJson,
-        			async:false,
-        			success:function(result){
-        				if(null != result){
-        					if(1 == result.status){
-        						//关闭窗口 并给父页面传值
-                                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                                parent.layer.msg('保存成功！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);                 
-                                 parent.reloadTable(1);         	                       
-                                parent.layer.close(index); 
-        					}else{
-        						parent.layer.msg(result.msg, {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-                                return;
-        					}
-        				}else{
-        					parent.layer.msg('保存失败！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-                            return;
-        				}
-        			},
-        			error:function(){
-        				parent.layer.msg('服务器异常！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-        			}
-                });      
-        });
-        
-        //关闭窗口按钮
-        $("#close").click(function(){
-        	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-        	parent.layer.close(index);
-        });
-        
-    });
-</script>
+    <div class="layui-col-md12">
+	         <div class="layui-field-box">
+			    <!-- 操作按钮区域 -->
+					<fieldset class="layui-elem-field layui-field-title"
+						style="margin-top: 50px;">
+						<legend>数据库备份</legend>
+					</fieldset>
+
+					<div class="layui-progress layui-progress-big"
+						lay-showpercent="true" lay-filter="demo">
+						<div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+					</div>
+
+					<div style="margin: 20px auto ">
+						<button class="layui-btn  site-demo-active" data-type="loading">开始备份</button>
+					</div>
+					<!-- 表格内容区域 -->
+					<fieldset class="layui-elem-field layui-field-title"
+						style="margin-top: 50px;">
+						<legend>数据库备份列表</legend>
+					</fieldset>
+			    <div class="layui-col-md12 layui-col-space1">
+					<table class="layui-hide" id="layTable" lay-size="sm" lay-filter="tableFilter"></table>
+			    </div>
+			  </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="../plugins/layui2.x/layui.js"></script>	
+	
+	<script type="text/javascript">
+	var table; //layUI的渲染动态表格
+	var currPageNum = 1;//当前页码
+  
+	function reloadTable(pageNum){
+		//刷新表格内容
+		table.reload('storeListTable', {
+		  page: {
+		    curr: pageNum //当前页开始
+		  } 
+		});
+	}
+
+	    // layui方法
+	    layui.use(['table', 'layer','element'], function () {
+			
+	        // 操作对象
+	        table = layui.table;
+	        var layer = layui.layer;
+	        var $ = layui.jquery;
+	        var element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+	        
+	        //触发事件
+	        var active = {
+	          setPercent: function(){
+	            //设置50%进度
+	            element.progress('demo', '50%')
+	          }
+	          ,loading: function(othis){
+	            var DISABLED = 'layui-btn-disabled';
+	            if(othis.hasClass(DISABLED)) return;
+	          
+	            //模拟loading
+	            var n = 0, timer = setInterval(function(){
+	              n = n + Math.random()*10|0;  
+	              if(n>100){
+	                n = 100;
+	                clearInterval(timer);
+	                othis.removeClass(DISABLED);
+	              }
+	              element.progress('demo', n+'%');
+	            }, 300+Math.random()*1000);
+	            
+	            othis.addClass(DISABLED);
+	          }
+	        };
+	        
+	        $('.site-demo-active').on('click', function(){
+	          var othis = $(this), type = $(this).data('type');
+	          active[type] ? active[type].call(this, othis) : '';
+	        });
+	        // 表格渲染
+	        table.render({
+			     elem: '#layTable'
+			    ,cellMinWidth: 80//自适应列宽
+			    ,cols: [[ 
+			       //{type:'numbers' ,title: '序号'},
+				  {field: 'goodsCode', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center',width:160}
+			      ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}		
+			      ,{field: 'purchaseTransaction', title: '<span style="color:#000;font-weight:bold;">商品进货总额(元)</span>',align: 'center'}
+			      ,{field: 'saleTransaction', title: '<span style="color:#000;font-weight:bold;">商品销售总额(元)</span>',align: 'center'}		  
+			      ,{field: 'branchNum', title: '<span style="color:#000;font-weight:bold;">商品支数量</span>',align: 'center',templet:'#branchCountTpl'}		  
+			      ,{field: 'boxNum', title: '<span style="color:#000;font-weight:bold;">商品箱数量</span>',align: 'center',templet:'#boxCountTpl'}		  
+			      ]]
+	        	,url:'${pageContext.request.contextPath}/store/list'
+	        	,id: 'storeListTable'
+	        	,where: {
+	        		keywords: $("#keywords").val()
+	        	}//查询传参
+			    //,skin: 'line' //表格风格
+			    ,even: false  //隔行换色
+			    ,size: 'sm' //小尺寸的表格
+			    ,page: true  //开启分页
+			    ,done: function(res, curr, count){
+			        //如果是异步请求数据方式，res即为你接口返回的信息。
+			        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+			        //console.log(res);
+			        //得到当前页码
+			        //console.log(curr);
+			        currPageNum = curr;
+			        //得到数据总量
+			       // console.log(count);
+			        
+			      }
+			  });
+	        
+	        
+	   
+	      	
+	      	
+			//页面刷新
+	      	$("#btn-refresh").click(function(){
+	      		//清空页面刷新条件
+	      		$("#keywords").val("");
+	      		//页面刷新
+	      		table.reload('storeListTable', {
+	      		  page: {
+	      		    curr: 1 //重新从第 1 页开始
+	      		  }
+	      		});
+	    	});
+	      	//多条件查询
+	      	$("#btn-search").click(function(){
+	      		//表格查询
+	      		table.reload('storeListTable', {
+	      		  page: {
+	      		    curr: 1 //重新从第 1 页开始
+	      		  }
+	      		  ,where: {
+	      			//查询传参
+	      		   keywords: $("#keywords").val()
+	      		  }
+	      		});
+	      	});   
+	      	
+	    });
+	</script>
 </body>
 </html>
+<script type="text/html" id="branchCountTpl">
+  {{#  if(d.branchNum <=5){ }}
+    <span style="color: red;">{{ d.branchNum }}</span>
+  {{#  } else { }}
+    {{ d.branchNum }}
+  {{#  } }}
+</script>
+<script type="text/html" id="boxCountTpl">
+  {{#  if(d.boxNum <=5){ }}
+    <span style="color: red;">{{ d.boxNum }}</span>
+  {{#  } else { }}
+    {{ d.boxNum}}
+  {{#  } }}
+</script>

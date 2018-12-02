@@ -1,13 +1,49 @@
 [
-   {
+  {
+    "title": "系统管理",
+    "icon": "fa fa-cogs",
+    "spread": true,
+    "children": [
+      {
+        "title": "管理员管理",
+        "icon": "fa fa-user-circle-o",
+        "href": "admin/usersList.jsp",
+        "spread": false
+      }
+      ]
+  },{
+    "title": "商品管理",
+    "icon": "fa fa-cubes",
+    "spread": true,
+    "children": [
+      {
+        "title": "商品管理",
+        "icon": "fa fa-cube",
+        "href": "admin/goodsList.jsp",
+        "spread": false
+      },{
+        "title": "供应商管理",
+        "icon": "fa fa-user-circle-o",
+        "href": "admin/supplierList.jsp",
+        "spread": false
+      },{
+        "title": "品牌管理",
+        "icon": "fa fa-bandcamp",
+        "href": "admin/brandList.jsp",
+        "spread": false
+      }
+    ]
+  }, 
+  {
     "title": "订单管理",
     "icon": "fa fa-list-alt",
     "spread": true,
     "children": [
-      {
-        "title": "订单新增/查看", 
-        "icon": "fa fa-eye",
-        "href": "admin/salespersonBillList.jsp",
+
+       {
+        "title": "销售订单管理", 
+        "icon": "fa fa-list-alt",
+        "href": "admin/saleBillList.jsp",
         "spread": false
       }
     ]

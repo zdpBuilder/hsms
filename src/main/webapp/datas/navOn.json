@@ -40,9 +40,15 @@
     "spread": true,
     "children": [
       {
-        "title": "进/出货订单管理", 
+        "title": "进货订单管理", 
         "icon": "fa fa-list-alt",
-        "href": "admin/billList.jsp",
+        "href": "admin/purchaseBillList.jsp",
+        "spread": false
+      },
+       {
+        "title": "销售订单管理", 
+        "icon": "fa fa-list-alt",
+        "href": "admin/saleBillList.jsp",
         "spread": false
       }
     ]
@@ -61,7 +67,7 @@
     ]
   },
   {
-    "title": "账单总览",
+    "title": "账单仪表盘",
     "icon": "fa fa-pie-chart",
     "spread": true,
     "children": [

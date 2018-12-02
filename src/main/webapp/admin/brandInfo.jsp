@@ -4,6 +4,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 String  id=request.getParameter("id");
+String  purchaseBillDetailisUsed=request.getParameter("purchaseBillDetailisUsed");
+
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,8 +138,13 @@ dd {
         						//关闭窗口 并给父页面传值
                                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                                 parent.layer.msg('保存成功！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);                 
-                                 parent.reloadTable(1);         	                       
-                                parent.layer.close(index); 
+                              if(<%=purchaseBillDetailisUsed%>){
+                            	  parent.reloadBrand(formJson.title);
+                            	  parent.layer.close(index);   
+                              }else{
+                            	  parent.reloadTable(1);         	                       
+                                  parent.layer.close(index);   
+                              }            	                
         					}else{
         						parent.layer.msg(result.msg, {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
                                 return;

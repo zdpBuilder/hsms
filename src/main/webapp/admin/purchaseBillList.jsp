@@ -4,7 +4,7 @@
 <html> 
 <head>
 	<meta charset="utf-8">
-	<title>冷食城后台管理系统</title>
+	<title>开心超市管理系统</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -31,30 +31,11 @@
 		        <div class="my-btn-box" style="margin-bottom:-10px;">
 		            <div class="fl" style="margin-top:5px;" >
 		                <a  class="layui-btn layui-btn-xs" id="btn-add-into"><i class="layui-icon"></i>进货新增</a>
-		                <a class="layui-btn layui-btn-xs" id="btn-add-out"><i class="layui-icon"></i>销售新增</a>
 		                <a class="layui-btn layui-btn-xs" id="btn-delete-all" data-type="deleteBatch"><i class="layui-icon"></i>删除</a>
 		                <a class="layui-btn layui-btn-xs" id="btn-refresh" data-type="refresh"><i class="layui-icon">&#x1002;</i>刷新</a>
 		            </div>
-		            <div class="fr" >
-		            
-		                  <span style=" margin-right:3px;">
-								<div class="layui-input-inline">
-									<select name="intoOrOutStatus" id="intoOrOutStatus" >
-										<option value="" selected>-订单类型-</option>
-										<option value="0">进货</option>
-										<option value="1">销售</option>						
-									</select>
-								</div>	
-						</span>		
-							<span  style=" margin-right:3px;">
-								<div class="layui-input-inline">
-									<select name="lineOrderStatus" id="lineOrderStatus" >
-										<option value="" selected>-订单状态-</option>
-										<option value="0">未处理订单</option>
-										<option value="1">已处理订单</option>						
-									</select>
-								</div>	
-						</span>	
+		            <div class="fr" >            		
+			
 						 <div class="layui-input-inline">
 		                    <input type="text" autocomplete="off" id="startDate" name="startDate" placeholder="开始时间" class="layui-input " style="height:26px;font-size:12px;"/>
 		                </div> -
@@ -75,14 +56,14 @@
     </div>
   </div>
 </div>
+
 <script type="text/javascript" src="../plugins/layui2.x/layui.js"></script>	
-	
 	<script type="text/javascript">
 	var table; //layUI的渲染动态表格
 	var currPageNum = 1;//当前页码
 
 	function reloadTable(pageNum){
-		//刷新表格内容
+		//刷新表格内容 
 		table.reload('billListTable', {
 		  page: {
 		    curr: pageNum //当前页开始
@@ -161,20 +142,7 @@
 	      		  ,fixed: true //位置固定
 	      		  ,maxmin: false //开启最大化最小化按钮
 	      		  ,anim: 5 //0-6的动画形式，-1不开启
-	      		  ,content: 'billInfo.jsp?intoOrOutStatus=0'
-	      	   });
-	      	});
-	      //销售添加 
-	      	$("#btn-add-out").click(function(){
-	      		layer.open({
-	      		  type: 2 //Page层类型
-	      		  ,area: ['100%', '100%']
-	      		  ,title:  ['新增信息', '']
-	      		  ,shade: 0.6 //遮罩透明度
-	      		  ,fixed: true //位置固定
-	      		  ,maxmin: false //开启最大化最小化按钮
-	      		  ,anim: 5 //0-6的动画形式，-1不开启
-	      		  ,content: 'billInfo.jsp?intoOrOutStatus=1'
+	      		  ,content: 'purchaseBillInfo.jsp'
 	      	   });
 	      	});
 	      	//批量删除

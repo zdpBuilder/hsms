@@ -1,4 +1,4 @@
-<%@ page language="java" import="yamp.com.util.SNUtil"
+<%@ page language="java"
 	contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
@@ -46,14 +46,13 @@ dd {
 <body class="body">
 
 	<form class="layui-form" action="">
-			<input type="hidden" name="id" id="id" value="<%=id%>" />		
 		<fieldset class="layui-elem-field">
 			<legend>基本信息</legend>	
 				<div class="layui-form-item" style="margin-bottom: 3px;">
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品编码</label>
 						<div class="layui-input-block">
-							<input type="text"  name="goodsCode" disabled id="goodsCode"  
+							<input type="text"  name="code"  value=" <%=id%>" disabled id="code"  
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">

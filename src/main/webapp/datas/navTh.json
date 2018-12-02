@@ -1,13 +1,13 @@
 [
-   {
+  {
     "title": "订单管理",
     "icon": "fa fa-list-alt",
     "spread": true,
     "children": [
-     {
-        "title": "订单查看/确认", 
-        "icon": "fa fa-eye",
-        "href": "admin/deliverymanBillList.jsp",
+      {
+        "title": "进货订单管理", 
+        "icon": "fa fa-list-alt",
+        "href": "admin/purchaseBillList.jsp",
         "spread": false
       }
     ]
