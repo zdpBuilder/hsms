@@ -27,8 +27,7 @@ public class BillServiceImpl implements BillService {
 	private BillMapper billMapper;
 
 	@Override
-	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
-		// TODO Auto-generated method stub
+	public ResponseJsonPageListBean list(String keywords, int limit, int page, int status) {
 		BillExample example = new BillExample();
 		// 分页配置
 		example.setStartRow((page - 1) * limit);
@@ -39,9 +38,9 @@ public class BillServiceImpl implements BillService {
 		if (Empty4jUtils.stringIsNotEmpty(keywords)) {
 			keywords = keywords.trim();
 			keywords = "%" + keywords + "%";
-			example.or().andCodeLike(keywords).andStatusNotEqualTo(0);
+			example.or().andCodeLike(keywords).andStatusNotEqualTo(0).andStatusEqualTo(status);
 		} else {
-			criteria.andStatusNotEqualTo(0);
+			criteria.andStatusNotEqualTo(0).andStatusEqualTo(status);
 		}
 		// 结果处理
 		List<Bill> list = billMapper.selectByExample(example);

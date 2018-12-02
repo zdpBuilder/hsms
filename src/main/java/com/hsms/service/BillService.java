@@ -11,9 +11,10 @@ public interface BillService {
 	 * @param keywords
 	 * @param limit
 	 * @param page
+	 * @param status
 	 * @return
 	 */
-	ResponseJsonPageListBean list(String keywords, int limit, int page);
+	ResponseJsonPageListBean list(String keywords, int limit, int page, int status);
 
 	/**
 	 * @Description: 账单 新增 编辑

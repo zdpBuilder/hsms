@@ -29,13 +29,14 @@ public class BillController {
 	 * @param keywords
 	 * @param limit
 	 * @param page
+	 * @param status
 	 * @return
 	 */
 	@RequestMapping("list")
 	@ResponseBody
-	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page) {
+	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page, Integer status) {
 
-		return billService.list(keywords, limit, page);
+		return billService.list(keywords, limit, page, status);
 
 	}
 
