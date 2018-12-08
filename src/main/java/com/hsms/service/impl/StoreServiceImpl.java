@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hsms.common.ResponseJsonPageListBean;
+import com.hsms.mapper.StoreCustomMapper;
 import com.hsms.mapper.StoreMapper;
+import com.hsms.model.BillDetail;
 import com.hsms.model.Store;
 import com.hsms.model.StoreExample;
 import com.hsms.model.SysUser;
@@ -23,6 +25,8 @@ public class StoreServiceImpl implements StoreService {
 
 	@Autowired
 	private StoreMapper storeMapper;
+	@Autowired
+	private StoreCustomMapper storeCustomMapper;
 
 	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
@@ -71,6 +75,46 @@ public class StoreServiceImpl implements StoreService {
 
 		return storeMapper.selectByPrimaryKey(id);
 
+	}
+
+	@Override
+	public boolean addList(List<BillDetail> billDetailList, String loginId) {
+		if(Empty4jUtils.listIsEmpty(billDetailList))
+			return false;
+		int result = 0;
+		Store store;
+		BillDetail billDetail;
+		for (int i = 0; i < billDetailList.size(); i++) {
+			result = 0;
+			store = storeCustomMapper.getOneByGoodsCode(billDetailList.get(i).getGoodsCode());
+			billDetail = billDetailList.get(i);
+			if(null != store) {
+				//更新
+				store.setTitle(billDetail.getTitle());
+				store.setRemainBoxNum(store.getRemainBoxNum() + billDetail.getBoxNum());
+				store.setPurchaseTransaction(store.getPurchaseTransaction() + billDetail.getTransaction());
+				store.setUpdater(loginId);
+				store.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+				result = this.storeMapper.updateByPrimaryKey(store);
+			}else {
+				//插入
+				store = new Store();
+				store.setGoodsCode(billDetail.getGoodsCode());
+				store.setTitle(billDetail.getTitle());
+				store.setRemainBranchNum(0);
+				store.setRemainBoxNum(billDetail.getBoxNum());
+				store.setSellBoxNum(0);
+				store.setSellBranchNum(0);
+				store.setPurchaseTransaction(billDetail.getTransaction());
+				store.setSaleTransaction(Double.valueOf(0));
+				store.setCreater(loginId);
+				store.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+				result = this.storeMapper.insert(store);
+			}
+		}
+		if(1 == result)
+			return true;
+		return false;
 	}
 
 }

@@ -1,9 +1,12 @@
 package com.hsms.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.BillDetail;
+import com.hsms.pojo.BillDetailPojo;
 
 public interface BillDetailService {
 
@@ -41,4 +44,15 @@ public interface BillDetailService {
 	 * @return
 	 */
 	BillDetail getOneById(int id);
+	
+	/**
+	 * 
+	 * @Description: 批量新增
+	 * @param billCode
+	 * @param billDetailList
+	 * @param loginId
+	 * @return
+	 * @throws Exception
+	 */
+	boolean addList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception;
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hsms.common.ResponseJsonPageListBean;
+import com.hsms.mapper.BillDetailCustomMapper;
 import com.hsms.mapper.BillDetailMapper;
 import com.hsms.model.BillDetail;
 import com.hsms.model.BillDetailExample;
@@ -25,6 +26,8 @@ public class BillDetailServiceImpl implements BillDetailService {
 
 	@Autowired
 	private BillDetailMapper billDetailMapper;
+	@Autowired
+	private BillDetailCustomMapper billDetailCustomMapper;
 
 	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
@@ -99,6 +102,29 @@ public class BillDetailServiceImpl implements BillDetailService {
 
 		return billDetailMapper.selectByPrimaryKey(id);
 
+	}
+
+	@Override
+	public boolean addList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception {
+		if (Empty4jUtils.listIsEmpty(billDetailList))
+			return false;
+		int result = 0;
+
+		// 初始化数据
+		for (BillDetail billDetail : billDetailList) {
+			billDetail.setBillCode(billCode);
+			billDetail.setCreater(loginId);
+			billDetail.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+			billDetail.setStatus(1);
+		}
+
+		try {
+			result = billDetailCustomMapper.insertList(billDetailList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return result == billDetailList.size() ? true : false;
 	}
 
 }

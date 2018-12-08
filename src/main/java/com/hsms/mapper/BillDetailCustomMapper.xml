@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsms.mapper.BillDetailCustomMapper">
+  <resultMap id="BaseResultMap" type="com.hsms.model.BillDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bill_code" jdbcType="VARCHAR" property="billCode" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="purchase_price" jdbcType="DOUBLE" property="purchasePrice" />
+    <result column="sale_branch_price" jdbcType="DOUBLE" property="saleBranchPrice" />
+    <result column="sale_box_price" jdbcType="DOUBLE" property="saleBoxPrice" />
+    <result column="branch_num" jdbcType="INTEGER" property="branchNum" />
+    <result column="box_num" jdbcType="INTEGER" property="boxNum" />
+    <result column="transaction" jdbcType="DOUBLE" property="transaction" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+    <result column="creater" jdbcType="VARCHAR" property="creater" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="brand_title" jdbcType="VARCHAR" property="brandTitle" />
+    <result column="specification" jdbcType="VARCHAR" property="specification" />
+  </resultMap>
+  <!-- 批量插入 -->
+    <insert id="insertList" parameterType="java.util.List">
+
+    insert into bill_detail (id, bill_code, goods_code, 
+      title, purchase_price, sale_branch_price, 
+      sale_box_price, branch_num, box_num, 
+      transaction, status, updater, 
+      update_time, creater, create_time, 
+      brand_title, specification)
+    values 
+    <foreach collection="list" item="billDetail" index="index" separator =",">
+    
+    (#{billDetail.id,jdbcType=INTEGER}, #{billDetail.billCode,jdbcType=VARCHAR}, #{billDetail.goodsCode,jdbcType=VARCHAR}, 
+      #{billDetail.title,jdbcType=VARCHAR}, #{billDetail.purchasePrice,jdbcType=DOUBLE}, #{billDetail.saleBranchPrice,jdbcType=DOUBLE}, 
+      #{billDetail.saleBoxPrice,jdbcType=DOUBLE}, #{billDetail.branchNum,jdbcType=INTEGER}, #{billDetail.boxNum,jdbcType=INTEGER}, 
+      #{billDetail.transaction,jdbcType=DOUBLE}, #{billDetail.status,jdbcType=INTEGER}, #{billDetail.updater,jdbcType=VARCHAR}, 
+      #{billDetail.updateTime,jdbcType=VARCHAR}, #{billDetail.creater,jdbcType=VARCHAR}, #{billDetail.createTime,jdbcType=VARCHAR}, 
+      #{billDetail.brandTitle,jdbcType=VARCHAR}, #{billDetail.specification,jdbcType=VARCHAR})
+    
+    </foreach>    
+    
+  </insert>
+ </mapper>

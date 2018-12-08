@@ -40,7 +40,7 @@ public class GoodServiceImpl implements GoodService {
 			keywords = "%" + keywords + "%";
 			// and or拼装
 			example.or().andTitleLike(keywords).andStatusEqualTo(1);
-			example.or().andCodeLike(keywords).andStatusEqualTo(1);
+			example.or().andGoodsCodeLike(keywords).andStatusEqualTo(1);
 		} else {
 			criteria.andStatusEqualTo(1);
 		}
@@ -101,12 +101,39 @@ public class GoodServiceImpl implements GoodService {
 	public Goods getOneByCode(String code) {
 		GoodsExample example = new  GoodsExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andCodeEqualTo(code).andStatusEqualTo(1);
+		criteria.andGoodsCodeEqualTo(code).andStatusEqualTo(1);
 		List<Goods> goodsList = goodsMapper.selectByExample(example);
 		if(Empty4jUtils.listIsNotEmpty(goodsList)) {
 			return goodsList.get(0);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean addList(List<Goods> goodsList, String loginId) {
+		if(Empty4jUtils.listIsEmpty(goodsList))
+			return false;
+		int result = 0;
+		for (Goods goods : goodsList) {
+			result = 0;
+			//数据库已经存在
+			if(null != goods.getId()) {
+				goods.setUpdater(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
+				goods.setUpdater(loginId);
+				result = this.goodsMapper.updateByPrimaryKey(goods);
+			}else {
+				//数据库不存在
+				goods.setStatus(1);
+				goods.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
+				goods.setCreater(loginId);
+				result = this.goodsMapper.insert(goods);
+			}
+			
+		}
+		//设置返回值
+		if(1 == result)
+			return true;
+		return false;
 	}
 
 }

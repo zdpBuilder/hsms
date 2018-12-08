@@ -1,5 +1,7 @@
 package com.hsms.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.hsms.common.ResponseJsonPageListBean;
@@ -50,4 +52,13 @@ public interface GoodService {
 	 * @return
 	 */
 	Goods getOneByCode(String code);
+	
+	/**
+	 * 
+	 * @Description: 批量处理
+	 * @param goodsList
+	 * @param loginId
+	 * @return
+	 */
+	boolean addList(List<Goods> goodsList, String loginId);
 }

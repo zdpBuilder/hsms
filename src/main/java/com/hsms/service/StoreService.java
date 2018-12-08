@@ -1,8 +1,11 @@
 package com.hsms.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.hsms.common.ResponseJsonPageListBean;
+import com.hsms.model.BillDetail;
 import com.hsms.model.Store;
 
 public interface StoreService {
@@ -30,4 +33,14 @@ public interface StoreService {
 	 * @return
 	 */
 	Store getOneById(int id);
+	
+	/**
+	 * 
+	 * @Description: 商品入库
+	 * @param billDetailList
+	 * @param loginId
+	 * @return
+	 */
+	boolean addList(List<BillDetail> billDetailList, String loginId);
+	
 }

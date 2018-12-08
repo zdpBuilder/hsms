@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Bill;
+import com.hsms.model.SysUser;
+import com.hsms.pojo.BillInfoPojo;
 import com.hsms.pojo.ResultPojo;
 import com.hsms.service.BillService;
+import com.hsms.utils.Const;
+import com.hsms.utils.Empty4jUtils;
+import com.hsms.utils.JsonUtils;
 
 /**
  * 
@@ -22,7 +27,7 @@ public class BillController {
 
 	@Autowired
 	private BillService billService;
-
+	
 	/**
 	 * 
 	 * @Description: 获取订单分页数据
@@ -57,6 +62,37 @@ public class BillController {
 		}
 		return new ResultPojo(0, "操作失败");
 
+	}
+	
+	/**
+	 * 
+	 * @Description: 入库订单
+	 * @param formData
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("inStore")
+	@ResponseBody
+	public ResultPojo inStore(String formData, HttpSession session) {
+		if(Empty4jUtils.stringIsNotEmpty(formData)) {
+			SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
+			BillInfoPojo billInfo = JsonUtils.jsonToPojo(formData, BillInfoPojo.class);
+			if(null !=billInfo && null != billInfo.getBill() 
+					&& Empty4jUtils.listIsNotEmpty(billInfo.getBillDetailPojoList())) {
+				boolean result = false;
+				//异常处理
+				try {
+					result = billService.inStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailPojoList());
+				} catch (Exception e) {
+					e.printStackTrace();
+					new ResultPojo(0, "操作失败");
+				}
+				
+				if(result)
+					return new ResultPojo(1, "操作成功");
+			}
+		}
+		return new ResultPojo(0, "操作失败");
 	}
 
 	/**

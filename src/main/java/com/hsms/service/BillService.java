@@ -1,9 +1,12 @@
 package com.hsms.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Bill;
+import com.hsms.pojo.BillDetailPojo;
 
 public interface BillService {
 	/**
@@ -40,4 +43,23 @@ public interface BillService {
 	 * @return
 	 */
 	Bill getOneById(int id);
+	
+	/**
+	 * 
+	 * @Description: 新增
+	 * @param bill
+	 * @param loginId
+	 * @return
+	 */
+	boolean save(Bill bill, String loginId);
+	
+	/**
+	 * 
+	 * @Description: 入库处理
+	 * @param loginId
+	 * @param bill
+	 * @param billDetailList
+	 * @return
+	 */
+	boolean inStore(String loginId, Bill bill, List<BillDetailPojo> billDetailList) throws Exception;
 }

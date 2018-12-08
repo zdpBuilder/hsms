@@ -12,11 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.mapper.BillMapper;
 import com.hsms.model.Bill;
+import com.hsms.model.BillDetail;
 import com.hsms.model.BillExample;
 import com.hsms.model.BillExample.Criteria;
+import com.hsms.model.Goods;
 import com.hsms.model.SysUser;
+import com.hsms.pojo.BillDetailPojo;
+import com.hsms.service.BillDetailService;
 import com.hsms.service.BillService;
+import com.hsms.service.GoodService;
+import com.hsms.service.StoreService;
 import com.hsms.utils.Const;
+import com.hsms.utils.ConvertUtil;
 import com.hsms.utils.DateUtil;
 import com.hsms.utils.Empty4jUtils;
 
@@ -25,6 +32,12 @@ public class BillServiceImpl implements BillService {
 
 	@Autowired
 	private BillMapper billMapper;
+	@Autowired
+	private BillDetailService billDetailService;
+	@Autowired
+	private GoodService goodService;
+	@Autowired
+	private StoreService storeService;
 
 	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page, int status) {
@@ -98,6 +111,45 @@ public class BillServiceImpl implements BillService {
 
 		return billMapper.selectByPrimaryKey(id);
 
+	}
+
+	@Override
+	public boolean inStore(String loginId, Bill bill, List<BillDetailPojo> billDetailPojoList) throws Exception {
+		boolean result = false;
+
+		// 转换为订单明细集合
+		List<BillDetail> billDetailList = ConvertUtil.convertList(billDetailPojoList, BillDetail.class);
+		// 转换为货品集合
+		List<Goods> goodsList = ConvertUtil.convert2GoodsList(billDetailPojoList, Goods.class, "GoodsId", "Id");
+
+		// 入库单
+		bill.setCreater(loginId);
+		bill.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+		bill.setStatus(1);
+		result = save(bill, loginId);
+		if (Empty4jUtils.listIsNotEmpty(billDetailList) && Empty4jUtils.listIsNotEmpty(goodsList)) {
+			// 新增订单明系
+			result = false;
+			result = billDetailService.addList(bill.getCode(), billDetailList, loginId);
+			
+			// 货品集合处理
+			result = false;
+			result = goodService.addList(goodsList, loginId);
+			
+			// 仓库处理
+			result = false;
+			result = storeService.addList(billDetailList, loginId);
+		}
+		return result;
+	}
+
+	@Override
+	public boolean save(Bill bill, String loginId) {
+		bill.setStatus(1);
+		bill.setCreater(loginId);
+		bill.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+		int result = billMapper.insert(bill);
+		return result > 0 ? true : false;
 	}
 
 }
