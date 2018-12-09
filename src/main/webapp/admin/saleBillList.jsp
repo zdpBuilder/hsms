@@ -30,7 +30,7 @@
 			    <!-- 操作按钮区域 -->
 		        <div class="my-btn-box" style="margin-bottom:-10px;">
 		            <div class="fl" style="margin-top:5px;" >
-		                <a  class="layui-btn layui-btn-xs" id="btn-add-into"><i class="layui-icon"></i>进货新增</a>
+		                <a  class="layui-btn layui-btn-xs" id="btn-add-into"><i class="layui-icon"></i>销售新增</a>
 		                <a class="layui-btn layui-btn-xs" id="btn-delete-all" data-type="deleteBatch"><i class="layui-icon"></i>删除</a>
 		                <a class="layui-btn layui-btn-xs" id="btn-refresh" data-type="refresh"><i class="layui-icon">&#x1002;</i>刷新</a>
 		            </div>
@@ -103,6 +103,7 @@
 	        	,url:'${pageContext.request.contextPath}/bill/list'
 	        	,id: 'billListTable'
 	        	,where: {
+	        		status:2,  	
 	        		keywords: $("#keywords").val()
 	        	}//查询传参
 			    //,skin: 'line' //表格风格
@@ -142,7 +143,7 @@
 	      		  ,fixed: true //位置固定
 	      		  ,maxmin: false //开启最大化最小化按钮
 	      		  ,anim: 5 //0-6的动画形式，-1不开启
-	      		  ,content: 'purchaseBillInfo.jsp'
+	      		  ,content: 'saleBillInfo.jsp'
 	      	   });
 	      	});
 	      	//批量删除

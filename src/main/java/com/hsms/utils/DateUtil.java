@@ -8,7 +8,7 @@ import java.util.Date;
 public class DateUtil {
    
 	/**
-	 * 将日期转换为指定格式的字符串
+	 * 将日期转换为指定格式的字符串 yyyy-MM-dd ||yyyy-MM-dd HH:mm:ss
 	 * @param date
 	 * @param dateString
 	 * @return

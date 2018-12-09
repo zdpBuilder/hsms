@@ -83,6 +83,6 @@
     "title": "数据库备份",
     "icon": "fa fa-pie-chart",
     "spread": true,
-     "href": "admin/dbBackup.jsp"
+     "href": "admin/dbBackupList.jsp"
   }
   ]

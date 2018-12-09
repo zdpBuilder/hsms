@@ -70,7 +70,7 @@ dd {
 	                     <label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">交易者</label>
 						<div class="layui-input-inline">
-							<input type="text" name="creater" value="${CurrentLoginUserInfo.loginId}" disabled id="creater" lay-verify="required"
+							<input type="text"  value="${CurrentLoginUserInfo.loginId}" disabled id="creater" lay-verify="required"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -81,7 +81,7 @@ dd {
                     <label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">供应商</label>
                     <div class="layui-input-inline">
-                    <select id="supplierId"  lay-search="" lay-verify="required" >
+                    <select id="supplierId" name="supplierId"  lay-search="" lay-verify="required" >
 				          <option value="">请选择</option>
 				         </select>
 				         </div>
@@ -108,7 +108,7 @@ dd {
 		            <div  style="margin-left:30%;">
 		              <span class="layui-form-label" style="font-size:12px;vertical-align: top;line-height:10px;">商品编码</span>
 			           <div class="layui-input-inline">
-			             <input type="text" autofocus="autofocus"  name="goodsCodeScan" id="goodsCodeScan" lay-verify="required"
+			             <input type="text" autofocus="autofocus"   id="goodsCodeScan"
 								placeholder="请输入或者扫描商品编码" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -216,7 +216,7 @@ dd {
   
       //表单元素赋值
       var goodsId = <%=id %>;
-      if(goodsId!=null){
+    /*   if(goodsId!=null){
     	  $.ajax({
   			method: "post",
   			data : {"id":goodsId},
@@ -251,7 +251,7 @@ dd {
   				
   			}
         });   
-      }   
+      }    */
       
       //供应商列表获取
   	   $.ajax({
@@ -292,18 +292,46 @@ dd {
  	    		}
  	    	}
     		
-    		layer.open({
-      		  type: 2 //Page层类型
-      		  ,area: ['700px', '350px']
-      		  ,title:  ['新增信息', '']
-      		  ,shade: 0.6 //遮罩透明度
-      		  ,fixed: true //位置固定
-      		  ,maxmin: false //开启最大化最小化按钮
-      		  ,anim: 5 //0-6的动画形式，-1不开启
-      		  ,content: 'purchaseBillDetailInfo.jsp?code='+goodsCodeScan
-      	   });
-    		$("#goodsCodeScan").val("");
-    		$("#goodsCodeScan").focus();
+ 	    	 $.ajax({
+ 	 			method: "post",
+ 	 			data : {
+ 	 				"code":goodsCodeScan
+ 	                   },
+ 	 			url:"../goods/getOneByCode",
+ 	 			success:function(result){
+ 	 				
+					 if(typeof(result.status)==="undefined"){
+	                        parent.layer.msg('数据异常', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
+					       return;
+					 }
+					 if(result.status==1){
+						 	
+						 layer.open({
+				      		  type: 2 //Page层类型
+				      		  ,area: ['700px', '350px']
+				      		  ,title:  ['新增信息', '']
+				      		  ,shade: 0.6 //遮罩透明度
+				      		  ,fixed: true //位置固定
+				      		  ,maxmin: false //开启最大化最小化按钮
+				      		  ,anim: 5 //0-6的动画形式，-1不开启
+				      		  ,content: 'purchaseBillDetailInfo.jsp?code='+goodsCodeScan+'&goodsId='+result.data.id
+				      	   }); 
+					 }else{
+						 layer.open({
+				      		  type: 2 //Page层类型
+				      		  ,area: ['700px', '350px']
+				      		  ,title:  ['新增信息', '']
+				      		  ,shade: 0.6 //遮罩透明度
+				      		  ,fixed: true //位置固定
+				      		  ,maxmin: false //开启最大化最小化按钮
+				      		  ,anim: 5 //0-6的动画形式，-1不开启
+				      		  ,content: 'purchaseBillDetailInfo.jsp?code='+goodsCodeScan
+				      	   });
+					 }
+ 	 				
+ 	 			}
+ 	       });  
+    		
     	});
         //table
          // 表格渲染
@@ -313,7 +341,6 @@ dd {
 			    ,cols: [[ 
 			       //{type:'numbers' ,title: '序号'},
 			       {type: 'checkbox'}
-			       ,{field: 'code', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
 				  ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
 				  ,{field: 'brandTitle', title: '<span style="color:#000;font-weight:bold;">品牌名称</span>',align: 'center'}
 				  ,{field: 'specification', title: '<span style="color:#000;font-weight:bold;">商品规格</span>',align: 'center'}
@@ -393,31 +420,39 @@ dd {
 	          form.on('submit(addForm)', function (data) {
 	            var formJson = data.field;      
 	           if(billDetialDatas!=null&&billDetialDatas!=""){
-	        	   formJson.goodsIds=JSON.stringify(billDetialDatas);
-	           	$.ajax({
+	        	   var formData;
+	        	   console.log(formJson);
+	        	   formData['bill']=formJson;
+	        	   formData['billDetailPojoList']=billDetialDatas;
+	        	console.log(JSON.stringify(formData));
+	           	 $.ajax({
 	       			method: "post",
-	       			url:"../bill/save",
-	       			data: formJson,
+	       			url:"../bill/inStore",
+	       			data: {
+	       				"formData":JSON.stringify(formData)
+	       			},
 	       			async:false,
 	       			success:function(result){
-	       				if(result==null){
-	                           parent.layer.msg('保存失败！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-	                           return;
+	       				var index = parent.layer.getFrameIndex(window.name);
+	       				console.log(result+"结果");
+	       				if(typeof(result.status)==="undefined"){
+	                           parent.layer.msg('保存失败！', {title:'提示消息',icon: 0, time: 1500}); //1s后自动关闭);	                            	                       
+                               parent.layer.close(index); 
+	           	            return;
 	   					}
-	       				if(result){
-	       					var data = result.data;
-	       					if(data<=0){
-	                               parent.layer.msg('保存失败！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-		                            return;
-	       					}
+	       				if(result.status==1){
 	                       		//关闭窗口 并给父页面传值
 	                               var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
 	                               parent.layer.msg('保存成功！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);                 
 	                                parent.reloadTable(1);         	                       
 	                               parent.layer.close(index); 		
+	       				}else{
+	       				 parent.layer.msg('保存失败！', {title:'提示消息',icon: 0, time: 1500}); //1s后自动关闭);
+	       				 parent.layer.close(index);
+                         return;
 	       				}
 	       			},
-	               });        
+	               });     
 	           }else{
 	               parent.layer.msg('请添加商品！', {time: 1500}); //1s后自动关闭);   
 	              return;

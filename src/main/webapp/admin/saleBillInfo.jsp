@@ -51,13 +51,12 @@ dd {
 <body class="body">
 
 	<form class="layui-form" action="">
-			<input type="hidden" name="braName" id="braName"/>
-		<input type="hidden" name="typeTitle" id="typeTitle"/>
+			<input type="hidden" name="status" id="status" value="1"/>
 		<c:if test="<%=id!=null%>">
 			<input type="hidden" name="id" id="id" value="<%=id%>" />
 		</c:if>
 		<fieldset class="layui-elem-field">
-			<legend>进货基本信息</legend>
+			<legend>销售基本信息</legend>
 			<div class=" layui-col-md12 layui-col-md-offset2">
 		       <div class="layui-form-item" style="margin-bottom:3px;">
 					<label class="layui-form-label"
@@ -79,13 +78,7 @@ dd {
 							
                     </div>
                     <div class="layui-form-item">
-                    <label class="layui-form-label"
-							style="font-size: 12px; line-height: 10px;">供应商</label>
-                    <div class="layui-input-inline">
-                    <select id="supplierId"  lay-search="" lay-verify="required" >
-				          <option value="">请选择</option>
-				         </select>
-				         </div>
+                   
 				         
 				         <label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">订单总额</label>
@@ -108,7 +101,6 @@ dd {
 		        <div class="my-btn-box" style="margin-bottom:-10px;">    
 		            <div  style="margin-left:30%;">
 		              <span class="layui-form-label" style="font-size:12px;vertical-align: top;line-height:10px;">商品编码</span>
-		               
 			           <div class="layui-input-inline">
 			             <input type="text" autofocus="autofocus"  name="goodsCodeScan" id="goodsCodeScan" lay-verify="required"
 								placeholder="请输入或者扫描商品编码" autocomplete="off"
@@ -138,30 +130,35 @@ dd {
 	<script type="text/javascript">
 	var table; //layUI的渲染动态表格
 	var currPageNum = 1;//当前页码
-	 var billDetialDatas=[];  //账单列表详情
-	 var transaction=0;       //订单总额
-    
-	
-	 
+	var billDetialDatas=[];  //账单列表详情
+	function codeScan(){
+		  $("#goodsCodeScan").val("");
+	 		$("#goodsCodeScan").focus();
+	}
 	 function initbillDetialDatas(goodsAddData){
-		 
-		   var checkStatus=true;//商品入库校验状态量 true 表示未入库可以入库   false 表示已经入库
-		    //商品入库校验
-	    	for(var i=0;i<billDetialDatas.length;i++){
-	    		if(billDetialDatas[i].id==goodsAddData.id){
-	    			isUsed=false;
-	  				layer.msg('商品已经入库！', {time: 1000}); //1s后自动关闭
+		
+		 for(var i=0;i<billDetialDatas.length;i++){		 
+	    		if(billDetialDatas[i].code.trim()==goodsAddData.code.trim()){				
+	    			billDetialDatas[i]=goodsAddData;	
+	    			var transaction="";
+		    		for(var j=0;j<billDetialDatas.length;j++){		 
+		    			transaction=Number(transaction)+Number(billDetialDatas[j].transaction);
+			    	}
+		  		   $("#transaction").val(transaction);
+		    	   table.reload('tableListId',{data:billDetialDatas});
+		    	   return;
 	    		}
 	    	}
-	   
-	    	if(isUsed){
 	    		//预加载数据添加
 	    		billDetialDatas.push(goodsAddData);
-	  		   //预加载订单总额添加
-	 		    transaction=transaction+goodsAddData.branchBidPrice*goodsAddData.branchCount+goodsAddData.boxBidPrice*goodsAddData.boxCount;			  		  	
-	    	 $("#transaction").val(transaction);
-	    	 table.reload('goodsListTable',{data:billDetialDatas});
-	    }
+	  		   //预加载订单总额设置
+	  		   var transaction="";
+	    		for(var i=0;i<billDetialDatas.length;i++){		 
+	    			transaction=Number(transaction)+Number(billDetialDatas[i].transaction);
+		    	}
+	  		   $("#transaction").val(transaction);
+	    	   table.reload('tableListId',{data:billDetialDatas});
+    
 	 }
 	function reloadTable(pageNum){
 		//刷新表格内容
@@ -254,26 +251,55 @@ dd {
         });   
       }   
       
+      //供应商列表获取
+  	   $.ajax({
+ 			method: "post",
+ 			data : {
+                   "page":0,
+ 				    "limit":0,},
+ 			url:"../supplier/list",
+ 			success:function(result){
+ 				 if(result){
+ 					 result=result.data;
+ 					 if(result){
+ 						for(var i=0;i<result.length;i++){
+ 							$("#supplierId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+ 						} 
+ 						renderForm();
+ 					 }
+ 				 }
+ 			}
+       });  
     //添加 
     	$("#btn-add").click(function(){
-    		if($("#goodsCodeScan").val()==""){
+    		var goodsCodeScan=$("#goodsCodeScan").val();
+    		//商品编码空处理
+    		if(goodsCodeScan==""){
     			$("#goodsCodeScan").focus();
-	       layer.msg('请输入或者扫描商品编码', {time: 1500}); //1s后自动关闭
+	            layer.msg('请输入或者扫描商品编码', {time: 1500}); //1s后自动关闭
     			return ;
     		}
+ 		    //商品入库校验
+ 	    	for(var i=0;i<billDetialDatas.length;i++){
+ 	    		
+ 	    		if(billDetialDatas[i].code.trim()==goodsCodeScan.trim()){	
+ 	    			layer.msg('商品已经入库！', {time: 1000}); //1s后自动关闭	
+ 	    			$("#goodsCodeScan").val("");
+ 	    			$("#goodsCodeScan").focus();
+ 	    			return;
+ 	    		}
+ 	    	}
     		
     		layer.open({
       		  type: 2 //Page层类型
-      		  ,area: ['388px', '400px']
+      		  ,area: ['700px', '350px']
       		  ,title:  ['新增信息', '']
       		  ,shade: 0.6 //遮罩透明度
       		  ,fixed: true //位置固定
       		  ,maxmin: false //开启最大化最小化按钮
       		  ,anim: 5 //0-6的动画形式，-1不开启
-      		  ,content: 'purchaseBillDetialInfo.jsp?id='+$("#goodsCodeScan").val()
+      		  ,content: 'saleBillDetailInfo.jsp?code='+goodsCodeScan
       	   });
-    		$("#goodsCodeScan").val("");
-    		$("#goodsCodeScan").focus();
     	});
         //table
          // 表格渲染
@@ -283,11 +309,13 @@ dd {
 			    ,cols: [[ 
 			       //{type:'numbers' ,title: '序号'},
 			       {type: 'checkbox'}
-				   ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">品牌名称</span>',align: 'center'}
-			      ,{field: 'creater', title: '<span style="color:#000;font-weight:bold;">创建者</span>',align: 'center'}
-			      ,{field: 'createTime', title: '<span style="color:#000;font-weight:bold;">创建时间</span>',align: 'center'}
-			      ,{field: 'updater', title: '<span style="color:#000;font-weight:bold;">更新者</span>',align: 'center'}
-			      ,{field: 'updateTime', title: '<span style="color:#000;font-weight:bold;">更新时间</span>',align: 'center'}
+			       ,{field: 'code', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
+				  ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
+				  ,{field: 'brandTitle', title: '<span style="color:#000;font-weight:bold;">品牌名称</span>',align: 'center'}
+				  ,{field: 'specification', title: '<span style="color:#000;font-weight:bold;">商品规格</span>',align: 'center'}
+				  ,{field: 'purchasePrice', title: '<span style="color:#000;font-weight:bold;">商品进价（按每箱）</span>',align: 'center',width:150}
+			      ,{field: 'boxNum', title: '<span style="color:#000;font-weight:bold;">箱数量</span>',align: 'center'}
+			      ,{field: 'transaction', title: '<span style="color:#000;font-weight:bold;">总金额</span>',align: 'center'}	 
 			      ,{field: '', title: '<span style="color:#000;font-weight:bold;">操作</span>',align: 'center',toolbar: '#toolbar',width:200}
 			    ]]
 	        	,id:"tableListId" 	
@@ -305,44 +333,51 @@ dd {
 	      		var data = obj.data;
 	      		
 	      	    if(obj.event === 'del'){  
+	      	    	
 	      	    	layer.confirm('确认删除吗？', {
 	      	    	  title: "确认消息", //标题
 	      	    	  btnAlign: 'c',
 	      	    	  btn: ['确认','取消'] //按钮
 	      	    	}, function(){
 	      	    		//单条删除   	   
-	      	    	      //table删除
-	      	    	       obj.del();
 	      	    	      //数据删除
 	      	    	     for(var i=0;i<billDetialDatas.length;i++){
-	          	    		if(billDetialDatas[i].id==data.id){
-	          	    		   //数据删除
-	          	    			billDetialDatas.splice(i,1);	
-	          	    		   //订单总额减少	          	    		   
-	                           transaction=transaction-(data.branchBidPrice*data.branchCount+data.boxBidPrice*data.boxCount);	   	      	   	    			
-	          	    		   $("#transaction").val(transaction);
+	          	    		if(billDetialDatas[i].code==data.code){  	    
+	          	    			//数据删除
+	          	    			billDetialDatas.splice(i,1);
+	          	    			//订单总金额
+	          	    			var transaction="";
+	        		    		for(var j=0;j<billDetialDatas.length;j++){		 
+	        		    			transaction=Number(transaction)+Number(billDetialDatas[j].transaction);
+	        			    	}
+	        		  		   $("#transaction").val(transaction);
+	        		    	   table.reload('tableListId',{data:billDetialDatas});
+	          	    			//table删除
+	 	      	    	        obj.del();
+	          	    		   //弹出消息
+        		  			   layer.msg('删除成功！', {time: 1000}); //1s后自动关闭
 	          	    		} 
-	          	    	 }
-	          	        //渲染表格数据
-	          	    	table.reload('tableListId',{data:billDetialDatas});
-	          	        
+	          	    	 }  
 	      	    	}, function(){
 	      	    	  //取消
 	      	    	});
 	      	      
 	      	    }
 	      	  	if(obj.event === 'edit'){
-	      	      //编辑操作
-	      	  	  //layer.msg('ID：'+ data.id + ' 的编辑操作');
-	      	      layer.open({
+	      	  	
+	      	      //编辑操作	    
+	      	      //初始化数据
+	      	     billDetailData= JSON.stringify(data);
+	      	     sessionStorage.setItem('billDetailData', billDetailData);
+	      	  	 layer.open({
 	        		  type: 2 //Page层类型
-	        		  ,area: ['350px', '180px']
-	        		  ,title: ['编辑信息', '']
+	        		  ,area: ['700px', '350px']
+	        		  ,title:  ['新增信息', '']
 	        		  ,shade: 0.6 //遮罩透明度
 	        		  ,fixed: true //位置固定
 	        		  ,maxmin: false //开启最大化最小化按钮
 	        		  ,anim: 5 //0-6的动画形式，-1不开启
-	        		  ,content: 'brandInfo.jsp?id='+data.id
+	        		  ,content: 'purchaseBillDetailInfo.jsp?billDetailDatastatus=1'
 	        	   });
 	      	      
 	      	    }

@@ -4,9 +4,7 @@
 <%
 //商品编码
 String  code=request.getParameter("code");
-//商品数据
-String  billDetailDatastatus=request.getParameter("billDetailDatastatus");
-
+String goodsId=request.getParameter("goodsId");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,24 +48,19 @@ dd {
 <body class="body">
 
 	<form class="layui-form" action="">
+	<input type="hidden" name="goodsId" value="<%=goodsId%>"/>
 		<fieldset class="layui-elem-field">
 			<legend>商品基本信息</legend>	
 				<div class="layui-form-item" style="margin-bottom: 3px;">
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品编码</label>
-						<div class="layui-input-inline">
+						<div class="layui-input-inline">		
 						<c:if test="<%=code!=null%>">
-						<input type="text"  name="code"  value=" <%=code%>" disabled id="code"  
+						<input type="text"  name="goodsCode"  value=" <%=code%>" disabled id="code"  
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
-						</c:if>
-						<c:if test="<%=billDetailDatastatus!=null%>">
-						<input type="text"  name="code"  value=" <%=code%>" disabled id="code"  
-								placeholder="必填项" autocomplete="off"
-								class="layui-input layui-form-danger"
-								style="height: 26px; font-size: 12px;">
-						</c:if>
+						</c:if>		
 						</div>
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品名称</label>
@@ -238,8 +231,7 @@ dd {
   						} 
   						 //表单元素赋值
   		  		       var billDetailData = sessionStorage.getItem('billDetailData');
-  		  		      console.info(billDetailData);
-  						 if(typeof(billDetailData)!="undefined" && billDetailData!=0){
+  						 if(typeof (billDetailData)!="undefined" && billDetailData!=null&&billDetailData!=""){
   							 var data=JSON.parse(billDetailData);
   		  		     	  $("#code").val(data.code);
   		  		     	  $("#brandId").val(data.brandId);

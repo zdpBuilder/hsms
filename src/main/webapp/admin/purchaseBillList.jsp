@@ -103,6 +103,7 @@
 	        	,url:'${pageContext.request.contextPath}/bill/list'
 	        	,id: 'billListTable'
 	        	,where: {
+	        		status:1,
 	        		keywords: $("#keywords").val()
 	        	}//查询传参
 			    //,skin: 'line' //表格风格
