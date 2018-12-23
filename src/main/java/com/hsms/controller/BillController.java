@@ -64,36 +64,7 @@ public class BillController {
 
 	}
 	
-	/**
-	 * 
-	 * @Description: 入库订单
-	 * @param formData
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping("inStore")
-	@ResponseBody
-	public ResultPojo inStore(String formData, HttpSession session) {
-		if(Empty4jUtils.stringIsNotEmpty(formData)) {
-			SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
-			BillInfoPojo billInfo = JsonUtils.jsonToPojo(formData, BillInfoPojo.class);
-			if(null !=billInfo && null != billInfo.getBill() 
-					&& Empty4jUtils.listIsNotEmpty(billInfo.getBillDetailList())) {
-				boolean result = false;
-				//异常处理
-				try {
-					result = billService.inStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailList());
-				} catch (Exception e) {
-					e.printStackTrace();
-					new ResultPojo(0, "操作失败");
-				}
-				
-				if(result)
-					return new ResultPojo(1, "操作成功");
-			}
-		}
-		return new ResultPojo(0, "操作失败");
-	}
+	
 	/**
 	 * @Description: 根据订单code查询订单和订单详细信息
 	 * @param billCode
@@ -111,7 +82,6 @@ public class BillController {
 		return new ResultPojo(0, "操作失败");
 
 	}
-	
 	
 	/**
 	 * 
@@ -146,6 +116,68 @@ public class BillController {
 
 		if (result == 1) {
 			return new ResultPojo(1, "操作成功");
+		}
+		return new ResultPojo(0, "操作失败");
+	}
+	
+	/**
+	 * 
+	 * @Description: 入库订单
+	 * @param formData
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("inStore")
+	@ResponseBody
+	public ResultPojo inStore(String formData, HttpSession session) {
+		if(Empty4jUtils.stringIsNotEmpty(formData)) {
+			SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
+			BillInfoPojo billInfo = JsonUtils.jsonToPojo(formData, BillInfoPojo.class);
+			if(null !=billInfo && null != billInfo.getBill() 
+					&& Empty4jUtils.listIsNotEmpty(billInfo.getBillDetailList())) {
+				boolean result = false;
+				//异常处理
+				try {
+					result = billService.inStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailList());
+				} catch (Exception e) {
+					e.printStackTrace();
+					new ResultPojo(0, "操作失败");
+				}
+				
+				if(result)
+					return new ResultPojo(1, "操作成功");
+			}
+		}
+		return new ResultPojo(0, "操作失败");
+	}
+	
+	/**
+	 * 商品出库
+	 * @Description: 
+	 * @param formData
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("outStore")
+	@ResponseBody
+	public ResultPojo outStore(String formData, HttpSession session) {
+		if(Empty4jUtils.stringIsNotEmpty(formData)) {
+			SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
+			BillInfoPojo billInfo = JsonUtils.jsonToPojo(formData, BillInfoPojo.class);
+			if(null !=billInfo && null != billInfo.getBill() 
+					&& Empty4jUtils.listIsNotEmpty(billInfo.getBillDetailList())) {
+				boolean result = false;
+				//异常处理
+				try {
+					result = billService.inStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailList());
+				} catch (Exception e) {
+					e.printStackTrace();
+					new ResultPojo(0, "操作失败");
+				}
+				
+				if(result)
+					return new ResultPojo(1, "操作成功");
+			}
 		}
 		return new ResultPojo(0, "操作失败");
 	}

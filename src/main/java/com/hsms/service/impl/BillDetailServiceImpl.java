@@ -15,8 +15,10 @@ import com.hsms.mapper.BillDetailMapper;
 import com.hsms.model.BillDetail;
 import com.hsms.model.BillDetailExample;
 import com.hsms.model.BillDetailExample.Criteria;
+import com.hsms.model.Goods;
 import com.hsms.model.SysUser;
 import com.hsms.service.BillDetailService;
+import com.hsms.service.GoodService;
 import com.hsms.utils.Const;
 import com.hsms.utils.DateUtil;
 import com.hsms.utils.Empty4jUtils;
@@ -28,6 +30,8 @@ public class BillDetailServiceImpl implements BillDetailService {
 	private BillDetailMapper billDetailMapper;
 	@Autowired
 	private BillDetailCustomMapper billDetailCustomMapper;
+	@Autowired
+	private GoodService goodService;
 
 	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
@@ -148,5 +152,30 @@ public class BillDetailServiceImpl implements BillDetailService {
 		
 		 return result>0?true:false;
 	}
+
+	@Override
+	public boolean outStoreAddList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception {
+		if(Empty4jUtils.listIsEmpty(billDetailList))
+			return false;
+		
+		//补全明细信息
+		for (BillDetail billDetail : billDetailList) {
+			Goods goods = goodService.getOneByCode(billDetail.getGoodsCode());
+			if(null != goods) {
+				billDetail.setSaleBranchPrice(goods.getSaleBoxPrice());
+				billDetail.setSaleBranchPrice(goods.getSaleBranchPrice());
+				billDetail.setSpecification(goods.getSpecification());
+				billDetail.setBrandId(goods.getBrandId());
+				billDetail.setBrandTitle(goods.getBrandTitle());
+			}
+		}
+		
+		//保存
+		boolean result = addList(billCode, billDetailList, loginId);
+		
+		return result;
+	}
+	
+	
 
 }

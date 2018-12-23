@@ -132,38 +132,7 @@ public class BillServiceImpl implements BillService {
 
 	}
 
-	@Override
-	public boolean inStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception {
-		boolean result = false;
-		
-		// 转换为货物集合
-		List<Goods> goodsList = ConvertUtil.convertList(billDetailList, Goods.class);
-		// 入库单
-		result = save(bill, loginId);
-		
-		//入库处理
-        if(Empty4jUtils.intIsNotEmpty(bill.getId())) {	    
-        	//还原库存
-        	storeService.restoreStoreList(bill.getCode(), loginId);
-        	//物理删除订单明细信息
-        	 billDetailService.delListByBillCode(bill.getCode());  	  
-        }
-       
-        if (Empty4jUtils.listIsNotEmpty(billDetailList) && Empty4jUtils.listIsNotEmpty(goodsList)) {
-			// 新增订单明系
-			result = false;
-			result = billDetailService.addList(bill.getCode(), billDetailList, loginId);
-			
-			// 货品集合处理
-			result = false;
-			result = goodService.addList(goodsList, loginId);
-			
-			// 仓库处理
-			result = false;
-			result = storeService.addList(billDetailList, loginId);
-		}
-		return result;
-	}
+	
 
 	@Override
 	public boolean save(Bill bill, String loginId) {
@@ -198,4 +167,54 @@ public class BillServiceImpl implements BillService {
 		return billInfoPojo;
 	}
 
+	@Override
+	public boolean inStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception {
+		boolean result = false;
+		
+		// 转换为货物集合
+		List<Goods> goodsList = ConvertUtil.convertList(billDetailList, Goods.class);
+		// 入库单
+		result = save(bill, loginId);
+		
+		//入库处理
+        if(Empty4jUtils.intIsNotEmpty(bill.getId())) {	    
+        	//还原库存
+        	storeService.restoreStoreList(bill.getCode(), loginId);
+        	//物理删除订单明细信息
+        	 billDetailService.delListByBillCode(bill.getCode());  	  
+        }
+       
+        if (Empty4jUtils.listIsNotEmpty(billDetailList) && Empty4jUtils.listIsNotEmpty(goodsList)) {
+			// 新增订单明系
+			result = false;
+			result = billDetailService.addList(bill.getCode(), billDetailList, loginId);
+			
+			// 货品集合处理
+			result = false;
+			result = goodService.addList(goodsList, loginId);
+			
+			// 仓库处理
+			result = false;
+			result = storeService.addList(billDetailList, loginId);
+		}
+		return result;
+	}
+	
+	@Override
+	public boolean outStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception {
+		boolean result = false;
+		//新增订单
+		result = save(bill, loginId);		
+		
+		// 新增订单明系
+		result = false;
+		result = billDetailService.outStoreAddList(bill.getCode(), billDetailList, loginId);
+		
+		//仓库处理
+		result = false;
+		result = storeService.outStoreAddList(billDetailList, loginId, bill.getTransaction());
+		
+		return result;
+	}
+	
 }

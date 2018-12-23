@@ -71,4 +71,15 @@ public interface BillService {
 	 * @return
 	 */
 	boolean inStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception;
+	
+	/**
+	 * 
+	 * @Description: 出库处理
+	 * @param loginId
+	 * @param bill
+	 * @param billDetailList
+	 * @return
+	 * @throws Exception
+	 */
+	boolean outStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception;
 }

@@ -67,4 +67,15 @@ public interface BillDetailService {
      * @return
      */
 	List<BillDetail> getBillDetailBybillCode(String billCode);
+	
+	/**
+	 * 
+	 * @Description: 出库新增明细
+	 * @param billCode
+	 * @param billDetailList
+	 * @param loginId
+	 * @return
+	 * @throws Exception
+	 */
+	boolean outStoreAddList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception;
 }

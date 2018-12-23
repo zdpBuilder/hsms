@@ -42,5 +42,16 @@ public interface StoreService {
 	 * @return
 	 */
 	boolean addList(List<BillDetail> billDetailList, String loginId);
+	
 	boolean restoreStoreList(String billCode, String loginId);
+	
+	/**
+	 * 
+	 * @Description: 商品出库
+	 * @param billDetailList
+	 * @param loginId
+	 * @param sumTransaction
+	 * @return
+	 */
+	boolean outStoreAddList(List<BillDetail> billDetailList, String loginId, Double sumTransaction);
 }

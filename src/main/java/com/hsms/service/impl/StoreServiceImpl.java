@@ -150,4 +150,28 @@ public class StoreServiceImpl implements StoreService {
 		return false;
 	}
 
+	@Override
+	public boolean outStoreAddList(List<BillDetail> billDetailList, String loginId, Double sumTransaction) {
+		if(Empty4jUtils.listIsEmpty(billDetailList))
+			return false;
+		for (BillDetail billDetail : billDetailList) {
+			Store store = storeCustomMapper.getOneByGoodsCode(billDetail.getGoodsCode());
+			if(null == store)
+				return false;
+			if(store.getRemainBoxNum() < billDetail.getBoxNum() || store.getRemainBranchNum() < billDetail.getBranchNum())
+				return false;
+			//补全仓库信息
+			store.setRemainBoxNum(store.getRemainBoxNum() - billDetail.getBoxNum());
+			store.setSellBoxNum(store.getSellBoxNum() + billDetail.getBoxNum());
+			store.setRemainBranchNum(billDetail.getBranchNum() - billDetail.getBranchNum());
+			store.setSellBranchNum(store.getSellBranchNum() + billDetail.getBranchNum());
+			store.setSaleTransaction(store.getSaleTransaction() + sumTransaction);
+			store.setUpdater(loginId);
+			store.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+			
+			storeMapper.updateByPrimaryKey(store);
+		}
+		return true;
+	}
+
 }
