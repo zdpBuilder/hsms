@@ -201,9 +201,7 @@
 			//页面刷新
 	      	$("#btn-refresh").click(function(){
 	      		//清空页面刷新条件
-	      		$("#keywords").val("");
-	      		$("#lineOrderStatus").val("");
-	      		$("#intoOrOutStatus").val("");
+	      		$("#keywords").val("");   
 	      		$("#startDate").val("");
 	      		$("#endDate").val("");
 
@@ -224,10 +222,9 @@
 	      		  ,where: {
 	      			//查询传参
 	      		   keywords: $("#keywords").val(),
-	      		 lineOrderStatus:$("#lineOrderStatus").val(),
-	      		intoOrOutStatus:$("#intoOrOutStatus").val(),
-	      		startDate:$("#startDate").val(),
-	      		endDate	:$("#endDate").val()
+	      		   status:1,
+	      		   startDate:$("#startDate").val(),
+	      		   endDate	:$("#endDate").val()
 	      		  }
 	      		});
 	      	});

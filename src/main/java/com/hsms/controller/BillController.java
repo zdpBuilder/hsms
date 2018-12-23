@@ -39,9 +39,9 @@ public class BillController {
 	 */
 	@RequestMapping("list")
 	@ResponseBody
-	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page, Integer status) {
+	public ResponseJsonPageListBean List(String keywords, Integer limit, Integer page, Integer status,String startDate,String endDate) {
 
-		return billService.list(keywords, limit, page, status);
+		return billService.list(keywords, limit, page, status,startDate,endDate);
 
 	}
 

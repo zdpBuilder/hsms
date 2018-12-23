@@ -40,7 +40,7 @@ public class BillServiceImpl implements BillService {
 	private StoreService storeService;
 
 	@Override
-	public ResponseJsonPageListBean list(String keywords, int limit, int page, int status) {
+	public ResponseJsonPageListBean list(String keywords, int limit, int page, int status,String startDate,String endDate) {
 		BillExample example = new BillExample();
 		// 分页配置
 		example.setStartRow((page - 1) * limit);
@@ -51,10 +51,20 @@ public class BillServiceImpl implements BillService {
 		if (Empty4jUtils.stringIsNotEmpty(keywords)) {
 			keywords = keywords.trim();
 			keywords = "%" + keywords + "%";
-			example.or().andCodeLike(keywords).andStatusNotEqualTo(0).andStatusEqualTo(status);
-		} else {
-			criteria.andStatusNotEqualTo(0).andStatusEqualTo(status);
+			criteria.andCodeLike(keywords);
+		} 
+		
+		if(Empty4jUtils.stringIsNotEmpty(startDate)) {
+			
+			criteria.andCreateTimeGreaterThanOrEqualTo(startDate);
+			
 		}
+		if(Empty4jUtils.stringIsNotEmpty(endDate)) {
+			
+			criteria.andCreateTimeLessThanOrEqualTo(endDate);
+		}
+		
+		criteria.andStatusNotEqualTo(0).andStatusEqualTo(status);
 		// 结果处理
 		List<Bill> list = billMapper.selectByExample(example);
 		int count = (int) billMapper.countByExample(example);
