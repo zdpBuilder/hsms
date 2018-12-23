@@ -4,7 +4,6 @@
 <%
 //商品编码
 String  code=request.getParameter("code");
-String goodsId=request.getParameter("goodsId");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +47,6 @@ dd {
 <body class="body">
 
 	<form class="layui-form" action="">
-	<input type="hidden" name="goodsId" value="<%=goodsId%>"/>
 		<fieldset class="layui-elem-field">
 			<legend>商品基本信息</legend>	
 				<div class="layui-form-item" style="margin-bottom: 3px;">
@@ -56,7 +54,13 @@ dd {
 							style="font-size: 12px; line-height: 10px;">商品编码</label>
 						<div class="layui-input-inline">		
 						<c:if test="<%=code!=null%>">
-						<input type="text"  name="goodsCode"  value=" <%=code%>" disabled id="code"  
+						<input type="text"  name="goodsCode"  value=" <%=code%>" disabled   
+								placeholder="必填项" autocomplete="off"
+								class="layui-input layui-form-danger"
+								style="height: 26px; font-size: 12px;">
+						</c:if>	
+						<c:if test="<%=code==null%>">
+						<input type="text"  name="goodsCode"  value="" disabled id="goodsCode"  
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -170,6 +174,7 @@ dd {
 	                    "page":0,
 	  				    "limit":0,},
 	  			url:"../brand/list",
+	  			async:false,
 	  			success:function(result){
 	  				 if(result){
 	  					 result=result.data;
@@ -222,36 +227,51 @@ dd {
                     "page":0,
   				    "limit":0,},
   			url:"../brand/list",
+  			async:false,
   			success:function(result){
   				 if(result){
   					 result=result.data;
   					 if(result){
   						for(var i=0;i<result.length;i++){
   							$("#brandId").append('<option value="'+result[i].id+'">'+result[i].title+'</option>');	
-  						} 
-  						 //表单元素赋值
-  		  		       var billDetailData = sessionStorage.getItem('billDetailData');
-  						 if(typeof (billDetailData)!="undefined" && billDetailData!=null&&billDetailData!=""){
-  							 var data=JSON.parse(billDetailData);
-  		  		     	  $("#code").val(data.code);
-  		  		     	  $("#brandId").val(data.brandId);
-  		  		     	  $("#title").val(data.title);
-  		  		     	  $("#transaction").val(data.transaction);
-  		  		     	  $("#boxNum").val(data.boxNum);
-  		  		     	  $("#saleBranchPrice").val(data.saleBranchPrice);
-  		  		     	  $("#saleBoxPrice").val(data.saleBoxPrice);
-  		  		     	  $("#specification").val(data.specification);
-  		  		     	  $("#purchasePrice").val(data.purchasePrice);
-  		  		           //清空session
-   		  	             sessionStorage.setItem('billDetailData',0);
-  						 } 	
+  						} 						 	
   		  		   renderForm(); 
   					 }
   					 
   				 }	 
   			}
         });   
- 
+      
+   	  var goodsData=sessionStorage.getItem('goodsData');
+       if(typeof (goodsData)!="undefined" && goodsData!=null&&goodsData!=""){
+           goodsData=JSON.stringify(goodsData);
+           $("#goodsCode").val(goodsData.goodsCode);
+	       $("#brandId").val(goodsData.brandId);
+	       $("#title").val(goodsData.title);
+     	   $("#saleBranchPrice").val(goodsData.saleBranchPrice);
+     	   $("#saleBoxPrice").val(goodsData.saleBoxPrice);
+     	   $("#specification").val(goodsData.specification);
+     	   $("#purchasePrice").val(goodsData.purchasePrice);
+     	  renderForm(); 
+       }
+   	 //表单元素赋值
+	       var billDetailData = sessionStorage.getItem('billDetailData');
+			 if(typeof (billDetailData)!="undefined" && billDetailData!=null&&billDetailData!=""){
+				 console.info(billDetailData);
+				 var data=JSON.parse(billDetailData);
+	     	  $("#goodsCode").val(data.goodsCode);
+	     	  $("#brandId").val(data.brandId);
+	     	  $("#title").val(data.title);
+	     	  $("#transaction").val(data.transaction);
+	     	  $("#boxNum").val(data.boxNum);
+	     	  $("#saleBranchPrice").val(data.saleBranchPrice);
+	     	  $("#saleBoxPrice").val(data.saleBoxPrice);
+	     	  $("#specification").val(data.specification);
+	     	  $("#purchasePrice").val(data.purchasePrice);
+	           //清空session
+	             sessionStorage.setItem('billDetailData',0);
+	             renderForm(); 
+			 }
    	  //品牌新增
    	  $("#brand-btn-add").click(function(){
   	

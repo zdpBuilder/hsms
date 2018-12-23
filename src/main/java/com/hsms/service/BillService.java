@@ -6,7 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Bill;
-import com.hsms.pojo.BillDetailPojo;
+import com.hsms.model.BillDetail;
+import com.hsms.pojo.BillInfoPojo;
 
 public interface BillService {
 	/**
@@ -45,6 +46,14 @@ public interface BillService {
 	Bill getOneById(int id);
 	
 	/**
+	 * @Description: 根据账单code 查询包含账单和该账单下的账单明细的信息
+	 * @param billCode
+	 * @return
+	 */
+	BillInfoPojo getBillIncludeBillDetailByBillCode(String billCode);
+	
+	
+	/**
 	 * 
 	 * @Description: 新增
 	 * @param bill
@@ -61,5 +70,5 @@ public interface BillService {
 	 * @param billDetailList
 	 * @return
 	 */
-	boolean inStore(String loginId, Bill bill, List<BillDetailPojo> billDetailList) throws Exception;
+	boolean inStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception;
 }

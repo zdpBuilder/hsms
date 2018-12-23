@@ -3,10 +3,10 @@
 	contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
-String code="";
+String goodsCode="";
 String  id=request.getParameter("id");
 if(id==null){
-	code =SNUtil.getSNNumber(Const.SUN_GOODS_CODE);	
+	goodsCode =SNUtil.getSNNumber(Const.SUN_GOODS_CODE);	
 	}
 %>
 <!DOCTYPE html>
@@ -64,7 +64,7 @@ dd {
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品编码</label>
 						<div class="layui-input-block">
-							<input type="text" name="code" disabled id="code"  value="<%=code %>" lay-verify="required"
+							<input type="text" name="goodsCode" disabled id="goodsCode"  value="<%=goodsCode %>" lay-verify="required"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -231,7 +231,7 @@ dd {
   	 					$("#braId").val(result.braId);
   	 					$("#braName").val(result.braName);
   	 					$("#note").val(result.note);
-  	 					$("#code").val(result.code);
+  	 					$("#goodsCode").val(result.goodsCode);
   	 					pohotoUrl='${pageContext.request.contextPath}/upload_files/goods_photo/'+result.imgUrl;
   	 	            	$("#preImg").html('<img style=" margin:20px 10px 0 10px;"src="'+pohotoUrl +'" width="240" height="250"/>');	
   	 					renderForm();

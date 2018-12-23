@@ -78,11 +78,11 @@ public class BillController {
 			SysUser currentLoginUser = (SysUser) session.getAttribute(Const.SESSION_USER);
 			BillInfoPojo billInfo = JsonUtils.jsonToPojo(formData, BillInfoPojo.class);
 			if(null !=billInfo && null != billInfo.getBill() 
-					&& Empty4jUtils.listIsNotEmpty(billInfo.getBillDetailPojoList())) {
+					&& Empty4jUtils.listIsNotEmpty(billInfo.getBillDetailList())) {
 				boolean result = false;
 				//异常处理
 				try {
-					result = billService.inStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailPojoList());
+					result = billService.inStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailList());
 				} catch (Exception e) {
 					e.printStackTrace();
 					new ResultPojo(0, "操作失败");
@@ -94,7 +94,25 @@ public class BillController {
 		}
 		return new ResultPojo(0, "操作失败");
 	}
+	/**
+	 * @Description: 根据订单code查询订单和订单详细信息
+	 * @param billCode
+	 * @return
+	 */
+	@RequestMapping("getBillIncludeBillDetailByBillCode")
+	@ResponseBody
+	public ResultPojo getBillIncludeBillDetailByBillCode(String billCode) {
+		BillInfoPojo billInfoPojo = billService.getBillIncludeBillDetailByBillCode(billCode);
 
+		if (billInfoPojo != null) {
+			return new ResultPojo(1, billInfoPojo);
+		}
+
+		return new ResultPojo(0, "操作失败");
+
+	}
+	
+	
 	/**
 	 * 
 	 * @Description: 获取订单信息
@@ -123,8 +141,8 @@ public class BillController {
 	 */
 	@RequestMapping("deleteBatch")
 	@ResponseBody
-	public ResultPojo deleteBatch(String idStr, HttpSession session) {
-		int result = billService.deleteBatch(idStr, session);
+	public ResultPojo deleteBatch(String codeStr, HttpSession session) {
+		int result = billService.deleteBatch(codeStr, session);
 
 		if (result == 1) {
 			return new ResultPojo(1, "操作成功");

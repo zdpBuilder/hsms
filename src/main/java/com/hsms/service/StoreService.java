@@ -42,5 +42,5 @@ public interface StoreService {
 	 * @return
 	 */
 	boolean addList(List<BillDetail> billDetailList, String loginId);
-	
+	boolean restoreStoreList(String billCode, String loginId);
 }

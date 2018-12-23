@@ -55,4 +55,16 @@ public interface BillDetailService {
 	 * @throws Exception
 	 */
 	boolean addList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception;
+    /**
+     * @Description: 根据billCode删除相应订单下的订单明细
+     * @param billCode
+     * @return
+     */
+	boolean delListByBillCode(String billCode);
+	/**
+     *  @Description: 根据账单code 查询该账单下的账单明细
+     * @param billId
+     * @return
+     */
+	List<BillDetail> getBillDetailBybillCode(String billCode);
 }

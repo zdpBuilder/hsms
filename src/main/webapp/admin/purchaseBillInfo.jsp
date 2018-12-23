@@ -3,9 +3,8 @@
 	contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
-String code="";
-String  id=request.getParameter("id");
-if(id==null){
+String code=request.getParameter("billCode");
+if(code==null){
 	code =SNUtil.getSNNumber(Const.SUN_PURCHASE_CODE);	
 	}
 %>
@@ -52,9 +51,7 @@ dd {
 
 	<form class="layui-form" action="">
 			<input type="hidden" name="status" id="status" value="1"/>
-		<c:if test="<%=id!=null%>">
-			<input type="hidden" name="id" id="id" value="<%=id%>" />
-		</c:if>
+			<input type="hidden" name="id" id="id" value="" />
 		<fieldset class="layui-elem-field">
 			<legend>进货基本信息</legend>
 			<div class=" layui-col-md12 layui-col-md-offset2">
@@ -140,7 +137,7 @@ dd {
 	 function initbillDetialDatas(goodsAddData){
 	
 		 for(var i=0;i<billDetialDatas.length;i++){		 
-	    		if(billDetialDatas[i].code.trim()==goodsAddData.code.trim()){				
+	    		if(billDetialDatas[i].goodsCode.trim()==goodsAddData.goodsCode.trim()){				
 	    			billDetialDatas[i]=goodsAddData;	
 	    			var transaction="";
 		    		for(var j=0;j<billDetialDatas.length;j++){		 
@@ -213,65 +210,57 @@ dd {
       }
      
      
-  
-      //表单元素赋值
-      var goodsId = <%=id %>;
-    /*   if(goodsId!=null){
-    	  $.ajax({
-  			method: "post",
-  			data : {"id":goodsId},
-  			url:"${pageContext.request.contextPath}/goods/show",
-  			success:function(result){
-  				if(null != result){
-  					if(1 == result.status){
-  						result = result.data;
-  	 					$("#title").val(result.title);
-  	 					$("#brandId").val(result.brandId);
-  	 					$("#typeTitle").val(result.typeTitle);
-  	 					$("#branchPrice").val(result.branchPrice);
-  	 					$("#boxPrice").val(result.boxPrice);
-  	 					$("#branchCount").val(result.branchCount);
-  	 					$("#boxCount").val(result.boxCount);
-  	 					$("#eachBoxNum").val(result.eachBoxNum);
-  	 					$("#branchBidPrice").val(result.branchBidPrice);
-  	 					$("#boxBidPrice").val(result.boxBidPrice);
-  	 					$("#imgUrlIntoSql").val(result.imgUrl);
-  	 					$("#braId").val(result.braId);
-  	 					$("#braName").val(result.braName);
-  	 					$("#note").val(result.note);
-  	 					$("#code").val(result.code);
-  	 					pohotoUrl='${pageContext.request.contextPath}/upload_files/goods_photo/'+result.imgUrl;
-  	 	            	$("#preImg").html('<img style=" margin:20px 10px 0 10px;"src="'+pohotoUrl +'" width="240" height="250"/>');	
-  	 					renderForm();
-  					} else{
-  						parent.layer.msg(result.msg, {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
-  					}
-  					
-  				}
-  				
-  			}
-        });   
-      }    */
-      
       //供应商列表获取
-  	   $.ajax({
+	   $.ajax({
+			method: "post",
+			data : {
+                 "page":0,
+				    "limit":0,},
+			url:"../supplier/list",
+			async:false,
+			success:function(result){
+				 if(result){
+					 result=result.data;
+					 if(result){
+						for(var i=0;i<result.length;i++){
+							$("#supplierId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+						} 
+						renderForm();
+					 }
+				 }
+			}
+     });
+     //表单元素赋值
+     var  billCode=$("#code").val();
+   if(billCode!=null){
+   	  $.ajax({
  			method: "post",
- 			data : {
-                   "page":0,
- 				    "limit":0,},
- 			url:"../supplier/list",
+ 			data : {"billCode":billCode},
+ 			url:"${pageContext.request.contextPath}/bill/getBillIncludeBillDetailByBillCode",
+ 			async:false,
  			success:function(result){
- 				 if(result){
- 					 result=result.data;
- 					 if(result){
- 						for(var i=0;i<result.length;i++){
- 							$("#supplierId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
- 						} 
- 						renderForm();
- 					 }
- 				 }
+ 				if(null != result){
+ 					if(1 == result.status){
+ 						result = result.data;
+ 						if(null!=result.bill){		
+ 							$("#id").val(result.bill.id);
+ 	 	 					$("#creater").val(result.bill.creater);
+ 	 	 					$("#transaction").val(result.bill.transaction);
+ 	 	 					$("#supplierId").val(result.bill.supplierId); 	 					
+ 	 	 					billDetialDatas=result.billDetailList;
+ 	 	 					renderForm();
+ 						}
+ 					
+ 					} else{
+ 						parent.layer.msg(result.msg, {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
+ 					}
+ 					
+ 				}
+ 				
  			}
-       });  
+       });   
+     }    
+      
     //添加 
     	$("#btn-add").click(function(){
     		var goodsCodeScan=$("#goodsCodeScan").val();
@@ -283,8 +272,9 @@ dd {
     		}
  		    //商品入库校验
  	    	for(var i=0;i<billDetialDatas.length;i++){
- 	    		
- 	    		if(billDetialDatas[i].code.trim()==goodsCodeScan.trim()){	
+ 	    		 console.info($.trim(billDetialDatas[i].code));
+ 	    		 console.info($.trim(goodsCodeScan));
+ 	    		if($.trim(billDetialDatas[i].goodsCode)==$.trim(goodsCodeScan)){	
  	    			layer.msg('商品已经入库！', {time: 1000}); //1s后自动关闭	
  	    			$("#goodsCodeScan").val("");
  	    			$("#goodsCodeScan").focus();
@@ -305,7 +295,7 @@ dd {
 					       return;
 					 }
 					 if(result.status==1){
-						 	
+			      	     sessionStorage.setItem('goodsData', JSON.stringify(result.data)); 
 						 layer.open({
 				      		  type: 2 //Page层类型
 				      		  ,area: ['700px', '350px']
@@ -314,7 +304,7 @@ dd {
 				      		  ,fixed: true //位置固定
 				      		  ,maxmin: false //开启最大化最小化按钮
 				      		  ,anim: 5 //0-6的动画形式，-1不开启
-				      		  ,content: 'purchaseBillDetailInfo.jsp?code='+goodsCodeScan+'&goodsId='+result.data.id
+				      		  ,content: 'purchaseBillDetailInfo.jsp?code='+goodsCodeScan
 				      	   }); 
 					 }else{
 						 layer.open({
@@ -399,16 +389,17 @@ dd {
 	      	      //编辑操作	    
 	      	      //初始化数据
 	      	     billDetailData= JSON.stringify(data);
+	      	     console.info(billDetailData);
 	      	     sessionStorage.setItem('billDetailData', billDetailData);
 	      	  	 layer.open({
 	        		  type: 2 //Page层类型
 	        		  ,area: ['700px', '350px']
-	        		  ,title:  ['新增信息', '']
+	        		  ,title:  ['编辑信息', '']
 	        		  ,shade: 0.6 //遮罩透明度
 	        		  ,fixed: true //位置固定
 	        		  ,maxmin: false //开启最大化最小化按钮
 	        		  ,anim: 5 //0-6的动画形式，-1不开启
-	        		  ,content: 'purchaseBillDetailInfo.jsp?billDetailDatastatus=1'
+	        		  ,content: 'purchaseBillDetailInfo.jsp'
 	        	   });
 	      	      
 	      	    }
@@ -420,11 +411,11 @@ dd {
 	          form.on('submit(addForm)', function (data) {
 	            var formJson = data.field;      
 	           if(billDetialDatas!=null&&billDetialDatas!=""){
-	        	   var formData;
-	        	   console.log(formJson);
-	        	   formData['bill']=formJson;
-	        	   formData['billDetailPojoList']=billDetialDatas;
-	        	console.log(JSON.stringify(formData));
+	        	   var formData={};
+	        	   formData.bill=formJson;
+	        	   formData.billDetailList=billDetialDatas;
+	        	   console.info(JSON.stringify(formData));
+
 	           	 $.ajax({
 	       			method: "post",
 	       			url:"../bill/inStore",

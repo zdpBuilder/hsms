@@ -95,9 +95,9 @@
 			    ,cols: [[ 
 			       //{type:'numbers' ,title: '序号'},
 			       {type: 'checkbox'}
-			      ,{field: 'orderCode', title: '<span style="color:#000;font-weight:bold;">订单编号</span>',align: 'center'}
-			      ,{field: 'intoOrOutStatus', title: '<span style="color:#000;font-weight:bold;">订单类型</span>',align: 'center',templet: '#intoOrOutStatusTem'}		  
-			      ,{field: 'lineOrderStatus', title: '<span style="color:#000;font-weight:bold;">订单状态</span>',align: 'center', templet: '#checkboxTpl', event: 'setSign'}		  
+			      ,{field: 'code', title: '<span style="color:#000;font-weight:bold;">订单编号</span>',align: 'center'}
+			      ,{field: 'status', title: '<span style="color:#000;font-weight:bold;">订单类型</span>',align: 'center',templet: '#statusName'}		  
+			      ,{field: 'transaction', title: '<span style="color:#000;font-weight:bold;">交易金额</span>',align: 'center'}		  
 			      ,{field: '', title: '<span style="color:#000;font-weight:bold;">操作</span>',align: 'center',toolbar: '#toolbar'}
 			    ]]
 	        	,url:'${pageContext.request.contextPath}/bill/list'
@@ -153,11 +153,11 @@
 			    var data = checkStatus.data;//选中数据
 			    
 			    if(data.length>0){
-			    	var idStr = "";
+			    	var codeStr = "";
 			    	for(var i=0;i<data.length;i++){	
-			    		idStr = data[i].id + "," + idStr;
+			    		codeStr = data[i].code + "," + codeStr;
 			    	}
-			    	layer.confirm('确认删除 '+data.length+' 条用户信息？', {
+			    	layer.confirm('确认删除 '+data.length+' 条信息？', {
 		      	    	  title: "确认消息", //标题
 		      	    	  btn: ['确认','取消'] //按钮
 		      	    	}, function(){
@@ -165,9 +165,9 @@
 		      	    		$.ajax({
 		        	  			method: "post",
 		        	  			url:"${pageContext.request.contextPath}/bill/deleteBatch",
-		        	  			data:{"idStr":idStr},
+		        	  			data:{"codeStr":codeStr},
 		        	  			success:function(result){
-		        	  				if(result.data==1){
+		        	  				if(result.status==1){
 		        		  				layer.msg('删除 '+data.length+' 条成功！', {time: 1000}); //1s后自动关闭
 		      	    					
 		        		  				//刷新表格内容
@@ -234,48 +234,11 @@
 	      	
 	      	//toolBar操作列监听
 	      	 table.on('tool(tableFilter)', function(obj){
-	      		var data = obj.data;
-          	//确认订单
-	      		if(obj.event === 'setSign'){    
-	      			layer.confirm('确认修改订单处理状态？', {
-		      	    	  title: "确认消息", //标题
-		      	    	  btnAlign: 'c',
-		      	    	  btn: ['确认','取消'] //按钮
-		      	    	}, function(){	
-        	  			   if(data.lineOrderStatus==1){
-        	  				 data.lineOrderStatus=0; 
-        	  			   }else{    	  			 
-        	  				 data.lineOrderStatus=1;   
-        	  			   }
-        	  			   console.info(data);
-		      	    		$.ajax({
-		        	  			method: "post",
-		        	  			url:"${pageContext.request.contextPath}/bill/BillSign",
-		        	  			data:data,
-		        	  			success:function(result){    	
-		        	  				if(result.data==1){
-		        		  				layer.msg('修改成功！', {time: 1000}); //1s后自动关闭
-		        		  				//刷新表格内容
-		        		  		        table.reload('billListTable', {
-		        		  		          page: {
-		        		  		            curr: currPageNum //从当前页开始
-		        		  		          }
-		        		  		        });
-		        	  				}else{
-		        	  					layer.msg('修改失败！', {time: 1000}); //1s后自动关闭
-		        	  					reloadTable(1);
-		        	  				}
-		        	  	        }
-		        			}); 
-		      	    	}, function(){
-		      	    	  //取消
-		      	    	 reloadTable(1);
-		      	    	});
-	      	    }
+	      		var data = obj.data;  
 	      	    if(obj.event === 'del'){
 	      	    
 	      	      //layer.msg('ID：'+ data.id + ' 的删除操作');
-	      	    	layer.confirm('确认删除用户信息？', {
+	      	    	layer.confirm('确认删除信息？', {
 	      	    	  title: "确认消息", //标题
 	      	    	  btnAlign: 'c',
 	      	    	  btn: ['确认','取消'] //按钮
@@ -284,9 +247,9 @@
 	      	    		$.ajax({
 	        	  			method: "post",
 	        	  			url:"${pageContext.request.contextPath}/bill/deleteBatch",
-	        	  			data:{"idStr":data.id},
+	        	  			data:{"codeStr":data.code},
 	        	  			success:function(result){
-	        	  				if(result.data==1){
+	        	  				if(result.status==1){
 	        		  				layer.msg('删除成功！', {time: 1000}); //1s后自动关闭
 	      	    					//console.info(obj);
 	        		  				//$(obj.tr).fadeOut();
@@ -314,18 +277,17 @@
 	      	    }
 	      	  	if(obj.event === 'edit'){
 	      	      //编辑操作
-	      	  	  //layer.msg('ID：'+ data.id + ' 的编辑操作');
-	      	      layer.open({
-	        		  type: 2 //Page层类型
-	        		  ,area: ['100%', '100%']
-	        		  ,title: ['编辑信息', '']
-	        		  ,shade: 0.6 //遮罩透明度
-	        		  ,fixed: true //位置固定
-	        		  ,maxmin: false //开启最大化最小化按钮
-	        		  ,anim: 5 //0-6的动画形式，-1不开启
-	        		  ,content: 'billInfo.jsp?id='+data.id+'&intoOrOutStatus='+data.intoOrOutStatus
-	        	   });
-	      	      
+	      	  
+		      		layer.open({
+		      		  type: 2 //Page层类型
+		      		  ,area: ['100%', '100%']
+		      		  ,title:  ['编辑信息', '']
+		      		  ,shade: 0.6 //遮罩透明度
+		      		  ,fixed: true //位置固定
+		      		  ,maxmin: false //开启最大化最小化按钮
+		      		  ,anim: 5 //0-6的动画形式，-1不开启
+		      		  ,content: 'purchaseBillInfo.jsp?billCode='+data.code
+		      	   }); 
 	      	    }
 	      		if(obj.event === 'show'){
   
@@ -337,7 +299,7 @@
 		        		  ,fixed: true //位置固定
 		        		  ,maxmin: false //开启最大化最小化按钮
 		        		  ,anim: 5 //0-6的动画形式，-1不开启
-		        		  ,content: 'billInfoShow.jsp?id='+data.id+'&intoOrOutStatus='+data.intoOrOutStatus
+		        		  ,content: 'purchaseBillInfoShow.jsp?billCode='+data.code
 		        	   });
 		      	      
 		      	    }
@@ -355,21 +317,12 @@
 	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" style="font-size:10px;"><i class="layui-icon">&#xe642;</i>编辑</a>
 	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="del" style="font-size:10px;"><i class="layui-icon">&#xe640;</i>删除</a>
 </script>
-<script type="text/html" id="checkboxTpl">
-		{{#  if( d.lineOrderStatus=== 0){ }}
-              <input type="checkbox"  value="0"  id="lineOrderStatus" name="lineOrderStatus"  lay-skin="switch" lay-text="是|否">
-        {{#  } }} 
-        
-        {{#  if( d.lineOrderStatus=== 1){ }}
-              <input type="checkbox"  value="1"  checked="checked" id="lineOrderStatus"  name="lineOrderStatus" lay-skin="switch" lay-text="是|否">
-        {{#  } }} 
-	</script>
-	<script type="text/html" id="intoOrOutStatusTem">
-		{{#  if( d.intoOrOutStatus=== 0){ }} 
+	<script type="text/html" id="statusName">
+		{{#  if( d.status=== 1){ }} 
         进货
         {{#  } }} 
         
-        {{#  if( d.intoOrOutStatus=== 1){ }}
+        {{#  if( d.status=== 2){ }}
        销售
         {{#  } }} 
 	</script>

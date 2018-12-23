@@ -116,11 +116,13 @@ public class GoodServiceImpl implements GoodService {
 		int result = 0;
 		for (Goods goods : goodsList) {
 			result = 0;
+			//根据商品code查询商品是否已存在
+			Goods goodsDb=getOneByCode(goods.getGoodsCode());
 			//数据库已经存在
-			if(null != goods.getId()) {
+			if(null != goodsDb) {
 				goods.setUpdater(DateUtil.DateToString(new Date(), "yyyy-MM-dd "));
 				goods.setUpdater(loginId);
-				result = this.goodsMapper.updateByPrimaryKey(goods);
+				result = this.goodsMapper.updateByPrimaryKeySelective(goods);
 			}else {
 				//数据库不存在
 				goods.setStatus(1);

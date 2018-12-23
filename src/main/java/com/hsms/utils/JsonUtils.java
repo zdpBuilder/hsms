@@ -1,11 +1,12 @@
 package com.hsms.utils;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.lang.reflect.Field;
 
 /**
  * json工具
@@ -13,8 +14,13 @@ import java.lang.reflect.Field;
  */
 public class JsonUtils {
 
-	private static final ObjectMapper MAPPER = new ObjectMapper();
-
+	private static final ObjectMapper MAPPER = ignoreUnknown();
+	
+	public static ObjectMapper ignoreUnknown() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	   return mapper;
+	}
 	/**
 	 * 将对象转换为json字符串
 	 * 

@@ -15,6 +15,7 @@ import com.hsms.model.BillDetail;
 import com.hsms.model.Store;
 import com.hsms.model.StoreExample;
 import com.hsms.model.SysUser;
+import com.hsms.service.BillDetailService;
 import com.hsms.service.StoreService;
 import com.hsms.utils.Const;
 import com.hsms.utils.DateUtil;
@@ -27,7 +28,9 @@ public class StoreServiceImpl implements StoreService {
 	private StoreMapper storeMapper;
 	@Autowired
 	private StoreCustomMapper storeCustomMapper;
-
+	@Autowired
+	private BillDetailService billDetailService;
+	
 	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
 		StoreExample example = new StoreExample();
@@ -114,6 +117,36 @@ public class StoreServiceImpl implements StoreService {
 		}
 		if(1 == result)
 			return true;
+		return false;
+	}
+
+	@Override
+	public boolean restoreStoreList(String billCode, String loginId) {
+		
+		
+		List<BillDetail> billDetailList=billDetailService.getBillDetailBybillCode(billCode);
+		
+		if(Empty4jUtils.listIsEmpty(billDetailList)) return false;
+		int result = 0;
+		Store store;
+		BillDetail billDetail;
+		
+		for (int i = 0; i < billDetailList.size(); i++) {
+			result = 0;
+			store = storeCustomMapper.getOneByGoodsCode(billDetailList.get(i).getGoodsCode());
+			billDetail = billDetailList.get(i);
+			if(null != store) {
+				//更新
+				store.setTitle(billDetail.getTitle());
+				store.setRemainBoxNum(store.getRemainBoxNum() - billDetail.getBoxNum());
+				store.setPurchaseTransaction(store.getPurchaseTransaction() - billDetail.getTransaction());
+				store.setUpdater(loginId);
+				store.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+				result = this.storeMapper.updateByPrimaryKey(store);
+			}
+		}
+		if(1 == result) return true;
+		
 		return false;
 	}
 

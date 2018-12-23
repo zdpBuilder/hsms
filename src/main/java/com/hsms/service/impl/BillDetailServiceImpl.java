@@ -127,4 +127,26 @@ public class BillDetailServiceImpl implements BillDetailService {
 		return result == billDetailList.size() ? true : false;
 	}
 
+	@Override
+	public List<BillDetail> getBillDetailBybillCode(String billCode) {
+		 
+		BillDetailExample example=new BillDetailExample();
+		 Criteria criteria=example.createCriteria();
+		 criteria.andBillCodeEqualTo(billCode);
+		 
+		return billDetailMapper.selectByExample(example);
+	}
+
+	@Override
+	public boolean delListByBillCode(String billCode) {
+		 
+		BillDetailExample example=new BillDetailExample();
+		Criteria criteria=example.createCriteria();
+		criteria.andBillCodeEqualTo(billCode);
+		
+		 int result=billDetailMapper.deleteByExample(example);
+		
+		 return result>0?true:false;
+	}
+
 }

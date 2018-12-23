@@ -19,6 +19,7 @@
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="brand_title" jdbcType="VARCHAR" property="brandTitle" />
     <result column="specification" jdbcType="VARCHAR" property="specification" />
+    <result column="brand_id" jdbcType="INTEGER" property="brandId" />
   </resultMap>
   <!-- 批量插入 -->
     <insert id="insertList" parameterType="java.util.List">

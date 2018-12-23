@@ -30,7 +30,7 @@
 			    <!-- 操作按钮区域 -->
 		        <div class="my-btn-box" style="margin-bottom:-10px;">
 		            <div class="fl">
-		                <a class="layui-btn layui-btn-sm" id="btn-add"><i class="layui-icon"></i>新增</a>
+		             <!--    <a class="layui-btn layui-btn-sm" id="btn-add"><i class="layui-icon"></i>新增</a> -->
 		                <a class="layui-btn layui-btn-sm" id="btn-delete-all" data-type="deleteBatch"><i class="layui-icon"></i>删除</a>
 		                <a class="layui-btn layui-btn-sm" id="btn-refresh" data-type="refresh"><i class="layui-icon">&#x1002;</i>刷新</a>
 		            </div>
@@ -80,7 +80,7 @@
 			    ,cols: [[ 
 			       //{type:'numbers' ,title: '序号'},
 			       {type: 'checkbox'}
-				   ,{field: 'code', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center'}
+				   ,{field: 'goodsCode', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center'}
 			      ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
 			      ,{field: 'brandTitle', title: '<span style="color:#000;font-weight:bold;">所属品牌名称</span>',align: 'center'}
 			      ,{field: 'specification', title: '<span style="color:#000;font-weight:bold;">规格</span>',align: 'center'}
