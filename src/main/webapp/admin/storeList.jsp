@@ -79,10 +79,12 @@
 			       //{type:'numbers' ,title: '序号'},
 				  {field: 'goodsCode', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center',width:160}
 			      ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}		
-			      ,{field: 'purchaseTransaction', title: '<span style="color:#000;font-weight:bold;">商品进货总额(元)</span>',align: 'center'}
-			      ,{field: 'saleTransaction', title: '<span style="color:#000;font-weight:bold;">商品销售总额(元)</span>',align: 'center'}		  
-			      ,{field: 'branchNum', title: '<span style="color:#000;font-weight:bold;">商品支数量</span>',align: 'center',templet:'#branchCountTpl'}		  
-			      ,{field: 'boxNum', title: '<span style="color:#000;font-weight:bold;">商品箱数量</span>',align: 'center',templet:'#boxCountTpl'}		  
+			      ,{field: 'remainBranchNum', title: '<span style="color:#000;font-weight:bold;">剩余商品支数量</span>',align: 'center'}
+			      ,{field: 'sellBranchNum', title: '<span style="color:#000;font-weight:bold;">销售商品支数量</span>',align: 'center'}		  
+			      ,{field: 'remainBoxNum', title: '<span style="color:#000;font-weight:bold;">剩余商品箱数量</span>',align: 'center',templet:'#branchCountTpl'}		  
+			      ,{field: 'sellBoxNum', title: '<span style="color:#000;font-weight:bold;">销售商品箱数量</span>',align: 'center',templet:'#boxCountTpl'}		  
+			      ,{field: 'purchaseTransaction', title: '<span style="color:#000;font-weight:bold;">进货总额</span>',align: 'center',templet:'#boxCountTpl'}		  
+			      ,{field: 'saleTransaction', title: '<span style="color:#000;font-weight:bold;">销售总额</span>',align: 'center',templet:'#boxCountTpl'}		  
 			      ]]
 	        	,url:'${pageContext.request.contextPath}/store/list'
 	        	,id: 'storeListTable'
