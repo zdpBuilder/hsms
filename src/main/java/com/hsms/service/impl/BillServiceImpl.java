@@ -40,7 +40,8 @@ public class BillServiceImpl implements BillService {
 	private StoreService storeService;
 
 	@Override
-	public ResponseJsonPageListBean list(String keywords, int limit, int page, int status,String startDate,String endDate) {
+	public ResponseJsonPageListBean list(String keywords, int limit, int page, int status, String startDate,
+			String endDate) {
 		BillExample example = new BillExample();
 		// 分页配置
 		example.setStartRow((page - 1) * limit);
@@ -52,18 +53,18 @@ public class BillServiceImpl implements BillService {
 			keywords = keywords.trim();
 			keywords = "%" + keywords + "%";
 			criteria.andCodeLike(keywords);
-		} 
-		
-		if(Empty4jUtils.stringIsNotEmpty(startDate)) {
-			
-			criteria.andCreateTimeGreaterThanOrEqualTo(startDate);
-			
 		}
-		if(Empty4jUtils.stringIsNotEmpty(endDate)) {
-			
+
+		if (Empty4jUtils.stringIsNotEmpty(startDate)) {
+
+			criteria.andCreateTimeGreaterThanOrEqualTo(startDate);
+
+		}
+		if (Empty4jUtils.stringIsNotEmpty(endDate)) {
+
 			criteria.andCreateTimeLessThanOrEqualTo(endDate);
 		}
-		
+
 		criteria.andStatusNotEqualTo(0).andStatusEqualTo(status);
 		// 结果处理
 		List<Bill> list = billMapper.selectByExample(example);
@@ -104,20 +105,20 @@ public class BillServiceImpl implements BillService {
 			String[] codeArr = codeStr.split(",");
 			for (int i = 0; i < codeArr.length; i++) {
 				// 更新账单状态
-				BillExample example =new BillExample();
-				Criteria criteria=example.createCriteria();
+				BillExample example = new BillExample();
+				Criteria criteria = example.createCriteria();
 				criteria.andCodeEqualTo(codeArr[i]);
 				List<Bill> bills = billMapper.selectByExample(example);
-				if(bills.size()>0) {
-					Bill bill =bills.get(0);
+				if (bills.size() > 0) {
+					Bill bill = bills.get(0);
 					bill.setStatus(0);
 					bill.setUpdater(currentLoginUser.getLoginId());
 					bill.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
 					billMapper.updateByPrimaryKeySelective(bill);
 				}
-				//还原库存
-			    storeService.restoreStoreList(codeArr[i], currentLoginUser.getLoginId());
-				//删除账单明细
+				// 还原库存
+				storeService.restoreStoreList(codeArr[i], currentLoginUser.getLoginId());
+				// 删除账单明细
 				billDetailService.delListByBillCode(codeArr[i]);
 			}
 			result = 1;
@@ -132,89 +133,97 @@ public class BillServiceImpl implements BillService {
 
 	}
 
-	
-
 	@Override
 	public boolean save(Bill bill, String loginId) {
-		int result=0;
-		//新增账单
-		if(Empty4jUtils.intIsEmpty(bill.getId())) {
+		int result = 0;
+		// 新增账单
+		if (Empty4jUtils.intIsEmpty(bill.getId())) {
 			bill.setStatus(1);
 			bill.setCreater(loginId);
 			bill.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			result = billMapper.insert(bill);	
-		}//编辑保存
+			result = billMapper.insert(bill);
+		} // 编辑保存
 		else {
-			
-        	bill.setUpdater(loginId);
-        	bill.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-        	result = billMapper.updateByPrimaryKeySelective(bill);
+
+			bill.setUpdater(loginId);
+			bill.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
+			result = billMapper.updateByPrimaryKeySelective(bill);
 		}
-		
+
 		return result > 0 ? true : false;
 	}
 
 	@Override
 	public BillInfoPojo getBillIncludeBillDetailByBillCode(String billCode) {
-		BillInfoPojo billInfoPojo=new BillInfoPojo();
-		//查询账单
-		BillExample example=new BillExample();
-		Criteria criteria=example.createCriteria();
-		criteria.andCodeEqualTo(billCode);	
-		billInfoPojo.setBill(billMapper.selectByExample(example).size()>0?billMapper.selectByExample(example).get(0):null);
-		//查询明细
-		billInfoPojo.setBillDetailList(billDetailService.getBillDetailBybillCode(billCode));	
+		BillInfoPojo billInfoPojo = new BillInfoPojo();
+		// 查询账单
+		BillExample example = new BillExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andCodeEqualTo(billCode);
+		billInfoPojo.setBill(
+				billMapper.selectByExample(example).size() > 0 ? billMapper.selectByExample(example).get(0) : null);
+		// 查询明细
+		billInfoPojo.setBillDetailList(billDetailService.getBillDetailBybillCode(billCode));
 		return billInfoPojo;
 	}
 
 	@Override
 	public boolean inStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception {
 		boolean result = false;
+
+		// 入库处理
+		if (Empty4jUtils.intIsNotEmpty(bill.getId())) {
+			// 还原库存
+			storeService.restoreStoreList(bill.getCode(), loginId);
+			// 物理删除订单明细信息
+			billDetailService.delListByBillCode(bill.getCode());
+		}
 		
 		// 转换为货物集合
 		List<Goods> goodsList = ConvertUtil.convertList(billDetailList, Goods.class);
 		// 入库单
 		result = save(bill, loginId);
-		
-		//入库处理
-        if(Empty4jUtils.intIsNotEmpty(bill.getId())) {	    
-        	//还原库存
-        	storeService.restoreStoreList(bill.getCode(), loginId);
-        	//物理删除订单明细信息
-        	 billDetailService.delListByBillCode(bill.getCode());  	  
-        }
-       
-        if (Empty4jUtils.listIsNotEmpty(billDetailList) && Empty4jUtils.listIsNotEmpty(goodsList)) {
+
+		if (Empty4jUtils.listIsNotEmpty(billDetailList) && Empty4jUtils.listIsNotEmpty(goodsList)) {
 			// 新增订单明系
 			result = false;
 			result = billDetailService.addList(bill.getCode(), billDetailList, loginId);
-			
+
 			// 货品集合处理
 			result = false;
 			result = goodService.addList(goodsList, loginId);
-			
+
 			// 仓库处理
 			result = false;
 			result = storeService.addList(billDetailList, loginId);
 		}
 		return result;
 	}
-	
+
 	@Override
 	public boolean outStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception {
 		boolean result = false;
-		//新增订单
-		result = save(bill, loginId);		
-		
-		// 新增订单明系
+
+		// 编辑订单，将之前信息还原。
+		if (Empty4jUtils.intIsNotEmpty(bill.getId())) {
+			// 还原库存
+			storeService.restoreStoreList(bill.getCode(), loginId);
+			// 物理删除订单明细信息
+			billDetailService.delListByBillCode(bill.getCode());
+		}
+
+		// 保存订单
+		result = save(bill, loginId);
+
+		// 订单明系处理
 		result = false;
 		result = billDetailService.outStoreAddList(bill.getCode(), billDetailList, loginId);
-		
-		//仓库处理
+
+		// 仓库处理
 		result = false;
 		result = storeService.outStoreAddList(billDetailList, loginId, bill.getTransaction());
-		
+
 		return result;
 	}
-	
+
 }

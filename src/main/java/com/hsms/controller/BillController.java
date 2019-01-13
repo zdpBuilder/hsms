@@ -167,7 +167,7 @@ public class BillController {
 			if(null !=billInfo && null != billInfo.getBill() 
 					&& Empty4jUtils.listIsNotEmpty(billInfo.getBillDetailList())) {
 				boolean result = false;
-				//异常处理
+				//异常处理	
 				try {
 					result = billService.inStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailList());
 				} catch (Exception e) {
