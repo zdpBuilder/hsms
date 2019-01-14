@@ -158,13 +158,24 @@ public class StoreServiceImpl implements StoreService {
 			Store store = storeCustomMapper.getOneByGoodsCode(billDetail.getGoodsCode());
 			if(null == store)
 				return false;
-			if(store.getRemainBoxNum() < billDetail.getBoxNum() || store.getRemainBranchNum() < billDetail.getBranchNum())
-				return false;
+			if( null!=billDetail.getBoxNum()) {
+				if(store.getRemainBoxNum() < billDetail.getBoxNum())
+					return false;
+			}
+			if( null!=billDetail.getBranchNum()) {
+				if(store.getRemainBranchNum() < billDetail.getBranchNum())
+					return false;
+			}
+			
 			//补全仓库信息
+			if( null!=billDetail.getBoxNum()) {
 			store.setRemainBoxNum(store.getRemainBoxNum() - billDetail.getBoxNum());
 			store.setSellBoxNum(store.getSellBoxNum() + billDetail.getBoxNum());
+			}
+			if( null!=billDetail.getBranchNum()) {
 			store.setRemainBranchNum(billDetail.getBranchNum() - billDetail.getBranchNum());
 			store.setSellBranchNum(store.getSellBranchNum() + billDetail.getBranchNum());
+			}
 			store.setSaleTransaction(store.getSaleTransaction() + sumTransaction);
 			store.setUpdater(loginId);
 			store.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));

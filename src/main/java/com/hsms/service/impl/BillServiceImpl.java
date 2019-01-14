@@ -138,7 +138,7 @@ public class BillServiceImpl implements BillService {
 		int result = 0;
 		// 新增账单
 		if (Empty4jUtils.intIsEmpty(bill.getId())) {
-			bill.setStatus(1);
+			//bill.setStatus(1);
 			bill.setCreater(loginId);
 			bill.setCreateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
 			result = billMapper.insert(bill);
@@ -182,6 +182,7 @@ public class BillServiceImpl implements BillService {
 		// 转换为货物集合
 		List<Goods> goodsList = ConvertUtil.convertList(billDetailList, Goods.class);
 		// 入库单
+		 bill.setStatus(1);
 		result = save(bill, loginId);
 
 		if (Empty4jUtils.listIsNotEmpty(billDetailList) && Empty4jUtils.listIsNotEmpty(goodsList)) {
@@ -213,6 +214,7 @@ public class BillServiceImpl implements BillService {
 		}
 
 		// 保存订单
+		bill.setStatus(2);
 		result = save(bill, loginId);
 
 		// 订单明系处理

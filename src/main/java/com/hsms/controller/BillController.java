@@ -169,7 +169,7 @@ public class BillController {
 				boolean result = false;
 				//异常处理	
 				try {
-					result = billService.inStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailList());
+					result = billService.outStore(currentLoginUser.getLoginId(), billInfo.getBill(), billInfo.getBillDetailList());
 				} catch (Exception e) {
 					e.printStackTrace();
 					new ResultPojo(0, "操作失败");

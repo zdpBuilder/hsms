@@ -4,9 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 String code=request.getParameter("billCode");
-if(code==null){
-	code =SNUtil.getSNNumber(Const.SUN_PURCHASE_CODE);	
-	}
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,20 +89,7 @@ dd {
 			<legend>交易商品信息</legend>
 		   <div class="layui-col-md12">
 		   
-	         <div class="layui-field-box">
-			    <!-- 操作按钮区域 -->
-		        <div class="my-btn-box" style="margin-bottom:-10px;">    
-		            <div  style="margin-left:30%;">
-		              <span class="layui-form-label" style="font-size:12px;vertical-align: top;line-height:10px;">商品编码</span>
-			           <div class="layui-input-inline">
-			             <input type="text" autofocus="autofocus"   id="goodsCodeScan"
-								placeholder="请输入或者扫描商品编码" autocomplete="off"
-								class="layui-input layui-form-danger"
-								style="height: 26px; font-size: 12px;">
-				          </div>
-		                <button type="button"class="layui-btn layui-btn-xs"  id="btn-add" style="font-size: 10px;"><i class="layui-icon"></i>手动录入</button>
-	            </div>
-		        </div>
+	         <div class="layui-field-box">		  
 		        <!-- 表格内容区域 -->
 			    <div class="layui-col-md12 layui-col-space1">
 					<table class="layui-hide" id="layTable" lay-size="sm" lay-filter="tableFilter"></table>
@@ -115,9 +99,6 @@ dd {
 		</fieldset>
 		<div class="layui-form-item"
 			style="text-align: center; margin-top: 10px;">
-			<button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit=""
-				lay-filter="addForm">保存</button>
-			&nbsp;&nbsp;
 			<button class="layui-btn layui-btn-sm layui-btn-normal" id="close">取消</button>
 		</div>
 	</form>
@@ -362,8 +343,8 @@ dd {
 			    ,cellMinWidth: 80//自适应列宽
 			    ,cols: [[ 
 			       //{type:'numbers' ,title: '序号'},
-			       {type: 'checkbox'}
-				  ,{field: 'goodsCode', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center'}
+			    
+				  {field: 'goodsCode', title: '<span style="color:#000;font-weight:bold;">商品编码</span>',align: 'center'}
 				  ,{field: 'title', title: '<span style="color:#000;font-weight:bold;">商品名称</span>',align: 'center'}
 				  ,{field: 'brandTitle', title: '<span style="color:#000;font-weight:bold;">品牌名称</span>',align: 'center'}
 				  ,{field: 'specification', title: '<span style="color:#000;font-weight:bold;">商品规格</span>',align: 'center'}
@@ -372,7 +353,6 @@ dd {
 			      ,{field: 'branchNum', title: '<span style="color:#000;font-weight:bold;">商品支数量</span>',align: 'center'}	 
 			      ,{field: 'boxNum', title: '<span style="color:#000;font-weight:bold;">商品箱数量</span>',align: 'center'}	 
 			      ,{field: 'transaction', title: '<span style="color:#000;font-weight:bold;">总金额</span>',align: 'center'}	 
-			      ,{field: '', title: '<span style="color:#000;font-weight:bold;">操作</span>',align: 'center',toolbar: '#toolbar',width:200}
 			    ]]
 	        	,id:"tableListId" 	
 	        	,data:billDetialDatas
