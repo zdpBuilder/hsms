@@ -30,7 +30,7 @@ public class StoreServiceImpl implements StoreService {
 	private StoreCustomMapper storeCustomMapper;
 	@Autowired
 	private BillDetailService billDetailService;
-	
+
 	@Override
 	public ResponseJsonPageListBean list(String keywords, int limit, int page) {
 		StoreExample example = new StoreExample();
@@ -82,7 +82,7 @@ public class StoreServiceImpl implements StoreService {
 
 	@Override
 	public boolean addList(List<BillDetail> billDetailList, String loginId) {
-		if(Empty4jUtils.listIsEmpty(billDetailList))
+		if (Empty4jUtils.listIsEmpty(billDetailList))
 			return false;
 		int result = 0;
 		Store store;
@@ -91,16 +91,16 @@ public class StoreServiceImpl implements StoreService {
 			result = 0;
 			store = storeCustomMapper.getOneByGoodsCode(billDetailList.get(i).getGoodsCode());
 			billDetail = billDetailList.get(i);
-			if(null != store) {
-				//更新
+			if (null != store) {
+				// 更新
 				store.setTitle(billDetail.getTitle());
 				store.setRemainBoxNum(store.getRemainBoxNum() + billDetail.getBoxNum());
 				store.setPurchaseTransaction(store.getPurchaseTransaction() + billDetail.getTransaction());
 				store.setUpdater(loginId);
 				store.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
 				result = this.storeMapper.updateByPrimaryKey(store);
-			}else {
-				//插入
+			} else {
+				// 插入
 				store = new Store();
 				store.setGoodsCode(billDetail.getGoodsCode());
 				store.setTitle(billDetail.getTitle());
@@ -115,28 +115,28 @@ public class StoreServiceImpl implements StoreService {
 				result = this.storeMapper.insert(store);
 			}
 		}
-		if(1 == result)
+		if (1 == result)
 			return true;
 		return false;
 	}
 
 	@Override
 	public boolean restoreStoreList(String billCode, String loginId) {
-		
-		
-		List<BillDetail> billDetailList=billDetailService.getBillDetailBybillCode(billCode);
-		
-		if(Empty4jUtils.listIsEmpty(billDetailList)) return false;
+
+		List<BillDetail> billDetailList = billDetailService.getBillDetailBybillCode(billCode);
+
+		if (Empty4jUtils.listIsEmpty(billDetailList))
+			return false;
 		int result = 0;
 		Store store;
 		BillDetail billDetail;
-		
+
 		for (int i = 0; i < billDetailList.size(); i++) {
 			result = 0;
 			store = storeCustomMapper.getOneByGoodsCode(billDetailList.get(i).getGoodsCode());
 			billDetail = billDetailList.get(i);
-			if(null != store) {
-				//更新
+			if (null != store) {
+				// 更新
 				store.setTitle(billDetail.getTitle());
 				store.setRemainBoxNum(store.getRemainBoxNum() - billDetail.getBoxNum());
 				store.setPurchaseTransaction(store.getPurchaseTransaction() - billDetail.getTransaction());
@@ -145,41 +145,53 @@ public class StoreServiceImpl implements StoreService {
 				result = this.storeMapper.updateByPrimaryKey(store);
 			}
 		}
-		if(1 == result) return true;
-		
+		if (1 == result)
+			return true;
+
 		return false;
 	}
 
 	@Override
 	public boolean outStoreAddList(List<BillDetail> billDetailList, String loginId, Double sumTransaction) {
-		if(Empty4jUtils.listIsEmpty(billDetailList))
+		if (Empty4jUtils.listIsEmpty(billDetailList))
 			return false;
 		for (BillDetail billDetail : billDetailList) {
 			Store store = storeCustomMapper.getOneByGoodsCode(billDetail.getGoodsCode());
-			if(null == store)
+			if (null == store)
 				return false;
-			if( null!=billDetail.getBoxNum()) {
-				if(store.getRemainBoxNum() < billDetail.getBoxNum())
+			if (null != billDetail.getBoxNum()) {
+				if (store.getRemainBoxNum() < billDetail.getBoxNum())
 					return false;
 			}
-			if( null!=billDetail.getBranchNum()) {
-				if(store.getRemainBranchNum() < billDetail.getBranchNum())
+			if (null != billDetail.getBranchNum()) {
+				if (store.getRemainBranchNum() < billDetail.getBranchNum())
 					return false;
 			}
-			
-			//补全仓库信息
-			if( null!=billDetail.getBoxNum()) {
+
+			// 补全仓库信息
 			store.setRemainBoxNum(store.getRemainBoxNum() - billDetail.getBoxNum());
 			store.setSellBoxNum(store.getSellBoxNum() + billDetail.getBoxNum());
-			}
-			if( null!=billDetail.getBranchNum()) {
-			store.setRemainBranchNum(billDetail.getBranchNum() - billDetail.getBranchNum());
-			store.setSellBranchNum(store.getSellBranchNum() + billDetail.getBranchNum());
+
+			if (billDetail.getBranchNum() > 0) {
+				// 库存支数量不够，向箱数量借一
+				if (store.getRemainBranchNum() < billDetail.getBranchNum()) {
+					store.setRemainBoxNum(store.getRemainBoxNum() - 1);
+					store.setRemainBranchNum(store.getRemainBranchNum() + billDetail.getSpecification());
+				}
+				store.setRemainBranchNum(billDetail.getBranchNum() - billDetail.getBranchNum());
+				store.setSellBranchNum(store.getSellBranchNum() + billDetail.getBranchNum());
+
+				// 如果已销售的支数量，大于等于规格，则需处理
+				if (store.getRemainBranchNum() >= billDetail.getSpecification()) {
+					store.setSellBoxNum(
+							store.getSellBoxNum() + (store.getRemainBoxNum() / billDetail.getSpecification()));
+					store.setSellBranchNum(store.getRemainBranchNum() % billDetail.getSpecification());
+				}
 			}
 			store.setSaleTransaction(store.getSaleTransaction() + sumTransaction);
 			store.setUpdater(loginId);
 			store.setUpdateTime(DateUtil.DateToString(new Date(), "yyyy-MM-dd"));
-			
+
 			storeMapper.updateByPrimaryKey(store);
 		}
 		return true;

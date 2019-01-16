@@ -152,7 +152,7 @@ public class BillDetail {
      *
      * @mbg.generated Sun Dec 23 12:12:49 CST 2018
      */
-    private String specification;
+    private Integer specification;
 
     /**
      *
@@ -555,7 +555,7 @@ public class BillDetail {
      *
      * @mbg.generated Sun Dec 23 12:12:49 CST 2018
      */
-    public String getSpecification() {
+    public Integer getSpecification() {
         return specification;
     }
 
@@ -567,8 +567,8 @@ public class BillDetail {
      *
      * @mbg.generated Sun Dec 23 12:12:49 CST 2018
      */
-    public void setSpecification(String specification) {
-        this.specification = specification == null ? null : specification.trim();
+    public void setSpecification(Integer specification) {
+        this.specification = specification;
     }
 
     /**
