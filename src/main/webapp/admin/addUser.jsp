@@ -30,7 +30,7 @@
 	            <option value="" selected >请选择</option>
 	            <option value="1"  >管理员</option>
 	            <option value="2">售货员</option>
-	            <option value="3">送货员</option> 
+	            <option value="3">采购员</option> 
 	           </select>
 	        </div>
         </div>
@@ -121,8 +121,8 @@
    			data: formJson,
    			async:false,
    			success:function(result){
-   				var data = result.data;
-               	if(data>0){
+   				var status = result.status;
+               	if(status==1){
                		//关闭窗口 并给父页面传值
                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                        parent.layer.msg('添加成功！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);             

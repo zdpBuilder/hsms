@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>冰糕厂后台管理系统</title>
+<title>超市后台管理系统</title>
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport"

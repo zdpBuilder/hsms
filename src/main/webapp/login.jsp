@@ -15,7 +15,7 @@
 <body class="beg-login-bg">
 	<div class="beg-login-box">
 		<header>
-			<h1>开心超市管理系统</h1>
+			<h1>超市后台管理系统</h1>
 		</header>
 		<div class="beg-login-main">
 			<form class="layui-form" method="post">
@@ -42,7 +42,7 @@
 			</form>
 		</div>
 		<footer>
-			<p>@copyRight WeiHuaLei</p>
+			<p>@copyRight 2019 WeiHuaLei</p>
 		</footer>
 	</div>
 	<script type="text/javascript" src="plugins/layui/layui.js"></script>

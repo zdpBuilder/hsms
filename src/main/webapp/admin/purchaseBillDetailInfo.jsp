@@ -93,8 +93,8 @@ dd {
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品规格</label>
 						<div class="layui-input-inline">
-							<input type="text" name="specification" id="specification" lay-verify="required"
-								placeholder="必填项(1X24)" autocomplete="off"
+							<input type="text" name="specification" id="specification" lay-verify="required|number"
+								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
 						</div>

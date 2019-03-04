@@ -11,5 +11,24 @@
         "spread": false
       }
     ]
+  }, 
+  {
+    "title": "库存管理",
+    "icon": "fa fa-database",
+    "spread": true,
+    "children": [
+      {
+        "title": "库存查看", 
+        "icon": "fa fa-database",
+        "href": "admin/storeList.jsp",
+        "spread": false
+      }
+    ]
+  },
+  {
+    "title": "数据库备份",
+    "icon": "fa fa-pie-chart",
+    "spread": true,
+     "href": "admin/dbBackupList.jsp"
   }
   ]

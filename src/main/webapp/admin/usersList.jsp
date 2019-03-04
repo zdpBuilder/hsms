@@ -4,7 +4,7 @@
 <html> 
 <head>
 	<meta charset="utf-8">
-	<title>开心超市管理系统</title>
+	<title>超市后台管理系统</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -138,19 +138,7 @@
 	      	   });
 	      	});
 	      
-	    	//批量添加 
-	      	$("#btn-add-batch").click(function(){
-	      		layer.open({
-	      		  type: 2 //Page层类型
-	      		  ,area: ['200px', '100px']
-	      		  ,title:  ['批量新增用户', '']
-	      		  ,shade: 0.6 //遮罩透明度
-	      		  ,fixed: true //位置固定
-	      		  ,maxmin: false //开启最大化最小化按钮
-	      		  ,anim: 5 //0-6的动画形式，-1不开启
-	      		  ,content: 'uploadExcel.jsp'
-	      	   });
-	      	});
+	    	
 	      	//批量删除
 			$("#btn-delete-all").click(function(){
 				

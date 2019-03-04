@@ -8,6 +8,7 @@ import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Bill;
 import com.hsms.model.BillDetail;
 import com.hsms.pojo.BillInfoPojo;
+import com.hsms.pojo.IntoOutCountPojo;
 
 public interface BillService {
 	/**
@@ -82,4 +83,10 @@ public interface BillService {
 	 * @throws Exception
 	 */
 	boolean outStore(String loginId, Bill bill, List<BillDetail> billDetailList) throws Exception;
+	/**
+	 * 
+	 * @Description: 收入支出统计
+	 * @return 
+	 */
+	IntoOutCountPojo intoOutCount();
 }

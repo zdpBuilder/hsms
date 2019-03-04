@@ -1,5 +1,6 @@
 package com.hsms.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.hsms.model.BillExample.Criteria;
 import com.hsms.model.Goods;
 import com.hsms.model.SysUser;
 import com.hsms.pojo.BillInfoPojo;
+import com.hsms.pojo.IntoOutCountPojo;
 import com.hsms.service.BillDetailService;
 import com.hsms.service.BillService;
 import com.hsms.service.GoodService;
@@ -26,6 +28,7 @@ import com.hsms.utils.Const;
 import com.hsms.utils.ConvertUtil;
 import com.hsms.utils.DateUtil;
 import com.hsms.utils.Empty4jUtils;
+import com.hsms.utils.JsonPrintUtil;
 
 @Service
 public class BillServiceImpl implements BillService {
@@ -226,6 +229,42 @@ public class BillServiceImpl implements BillService {
 		result = storeService.outStoreAddList(billDetailList, loginId, bill.getTransaction());
 
 		return result;
+	}
+
+	@Override
+	public IntoOutCountPojo intoOutCount() {
+		IntoOutCountPojo intoOutCountPojo = new IntoOutCountPojo();
+		DecimalFormat df = new DecimalFormat("#.00");
+		// 进货统计
+		BillExample example = new BillExample();
+		BillExample.Criteria criteria = example.createCriteria();
+		criteria.andStatusEqualTo(1);
+		List<Bill> billList = billMapper.selectByExample(example);
+		if (billList.size() > 0 && billList != null) {
+			for (Bill bill : billList) {
+				intoOutCountPojo.setIntoCount(intoOutCountPojo.getIntoCount() + bill.getTransaction());
+			}
+		}
+
+		// 销售统计
+		BillExample example2 = new BillExample();
+		BillExample.Criteria criteria2 = example.createCriteria();
+		criteria2.andStatusEqualTo(1);
+		List<Bill> billList2 = billMapper.selectByExample(example2);
+		if (billList2.size() > 0 && billList2 != null) {
+			for (Bill bill : billList2) {
+				intoOutCountPojo.setOutCount(intoOutCountPojo.getOutCount() + bill.getTransaction());
+			}
+		}
+		intoOutCountPojo.setSumCount(intoOutCountPojo.getIntoCount() + intoOutCountPojo.getOutCount());
+		if (intoOutCountPojo.getSumCount() != 0) {
+			intoOutCountPojo.setIntoCountPercent(
+					Double.parseDouble(df.format(intoOutCountPojo.getIntoCount() / intoOutCountPojo.getSumCount())));
+			intoOutCountPojo.setOutCountPercent(
+					Double.parseDouble(df.format(intoOutCountPojo.getOutCount() / intoOutCountPojo.getSumCount())));
+		}
+
+		return intoOutCountPojo;
 	}
 
 }
