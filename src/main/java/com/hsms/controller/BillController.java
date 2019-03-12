@@ -1,28 +1,19 @@
 package com.hsms.controller;
 
-import java.text.DecimalFormat;
-import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Bill;
-import com.hsms.model.BillExample;
 import com.hsms.model.SysUser;
 import com.hsms.pojo.BillInfoPojo;
-import com.hsms.pojo.IntoOutCountPojo;
 import com.hsms.pojo.ResultPojo;
 import com.hsms.service.BillService;
 import com.hsms.utils.Const;
 import com.hsms.utils.Empty4jUtils;
-import com.hsms.utils.JsonPrintUtil;
 import com.hsms.utils.JsonUtils;
 
 
@@ -191,13 +182,5 @@ public class BillController {
 		}
 		return new ResultPojo(0, "操作失败");
 	}
-	
-	    // 收入/支出统计
-		@RequestMapping("intoOutCount")
-		@ResponseBody
-		public ResultPojo intoOutCount(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-			
-				return new ResultPojo(1, billService.intoOutCount(),"操作成功");
-		}
 
 }

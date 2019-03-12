@@ -61,12 +61,15 @@ layui.config({
 
     //设置navbar
     var navBar=null;
+    //管理员
     if($("#roleStatus").val()==1){
     	navBar='datas/navOn.json';
     }
+    //销售员
     if($("#roleStatus").val()==2){
     	navBar='datas/navTw.json';
     }
+    //采购员
     if($("#roleStatus").val()==3){
     	navBar='datas/navTh.json';
     }

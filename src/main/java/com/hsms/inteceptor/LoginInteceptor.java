@@ -14,7 +14,7 @@ import com.hsms.utils.Const;
 /**
  * 登陆拦截
  * 
- * @author zdp
+ * @author 
  *
  */
 public class LoginInteceptor implements HandlerInterceptor {

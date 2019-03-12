@@ -262,7 +262,7 @@
 	      	  	  //layer.msg('ID：'+ data.id + ' 的编辑操作');
 	      	      layer.open({
 	        		  type: 2 //Page层类型
-	        		  ,area: ['300px', '490px']
+	        		  ,area: ['400px', '410px']
 	        		  ,title: ['编辑信息', '']
 	        		  ,shade: 0.6 //遮罩透明度
 	        		  ,fixed: true //位置固定

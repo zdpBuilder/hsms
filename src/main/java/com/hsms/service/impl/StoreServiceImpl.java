@@ -1,5 +1,7 @@
 package com.hsms.service.impl;
 
+import java.lang.ref.SoftReference;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +13,13 @@ import org.springframework.stereotype.Service;
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.mapper.StoreCustomMapper;
 import com.hsms.mapper.StoreMapper;
+import com.hsms.model.Bill;
 import com.hsms.model.BillDetail;
+import com.hsms.model.BillExample;
 import com.hsms.model.Store;
 import com.hsms.model.StoreExample;
 import com.hsms.model.SysUser;
+import com.hsms.pojo.DataCountPojo;
 import com.hsms.service.BillDetailService;
 import com.hsms.service.StoreService;
 import com.hsms.utils.Const;
@@ -197,4 +202,21 @@ public class StoreServiceImpl implements StoreService {
 		return true;
 	}
 
+	
+	@Override
+	public DataCountPojo dataCount() {
+		DataCountPojo dataCountPojo = new DataCountPojo();
+		DecimalFormat df = new DecimalFormat("#.00");
+		
+	   List<Store> stores= storeMapper.selectByExample(null);
+       for (Store store : stores) {
+		dataCountPojo.setPurchaseCount(dataCountPojo.getPurchaseCount()+store.getPurchaseTransaction());
+		dataCountPojo.setSaleCount(dataCountPojo.getSaleCount()+store.getSaleTransaction());
+	}
+       dataCountPojo.setSumCount(dataCountPojo.getPurchaseCount()+dataCountPojo.getSaleCount());
+       dataCountPojo.setSaleCountPercent(Double.parseDouble(df.format(dataCountPojo.getSaleCount()/dataCountPojo.getSumCount())));
+       dataCountPojo.setPurchaseCountPercent(Double.parseDouble(df.format(dataCountPojo.getPurchaseCount()/dataCountPojo.getSumCount())));
+
+		return dataCountPojo;
+	}
 }

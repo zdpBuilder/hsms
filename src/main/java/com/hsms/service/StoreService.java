@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.BillDetail;
 import com.hsms.model.Store;
+import com.hsms.pojo.DataCountPojo;
 
 public interface StoreService {
 	/**
@@ -54,4 +55,12 @@ public interface StoreService {
 	 * @return
 	 */
 	boolean outStoreAddList(List<BillDetail> billDetailList, String loginId, Double sumTransaction);
+   
+	/**
+	 * 
+	 * @Description: 收入支出数据统计
+	 * @return 
+	 */
+	DataCountPojo dataCount();
+
 }
