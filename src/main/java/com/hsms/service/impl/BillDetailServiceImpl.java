@@ -154,7 +154,7 @@ public class BillDetailServiceImpl implements BillDetailService {
 	}
 
 	@Override
-	public boolean outStoreAddList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception {
+	public boolean addbillDetailList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception {
 		if(Empty4jUtils.listIsEmpty(billDetailList))
 			return false;
 		
@@ -162,11 +162,8 @@ public class BillDetailServiceImpl implements BillDetailService {
 		for (BillDetail billDetail : billDetailList) {
 			Goods goods = goodService.getOneByCode(billDetail.getGoodsCode());
 			if(null != goods) {
-				billDetail.setSaleBranchPrice(goods.getSaleBoxPrice());
-				billDetail.setSaleBranchPrice(goods.getSaleBranchPrice());
-				billDetail.setSpecification(goods.getSpecification());
+				billDetail.setPurchasePrice(goods.getPurchasePrice());		
 				billDetail.setBrandId(goods.getBrandId());
-				billDetail.setBrandTitle(goods.getBrandTitle());
 			}
 		}
 		

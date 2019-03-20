@@ -146,6 +146,7 @@ $(function () {
 	  if(res==null){
 		 return; 
 	  }
+	  console.info(res);
 	  $("#income").text(res.saleCount);
 	  $("#pay").text(res.purchaseCount);
 	  $("#payoff").text((res.saleCount-res.purchaseCount)>0?(res.saleCount-res.purchaseCount):"0.00");

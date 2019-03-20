@@ -222,7 +222,7 @@ public class BillServiceImpl implements BillService {
 
 		// 订单明细处理
 		result = false;
-		result = billDetailService.outStoreAddList(bill.getCode(), billDetailList, loginId);
+		result = billDetailService.addbillDetailList(bill.getCode(), billDetailList, loginId);
 
 		// 仓库处理
 		result = false;

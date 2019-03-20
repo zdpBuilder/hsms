@@ -168,10 +168,6 @@ public class StoreServiceImpl implements StoreService {
 				if (store.getRemainBoxNum() < billDetail.getBoxNum())
 					return false;
 			}
-			if (null != billDetail.getBranchNum()) {
-				if (store.getRemainBranchNum() < billDetail.getBranchNum())
-					return false;
-			}
 
 			// 补全仓库信息
 			store.setRemainBoxNum(store.getRemainBoxNum() - billDetail.getBoxNum());
@@ -183,13 +179,12 @@ public class StoreServiceImpl implements StoreService {
 					store.setRemainBoxNum(store.getRemainBoxNum() - 1);
 					store.setRemainBranchNum(store.getRemainBranchNum() + billDetail.getSpecification());
 				}
-				store.setRemainBranchNum(billDetail.getBranchNum() - billDetail.getBranchNum());
+				store.setRemainBranchNum(store.getRemainBranchNum() - billDetail.getBranchNum());
 				store.setSellBranchNum(store.getSellBranchNum() + billDetail.getBranchNum());
 
 				// 如果已销售的支数量，大于等于规格，则需处理
 				if (store.getRemainBranchNum() >= billDetail.getSpecification()) {
-					store.setSellBoxNum(
-							store.getSellBoxNum() + (store.getRemainBoxNum() / billDetail.getSpecification()));
+					store.setSellBoxNum(store.getSellBoxNum() + (int)Math.floor(store.getRemainBranchNum() / billDetail.getSpecification()));
 					store.setSellBranchNum(store.getRemainBranchNum() % billDetail.getSpecification());
 				}
 			}
@@ -206,7 +201,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public DataCountPojo dataCount() {
 		DataCountPojo dataCountPojo = new DataCountPojo();
-		DecimalFormat df = new DecimalFormat("#.00");
+		DecimalFormat df = new DecimalFormat("#.0000");
 		
 	   List<Store> stores= storeMapper.selectByExample(null);
        for (Store store : stores) {

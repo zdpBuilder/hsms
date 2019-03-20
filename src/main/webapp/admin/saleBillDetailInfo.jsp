@@ -225,7 +225,7 @@ dd {
           form.on('submit(addForm)', function (data) {
         	  
             var formJson = data.field;
-            
+            console.info(formJson);
             //将保存的值传入purchaseBillIInfo 进行渲染
             parent.initbillDetialDatas(formJson);
             
