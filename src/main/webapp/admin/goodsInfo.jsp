@@ -86,7 +86,7 @@ dd {
 						 <div class="layui-input-block">
 					           <select name="brandId" id="brandId" lay-verify="required" lay-filter="braIdSel">
 					            <option value="" selected >请选择</option>	
-					            <option value="0">测试</option>            
+          
 					           </select>
 	                     </div>
 					</div>
@@ -95,7 +95,7 @@ dd {
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品进价</label>
 						<div class="layui-input-block">
-							<input type="text" name="purchasePrice" id="purchasePrice" lay-verify="required"
+							<input type="text" name="purchasePrice" id="purchasePrice" lay-verify="required|number"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -105,7 +105,7 @@ dd {
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品支售价</label>
 						<div class="layui-input-block">
-							<input type="text" name="saleBranchPrice" id="saleBranchPrice" lay-verify="required"
+							<input type="text" name="saleBranchPrice" id="saleBranchPrice" lay-verify="required|number"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -115,7 +115,7 @@ dd {
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品箱售价</label>
 						<div class="layui-input-block">
-							<input type="text" name="saleBoxPrice" id="saleBoxPrice" lay-verify="required"
+							<input type="text" name="saleBoxPrice" id="saleBoxPrice" lay-verify="required|number"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -125,7 +125,7 @@ dd {
 						<label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">商品规格</label>
 						<div class="layui-input-block">
-							<input type="text" name="specification" id="specification" lay-verify="required"
+							<input type="text" name="specification" id="specification" lay-verify="required|number"
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -159,53 +159,38 @@ dd {
         form.verify({  
         	title:[/^.{0,30}$/,'请输入小于30个字的名称！'],
         	nameLength:[/^.{0,100}$/,'请输入小于100个字的描述！'],
+        	phone:[/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,'输入的手机号码不合法！'],
+
         });
       //重新渲染表单
       function renderForm(){
     	  form.render();
       }
      
-      
-      function getBraOrTyp(isId,roleStatus){
-    	   $.ajax({
-   			method: "post",
-   			data : {"roleStatus":roleStatus,
-   				    "page":0,
-   				    "limit":0,},
-   				    async:false,
-   			url:"../braagntyp/list",
-   			success:function(result){
-   				 if(result){
-   					 result=result.data;
-   					 if(result){
-   						for(var i=0;i<result.length;i++){
-   							$("#"+isId).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
-   						} 
-   						renderForm();
-   					 }
-   				 }
-   			}
-         });   
-      }
 
-      getBraOrTyp("braId",1);
-      getBraOrTyp("typeId",3);
       
-      //下拉框监听事件
-       form.on('select(typIdSel)', function(data){
-    	   if(data.value==""){
-    		   $("#typeTitle").val("");
-    		  return;
-    	   }
-    	   $("#typeTitle").val($("#typeId option:selected").text());
-    		});
-       form.on('select(braIdSel)', function(data){
-    	   if(data.value==""){
-    		   $("#braName").val("");
-     		  return;
-     	   }
-    	   $("#braName").val($("#braId option:selected").text());
-    		});
+      //品牌列表
+         $.ajax({
+			method: "post",
+			data : {
+                 "page":0,
+				    "limit":0,},
+			url:"../brand/list",
+			async:false,
+			success:function(result){
+				 if(result){
+					 result=result.data;
+					 if(result){
+						for(var i=0;i<result.length;i++){
+							$("#brandId").append('<option value="'+result[i].id+'">'+result[i].title+'</option>');	
+						} 
+						renderForm();
+					 }
+				 }
+			}
+     });
+     
+      
       //表单元素赋值
       var goodsId = <%=id %>;
       if(goodsId!=null){
@@ -218,22 +203,12 @@ dd {
   					if(1 == result.status){
   						result = result.data;
   	 					$("#title").val(result.title);
-  	 					$("#brandId").val(result.brandId);
-  	 					$("#typeTitle").val(result.typeTitle);
-  	 					$("#branchPrice").val(result.branchPrice);
-  	 					$("#boxPrice").val(result.boxPrice);
-  	 					$("#branchCount").val(result.branchCount);
-  	 					$("#boxCount").val(result.boxCount);
-  	 					$("#eachBoxNum").val(result.eachBoxNum);
-  	 					$("#branchBidPrice").val(result.branchBidPrice);
-  	 					$("#boxBidPrice").val(result.boxBidPrice);
-  	 					$("#imgUrlIntoSql").val(result.imgUrl);
-  	 					$("#braId").val(result.braId);
-  	 					$("#braName").val(result.braName);
-  	 					$("#note").val(result.note);
+  	 					$("#brandId").val(result.brandId);	
+  	 					$("#purchasePrice").val(result.purchasePrice);
+  	 					$("#saleBranchPrice").val(result.saleBranchPrice);
+  	 					$("#saleBoxPrice").val(result.saleBoxPrice);
+  	 					$("#specification").val(result.specification); 	
   	 					$("#goodsCode").val(result.goodsCode);
-  	 					pohotoUrl='${pageContext.request.contextPath}/upload_files/goods_photo/'+result.imgUrl;
-  	 	            	$("#preImg").html('<img style=" margin:20px 10px 0 10px;"src="'+pohotoUrl +'" width="240" height="250"/>');	
   	 					renderForm();
   					} else{
   						parent.layer.msg(result.msg, {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);

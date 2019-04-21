@@ -1,5 +1,7 @@
 package com.hsms.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +78,13 @@ public class StoreController {
 
 		return new ResultPojo(0, "操作失败");
 
+	}
+	
+	// 收入/支出统计
+	@RequestMapping("dataCount")
+	@ResponseBody
+	public ResultPojo intoOutCount(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+
+		return new ResultPojo(1, storeService.dataCount(), "操作成功");
 	}
 }

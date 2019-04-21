@@ -1,5 +1,6 @@
 package com.hsms.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import com.hsms.model.BillExample.Criteria;
 import com.hsms.model.Goods;
 import com.hsms.model.SysUser;
 import com.hsms.pojo.BillInfoPojo;
+import com.hsms.pojo.DataCountPojo;
 import com.hsms.service.BillDetailService;
 import com.hsms.service.BillService;
 import com.hsms.service.GoodService;
@@ -26,6 +28,7 @@ import com.hsms.utils.Const;
 import com.hsms.utils.ConvertUtil;
 import com.hsms.utils.DateUtil;
 import com.hsms.utils.Empty4jUtils;
+import com.hsms.utils.JsonPrintUtil;
 
 @Service
 public class BillServiceImpl implements BillService {
@@ -217,9 +220,9 @@ public class BillServiceImpl implements BillService {
 		bill.setStatus(2);
 		result = save(bill, loginId);
 
-		// 订单明系处理
+		// 订单明细处理
 		result = false;
-		result = billDetailService.outStoreAddList(bill.getCode(), billDetailList, loginId);
+		result = billDetailService.addbillDetailList(bill.getCode(), billDetailList, loginId);
 
 		// 仓库处理
 		result = false;

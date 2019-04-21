@@ -29,7 +29,7 @@
 
 .header-index{background-color: #080018; border: none;}
 
-.layui-layout-admin .header-demo{border-bottom-color: #1AA094; background-color: #fff;}
+.layui-layout-admin .header-demo{border-bottom-color: #0000ff; background-color: #fff;}
 .header-demo .logo{left: 40px;}
 .header-demo .layui-nav{top: 0;}
 .header-demo .layui-nav .layui-nav-item{margin: 0 10px; line-height: 65px;}

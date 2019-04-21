@@ -4,7 +4,7 @@
 <html> 
 <head>
 	<meta charset="utf-8">
-	<title>开心超市管理系统</title>
+	<title>超市后台管理系统</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -262,7 +262,7 @@
 	      	  	  //layer.msg('ID：'+ data.id + ' 的编辑操作');
 	      	      layer.open({
 	        		  type: 2 //Page层类型
-	        		  ,area: ['300px', '490px']
+	        		  ,area: ['400px', '410px']
 	        		  ,title: ['编辑信息', '']
 	        		  ,shade: 0.6 //遮罩透明度
 	        		  ,fixed: true //位置固定

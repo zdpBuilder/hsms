@@ -23,7 +23,7 @@
     <result column="creater" jdbcType="VARCHAR" property="creater" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="brand_title" jdbcType="VARCHAR" property="brandTitle" />
-    <result column="specification" jdbcType="VARCHAR" property="specification" />
+    <result column="specification" jdbcType="INTEGER" property="specification" />
     <result column="brand_id" jdbcType="INTEGER" property="brandId" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -176,7 +176,7 @@
       #{saleBoxPrice,jdbcType=DOUBLE}, #{branchNum,jdbcType=INTEGER}, #{boxNum,jdbcType=INTEGER}, 
       #{transaction,jdbcType=DOUBLE}, #{status,jdbcType=INTEGER}, #{updater,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
-      #{brandTitle,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR}, #{brandId,jdbcType=INTEGER}
+      #{brandTitle,jdbcType=VARCHAR}, #{specification,jdbcType=INTEGER}, #{brandId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.hsms.model.BillDetail">
@@ -292,7 +292,7 @@
         #{brandTitle,jdbcType=VARCHAR},
       </if>
       <if test="specification != null">
-        #{specification,jdbcType=VARCHAR},
+        #{specification,jdbcType=INTEGER},
       </if>
       <if test="brandId != null">
         #{brandId,jdbcType=INTEGER},
@@ -367,7 +367,7 @@
         brand_title = #{record.brandTitle,jdbcType=VARCHAR},
       </if>
       <if test="record.specification != null">
-        specification = #{record.specification,jdbcType=VARCHAR},
+        specification = #{record.specification,jdbcType=INTEGER},
       </if>
       <if test="record.brandId != null">
         brand_id = #{record.brandId,jdbcType=INTEGER},
@@ -400,7 +400,7 @@
       creater = #{record.creater,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=VARCHAR},
       brand_title = #{record.brandTitle,jdbcType=VARCHAR},
-      specification = #{record.specification,jdbcType=VARCHAR},
+      specification = #{record.specification,jdbcType=INTEGER},
       brand_id = #{record.brandId,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -460,7 +460,7 @@
         brand_title = #{brandTitle,jdbcType=VARCHAR},
       </if>
       <if test="specification != null">
-        specification = #{specification,jdbcType=VARCHAR},
+        specification = #{specification,jdbcType=INTEGER},
       </if>
       <if test="brandId != null">
         brand_id = #{brandId,jdbcType=INTEGER},
@@ -490,7 +490,7 @@
       creater = #{creater,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       brand_title = #{brandTitle,jdbcType=VARCHAR},
-      specification = #{specification,jdbcType=VARCHAR},
+      specification = #{specification,jdbcType=INTEGER},
       brand_id = #{brandId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

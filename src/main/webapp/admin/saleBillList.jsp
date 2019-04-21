@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%> 
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    
 <!DOCTYPE html>
 <html> 
 <head>
 	<meta charset="utf-8">
-	<title>开心超市管理系统</title>
+	<title>超市后台管理系统</title>
 	<meta name="renderer" content="webkit">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -21,7 +23,7 @@
     </style>
 </head>
 <body class="body">
-
+<input  type="hidden"  value="${CurrentLoginUserInfo.status}" id="roleStatus"/>
 <div class="layui-fluid">  
   <div class="layui-row layui-col-space10">
     
@@ -31,7 +33,9 @@
 		        <div class="my-btn-box" style="margin-bottom:-10px;">
 		            <div class="fl" style="margin-top:5px;" >
 		                <a  class="layui-btn layui-btn-xs" id="btn-add-into"><i class="layui-icon"></i>销售新增</a>
+		             <c:if test="${CurrentLoginUserInfo.status==1}">    
 		                <a class="layui-btn layui-btn-xs" id="btn-delete-all" data-type="deleteBatch"><i class="layui-icon"></i>删除</a>
+		              </c:if>  
 		                <a class="layui-btn layui-btn-xs" id="btn-refresh" data-type="refresh"><i class="layui-icon">&#x1002;</i>刷新</a>
 		            </div>
 		            <div class="fr" >            		
@@ -80,6 +84,10 @@
 	        var $ = layui.jquery;
 	        var laydate = layui.laydate;
 	        
+	        //操作权限
+		 	   var toolbarAuthor="";
+		 	  if($("#roleStatus").val()==="1"||$("#roleStatus").val()===1)  toolbarAuthor="#toolbar1";
+		 	  else toolbarAuthor="#toolbar2";
 	        //日期插件加载
 	        laydate.render({ 
 	            elem: '#startDate' 
@@ -98,7 +106,7 @@
 			      ,{field: 'code', title: '<span style="color:#000;font-weight:bold;">订单编号</span>',align: 'center'}
 			      ,{field: 'status', title: '<span style="color:#000;font-weight:bold;">订单类型</span>',align: 'center',templet: '#statusName'}		  
 			      ,{field: 'transaction', title: '<span style="color:#000;font-weight:bold;">交易金额</span>',align: 'center'}		  
-			      ,{field: '', title: '<span style="color:#000;font-weight:bold;">操作</span>',align: 'center',toolbar: '#toolbar'}
+			      ,{field: '', title: '<span style="color:#000;font-weight:bold;">操作</span>',align: 'center',toolbar: toolbarAuthor}
 			    ]]
 	        	,url:'${pageContext.request.contextPath}/bill/list'
 	        	,id: 'billListTable'
@@ -294,11 +302,16 @@
 	<!-- 操作列  -->
 <!-- 		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" style="font-size:10px;"><i class="layui-icon">&#xe642;</i>编辑</a>
  -->	
-<script type="text/html" id="toolbar">
+<script type="text/html" id="toolbar1">
 
 	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="show" style="font-size:10px;"><i class="layui-icon">&#xe615;</i>查看订单详情</a>
 	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit" style="font-size:10px;"><i class="layui-icon">&#xe642;</i>编辑</a>
 	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="del" style="font-size:10px;"><i class="layui-icon">&#xe640;</i>删除</a>
+</script>
+<script type="text/html" id="toolbar2">
+
+	<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="show" style="font-size:10px;"><i class="layui-icon">&#xe615;</i>查看订单详情</a>
+
 </script>
 	<script type="text/html" id="statusName">
 		{{#  if( d.status=== 1){ }} 

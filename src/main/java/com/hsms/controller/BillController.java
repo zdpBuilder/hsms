@@ -1,12 +1,11 @@
 package com.hsms.controller;
 
-import javax.servlet.http.HttpSession;
 
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Bill;
 import com.hsms.model.SysUser;
@@ -16,6 +15,8 @@ import com.hsms.service.BillService;
 import com.hsms.utils.Const;
 import com.hsms.utils.Empty4jUtils;
 import com.hsms.utils.JsonUtils;
+
+
 
 /**
  * 
@@ -181,4 +182,5 @@ public class BillController {
 		}
 		return new ResultPojo(0, "操作失败");
 	}
+
 }

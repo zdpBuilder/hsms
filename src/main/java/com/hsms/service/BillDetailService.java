@@ -77,5 +77,5 @@ public interface BillDetailService {
 	 * @return
 	 * @throws Exception
 	 */
-	boolean outStoreAddList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception;
+	boolean addbillDetailList(String billCode, List<BillDetail> billDetailList, String loginId) throws Exception;
 }
