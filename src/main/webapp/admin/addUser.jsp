@@ -30,7 +30,7 @@
 	            <option value="" selected >请选择</option>
 	            <option value="1"  >管理员</option>
 	            <option value="2">售货员</option>
-	            <option value="3">送货员</option> 
+	            <option value="3">采购员</option> 
 	           </select>
 	        </div>
         </div>

@@ -43,14 +43,14 @@ if(id==currId){
 	            <option value="" selected >请选择</option>
 	            <option value="1"  >管理员</option>
 	            <option value="2">售货员</option>
-	            <option value="3">送货员</option> 
+	            <option value="3">采购员</option> 
 	           </select>
 	        </div>
         </div>
   		<div class="layui-form-item" style="margin-bottom:3px;">
 	        <label class="layui-form-label" style="font-size:12px;line-height:10px;" >登录账号</label>
 	        <div class="layui-input-block">
-	            <input  disabled type="text" name="loginId" id="loginId" lay-verify="required" placeholder="必填项" autocomplete="off" 
+	            <input id="loginId"  disabled type="text" name="loginId" id="loginId" lay-verify="required" placeholder="必填项" autocomplete="off" 
 	            class="layui-input layui-form-danger" style="background-color:#F2F2F2;">
 	        </div>
 	       </div>
@@ -103,19 +103,19 @@ if(id==currId){
       
       //自定义表单验证
       form.verify({  
-    	phone:ecc.phone,
+    	phone:[/^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/,'输入的手机号码不合法！'],
       	name:[/^.{0,6}$/,'姓名输入过长！'],
       });
       //表单元素赋值
       var userId = <%=id %>;
+      console.log(userId);
       $.ajax({
 			method: "post",
 			data : {"id":userId},
-			url:"../user/show",
-		
+			url:"${pageContext.request.contextPath}/user/show",
 			success:function(result){
 				result = result.data;
-				if(result){
+				if(null != result){
 					$("#loginId").val(result.loginId);
 					$("#name").val(result.name);
 					$("#loginloginPassword").val(result.loginPassword);
