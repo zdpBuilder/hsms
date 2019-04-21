@@ -1,4 +1,3 @@
-<%@ page language="java" import ="yamp.com.model.Customer" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%
 //客户管理主键id
 int id = Integer.parseInt(request.getParameter("id"));
