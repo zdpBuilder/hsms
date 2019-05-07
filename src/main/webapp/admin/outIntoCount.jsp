@@ -161,7 +161,7 @@ $(function () {
 	            }
 	        },
 	        title: {
-	            text: '开心超市收入/支出统计饼状图'
+	            text: '超市收入/支出统计饼状图'
 	        },
 	        tooltip: {
 	            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
