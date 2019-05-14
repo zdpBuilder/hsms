@@ -72,6 +72,7 @@ dd {
 							<input type="text" name="title" id="title"  
 								placeholder="必填项" autocomplete="off"
 								class="layui-input layui-form-danger"
+								lay-verify="required"
 								style="height: 26px; font-size: 12px;">
 						</div>
 					</div>

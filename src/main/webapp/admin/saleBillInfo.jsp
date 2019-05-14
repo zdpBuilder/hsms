@@ -205,6 +205,8 @@ dd {
      								flag=true;
      								billDetialDatas[i].branchNum++;
      								billDetialDatas[i].transaction=billDetialDatas[i].branchNum*billDetialDatas[i].saleBranchPrice;
+     	     				       $("#transaction").val(parseFloat(billDetialDatas[i].transaction));
+
      							}
      						 }	
      				        if(!flag){
@@ -215,7 +217,8 @@ dd {
      				         }   
      				         goods.branchNum+=1;
      				        goods.transaction+= goods.branchNum* goods.saleBranchPrice;
-     				        billDetialDatas.push( goods);
+     				        billDetialDatas.push(goods);
+     				       $("#transaction").val(parseFloat(goods.transaction));
      				        }
      				        //清空扫码框
      				        $("#goodsCodeScan").val("");
