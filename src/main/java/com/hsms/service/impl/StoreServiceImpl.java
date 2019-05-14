@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.ss.formula.ptg.TblPtg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import com.hsms.model.BillDetail;
 import com.hsms.model.BillExample;
 import com.hsms.model.Store;
 import com.hsms.model.StoreExample;
+import com.hsms.model.StoreExample.Criteria;
 import com.hsms.model.SysUser;
 import com.hsms.pojo.DataCountPojo;
 import com.hsms.service.BillDetailService;
@@ -169,11 +171,14 @@ public class StoreServiceImpl implements StoreService {
 					return false;
 			}
 
-			// 补全仓库信息
-			store.setRemainBoxNum(store.getRemainBoxNum() - billDetail.getBoxNum());
-			store.setSellBoxNum(store.getSellBoxNum() + billDetail.getBoxNum());
-
-			if (billDetail.getBranchNum() > 0) {
+			if(billDetail.getBoxNum() != null) {
+				// 补全仓库信息
+				store.setRemainBoxNum(store.getRemainBoxNum() - billDetail.getBoxNum());
+				store.setSellBoxNum(store.getSellBoxNum() + billDetail.getBoxNum());
+			}
+			
+			if (billDetail.getBranchNum() !=null) {
+				
 				// 库存支数量不够，向箱数量借一
 				if (store.getRemainBranchNum() < billDetail.getBranchNum()) {
 					store.setRemainBoxNum(store.getRemainBoxNum() - 1);
@@ -183,9 +188,9 @@ public class StoreServiceImpl implements StoreService {
 				store.setSellBranchNum(store.getSellBranchNum() + billDetail.getBranchNum());
 
 				// 如果已销售的支数量，大于等于规格，则需处理
-				if (store.getRemainBranchNum() >= billDetail.getSpecification()) {
+				if (store.getSellBranchNum() >= billDetail.getSpecification()) {
 					store.setSellBoxNum(store.getSellBoxNum() + (int)Math.floor(store.getRemainBranchNum() / billDetail.getSpecification()));
-					store.setSellBranchNum(store.getRemainBranchNum() % billDetail.getSpecification());
+					store.setSellBranchNum(store.getSellBranchNum() % billDetail.getSpecification());
 				}
 			}
 			store.setSaleTransaction(store.getSaleTransaction() + sumTransaction);
@@ -213,5 +218,16 @@ public class StoreServiceImpl implements StoreService {
        dataCountPojo.setPurchaseCountPercent(Double.parseDouble(df.format(dataCountPojo.getPurchaseCount()/dataCountPojo.getSumCount())));
 
 		return dataCountPojo;
+	}
+
+	@Override
+	public Store getStoreByCode(String goodsCode) {
+		StoreExample example = new StoreExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andGoodsCodeEqualTo(goodsCode);
+		List<Store> storeList = storeMapper.selectByExample(example);
+		if(Empty4jUtils.listIsNotEmpty(storeList))
+			return storeList.get(0);
+		return null;
 	}
 }

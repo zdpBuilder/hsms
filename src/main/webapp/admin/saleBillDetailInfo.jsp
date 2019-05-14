@@ -121,7 +121,7 @@ dd {
                     <label class="layui-form-label"
 							style="font-size: 12px; line-height: 10px;">销售支数量</label>
 						<div class="layui-input-inline">
-							<input type="text" name="branchNum" id="branchNum" lay-verify=""
+							<input type="text" value="0" name="branchNum" id="branchNum" lay-verify=""
 								 autocomplete="off"
 								class="layui-input layui-form-danger"
 								style="height: 26px; font-size: 12px;">
@@ -226,12 +226,33 @@ dd {
         	  
             var formJson = data.field;
             console.info(formJson);
+            if(parseInt(formJson.branchNum.trim()) >= parseInt(formJson.specification.trim())){
+            	parent.layer.msg("支数量不得大于规格", {title:'提示消息',icon: 2, time: 1500}); //1s后自动关闭);
+            	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引                   	                       
+                parent.layer.close(index);        
+                return;        
+            }
             //将保存的值传入purchaseBillIInfo 进行渲染
-            parent.initbillDetialDatas(formJson);
-            
-            //关闭窗口 并给父页面传值
-            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引                   	                       
-            parent.layer.close(index);      
+            $.post('../store/validateStore',
+            	{goodsCode:formJson.goodsCode
+            	,specification:formJson.specification
+            	,boxNum:formJson.boxNum
+            	,branchNum:formJson.branchNum},
+            	function(result){
+            	if(!result){
+            		parent.layer.msg('库存不足！', {title:'提示消息',icon: 2, time: 1500}); //1s后自动关闭);
+            		//关闭窗口 并给父页面传值
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引                   	                       
+                    parent.layer.close(index);        
+                    return;
+            	}else{
+            		 parent.initbillDetialDatas(formJson);
+            		 //关闭窗口 并给父页面传值
+                     var index = parent.layer.getFrameIndex(window.name); //获取窗口索引                   	                       
+                     parent.layer.close(index); 
+            	}
+            });
+                 
         });
         
         //关闭窗口按钮

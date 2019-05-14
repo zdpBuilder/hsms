@@ -13,6 +13,7 @@ import com.hsms.common.ResponseJsonPageListBean;
 import com.hsms.model.Store;
 import com.hsms.pojo.ResultPojo;
 import com.hsms.service.StoreService;
+import com.hsms.utils.Empty4jUtils;
 
 /**
  * 
@@ -86,5 +87,20 @@ public class StoreController {
 	public ResultPojo intoOutCount(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
 		return new ResultPojo(1, storeService.dataCount(), "操作成功");
+	}
+	
+	@RequestMapping("validateStore")
+	@ResponseBody
+	public Boolean validateStore(String goodsCode, Integer specification, Integer boxNum, Integer branchNum) {
+		if(Empty4jUtils.stringIsEmpty(goodsCode))
+			return false;
+		Store store = storeService.getStoreByCode(goodsCode.trim());
+		if(null == store)
+			return false;
+		int balance = store.getRemainBranchNum() + store.getRemainBoxNum()*specification;
+		int buySum = branchNum + boxNum * specification;
+		if(balance >= buySum)
+			return true;
+		return false;
 	}
 }

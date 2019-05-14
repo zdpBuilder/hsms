@@ -62,5 +62,7 @@ public interface StoreService {
 	 * @return 
 	 */
 	DataCountPojo dataCount();
+	
+	Store getStoreByCode(String goodsCode);
 
 }
