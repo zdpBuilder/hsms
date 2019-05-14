@@ -148,7 +148,7 @@ dd {
 		</fieldset>
 		<div class="layui-form-item"
 			style="text-align: center; margin-top: 10px;">
-			<button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit=""
+			<button  type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-submit=""
 				lay-filter="addForm">保存</button>
 			&nbsp;&nbsp;
 			<button class="layui-btn layui-btn-sm layui-btn-normal" id="close">取消</button>
@@ -236,7 +236,7 @@ dd {
             $.post('../store/validateStore',
             	{goodsCode:formJson.goodsCode
             	,specification:formJson.specification
-            	,boxNum:formJson.boxNum
+            	,boxNum:formJson.boxNum.trim()==null||formJson.boxNum.trim()==""?0:formJson.boxNum.trim()
             	,branchNum:formJson.branchNum},
             	function(result){
             	if(!result){

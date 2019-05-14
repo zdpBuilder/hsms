@@ -94,6 +94,11 @@ public class StoreController {
 	public Boolean validateStore(String goodsCode, Integer specification, Integer boxNum, Integer branchNum) {
 		if(Empty4jUtils.stringIsEmpty(goodsCode))
 			return false;
+		if(Empty4jUtils.intIsNotEmpty(boxNum)) 
+			boxNum=0;
+		if(Empty4jUtils.intIsEmpty(branchNum)) 
+			branchNum=0;
+			
 		Store store = storeService.getStoreByCode(goodsCode.trim());
 		if(null == store)
 			return false;

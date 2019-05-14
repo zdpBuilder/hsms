@@ -127,6 +127,7 @@ dd {
 	var table; //layUI的渲染动态表格
 	var currPageNum = 1;//当前页码
 	var billDetialDatas=[];  //账单列表详情
+	var $;
 	 function initbillDetialDatas(goodsAddData){
 	
 		 for(var i=0;i<billDetialDatas.length;i++){		 
@@ -134,7 +135,7 @@ dd {
 	    			billDetialDatas[i]=goodsAddData;	
 	    			var transaction="";
 		    		for(var j=0;j<billDetialDatas.length;j++){		 
-		    			transaction=Number(transaction)+Number(billDetialDatas[j].transaction);
+		    			transaction=parseFloat(transaction)+parseFloat(billDetialDatas[j].transaction);
 			    	}
 		  		   $("#transaction").val(transaction);
 		    	   table.reload('tableListId',{data:billDetialDatas});
@@ -146,7 +147,7 @@ dd {
 	  		   //预加载订单总额设置
 	  		   var transaction="";
 	    		for(var i=0;i<billDetialDatas.length;i++){		 
-	    			transaction=Number(transaction)+Number(billDetialDatas[i].transaction);
+	    			transaction=parseFloat(transaction)+parseFloat(billDetialDatas[i].transaction);
 		    	}
 	  		   $("#transaction").val(transaction);
 	    	   table.reload('tableListId',{data:billDetialDatas});
@@ -171,6 +172,7 @@ dd {
         table = layui.table;
         layer = layui.layer;
         $ = layui.jquery;
+       
         //因为扫码器扫一次会请求两次 去除重复
         var delRepeat=1;
       //F2触发搜索事件
