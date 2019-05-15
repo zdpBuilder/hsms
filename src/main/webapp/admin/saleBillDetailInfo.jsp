@@ -226,6 +226,7 @@ dd {
         	  
             var formJson = data.field;
             console.info(formJson);
+            formJson.boxNum=  formJson.boxNum.trim()==null||formJson.boxNum.trim()==""?0:formJson.boxNum.trim();
             if(parseInt(formJson.branchNum.trim()) >= parseInt(formJson.specification.trim())){
             	parent.layer.msg("支数量不得大于规格", {title:'提示消息',icon: 2, time: 1500}); //1s后自动关闭);
             	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引                   	                       
@@ -236,7 +237,7 @@ dd {
             $.post('../store/validateStore',
             	{goodsCode:formJson.goodsCode
             	,specification:formJson.specification
-            	,boxNum:formJson.boxNum.trim()==null||formJson.boxNum.trim()==""?0:formJson.boxNum.trim()
+            	,boxNum:formJson.boxNum
             	,branchNum:formJson.branchNum},
             	function(result){
             	if(!result){

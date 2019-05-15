@@ -133,10 +133,11 @@ dd {
 		 for(var i=0;i<billDetialDatas.length;i++){		 
 	    		if(billDetialDatas[i].goodsCode.trim()==goodsAddData.goodsCode.trim()){				
 	    			billDetialDatas[i]=goodsAddData;	
-	    			var transaction="";
+	    			var transaction=0;
 		    		for(var j=0;j<billDetialDatas.length;j++){		 
 		    			transaction=parseFloat(transaction)+parseFloat(billDetialDatas[j].transaction);
 			    	}
+		    	
 		  		   $("#transaction").val(transaction);
 		    	   table.reload('tableListId',{data:billDetialDatas});
 		    	   return;
@@ -145,7 +146,7 @@ dd {
 	    		//预加载数据添加
 	    		billDetialDatas.push(goodsAddData);
 	  		   //预加载订单总额设置
-	  		   var transaction="";
+	  		   var transaction=0;
 	    		for(var i=0;i<billDetialDatas.length;i++){		 
 	    			transaction=parseFloat(transaction)+parseFloat(billDetialDatas[i].transaction);
 		    	}
@@ -407,7 +408,7 @@ dd {
 	          	    			//数据删除
 	          	    			billDetialDatas.splice(i,1);
 	          	    			//订单总金额
-	          	    			var transaction="";
+	          	    			var transaction=0;
 	        		    		for(var j=0;j<billDetialDatas.length;j++){		 
 	        		    			transaction=Number(transaction)+Number(billDetialDatas[j].transaction);
 	        			    	}
