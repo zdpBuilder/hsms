@@ -147,10 +147,12 @@ $(function () {
 		 return; 
 	  }
 	  console.info(res);
+	  //将后台请求的数据赋值到页面上
 	  $("#income").text(res.saleCount);
 	  $("#pay").text(res.purchaseCount);
 	  $("#payoff").text((res.saleCount-res.purchaseCount)>0?(res.saleCount-res.purchaseCount):"0.00");
 	  $("#lose").text((res.saleCount-res.purchaseCount)<0?(res.saleCount-res.purchaseCount):"0.00");
+	  //将数据赋值到highcharts插件中
 	  $('#container').highcharts({
 	        chart: {
 	            type: 'pie',
@@ -179,7 +181,8 @@ $(function () {
 	        },
 	        series: [{
 	            type: 'pie',
-	            name: '开心超市销售统计',
+	            name: '中小型超市销售统计',
+	            //渲染数据
 	            data: [
 	                ['收入',  res.saleCountPercent],
 	                ['支出', res.purchaseCountPercent],
