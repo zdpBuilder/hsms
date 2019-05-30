@@ -180,7 +180,7 @@
 	        	  			data:{"id":data.id},
 	        	  			success:function(result){
 	        	  				if(null != result){
-	        	  					if(1 == result.status){
+	        	  				/* 	if(1 == result.status){
 		        		  				layer.msg('还原成功！', {time: 1000}); //1s后自动关闭
 		        		  				//刷新表格内容
 		        		  		        table.reload('dbBackupListTable', {
@@ -190,7 +190,9 @@
 		        		  		        });
 		        	  				}else{
 		        	  					layer.msg('还原失败！', {time: 1000}); //1s后自动关闭
-		        	  				}
+		        	  				} */
+	        		  				layer.msg('还原成功！', {time: 1000}); //1s后自动关闭
+
 	        	  				}
 	        	  				
 	        	  	        }

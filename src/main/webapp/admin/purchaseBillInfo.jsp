@@ -272,8 +272,7 @@ dd {
     		}
  		    //商品入库校验
  	    	for(var i=0;i<billDetialDatas.length;i++){
- 	    		 console.info($.trim(billDetialDatas[i].code));
- 	    		 console.info($.trim(goodsCodeScan));
+ 	    		 
  	    		if($.trim(billDetialDatas[i].goodsCode)==$.trim(goodsCodeScan)){	
  	    			layer.msg('商品已经入库！', {time: 1000}); //1s后自动关闭	
  	    			$("#goodsCodeScan").val("");

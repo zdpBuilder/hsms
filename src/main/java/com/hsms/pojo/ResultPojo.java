@@ -3,18 +3,43 @@ package com.hsms.pojo;
 import lombok.Data;
 
 /**
- * 返回值
+ * 杩斿洖鍊�
  *
  */
-@Data
+
 public class ResultPojo {
 
-	private Integer status; //0失败，1成功
+	private Integer status; //0澶辫触锛�1鎴愬姛
 	
-	private Object data; //返回值
+	private Object data; //杩斿洖鍊�
 	
-	private String msg; //返回信息
+	private String msg; //杩斿洖淇℃伅
 	
+	
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
 	public ResultPojo() {
 		super();
 	}

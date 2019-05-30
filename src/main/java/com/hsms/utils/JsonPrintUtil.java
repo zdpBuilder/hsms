@@ -30,7 +30,7 @@ public class JsonPrintUtil {
             json = json.fromObject(obj, jsonConfig);
             json.put(key, json);
             out.print(json.toString());
-            log.debug(json.toString());
+            //log.debug(json.toString());
             out.flush();
             out.close();
         } catch (IOException e) {
@@ -51,7 +51,7 @@ public class JsonPrintUtil {
             JSONObject json = new JSONObject();
             json.put(key, obj);
             out.print(json.toString());
-            log.debug(json.toString());
+            //log.debug(json.toString());
             out.flush();
             out.close();
         } catch (IOException e) {
@@ -73,7 +73,7 @@ public class JsonPrintUtil {
             jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateValueProcessor());
             json = json.fromObject(obj, jsonConfig);
             out.print(json.toString());
-            log.debug(json.toString());
+           // log.debug(json.toString());
             out.flush();
             out.close();
         } catch (IOException e) {
@@ -95,7 +95,7 @@ public class JsonPrintUtil {
             jsonConfig.registerJsonValueProcessor(Date.class, new JsonDateTimeValueProcessor());
             json = json.fromObject(obj, jsonConfig);
             out.print(json.toString());
-            log.debug(json.toString());
+           // log.debug(json.toString());
             out.flush();
             out.close();
         } catch (IOException e) {
@@ -114,7 +114,7 @@ public class JsonPrintUtil {
             out = response.getWriter();
             JSONArray json = JSONArray.fromObject(obj);
             out.print(json.toString());
-            log.debug(json.toString());
+          //  log.debug(json.toString());
             out.flush();
             out.close();
         } catch (IOException e) {

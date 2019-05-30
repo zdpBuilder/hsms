@@ -242,7 +242,7 @@
 	        	  			url:"${pageContext.request.contextPath}/user/deleteBatch",
 	        	  			data:{"idStr":data.id},
 	        	  			success:function(result){
-	        	  				if(result.data==1){
+	        	  				if(result.status==1){
 	        		  				layer.msg('删除成功！', {time: 1000}); //1s后自动关闭
 	      	    					//console.info(obj);
 	        		  				//$(obj.tr).fadeOut();

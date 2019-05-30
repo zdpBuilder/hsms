@@ -139,9 +139,9 @@ if(id==currId){
                             return;
     					}
         				if(result){
-        					var data = result.data;
-        					if(data<=0){
-                                parent.layer.msg('修改失败！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);
+        					
+        					if(result.status<=0){
+                                parent.layer.msg('修改失败！', {title:'提示消息',icon: 0, time: 1500}); //1s后自动关闭);
 	                            return;
         					}
                         		//关闭窗口 并给父页面传值

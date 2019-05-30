@@ -186,8 +186,9 @@ dd {
          if (typeof(e.target.value) != "undefined") { 
          	++delRepeat;
          	if(delRepeat%2==0){
-         		
-         	
+         	 //打印扫码器值	
+         	 console.info(e.target.value);
+        
         		 $.ajax({
       	 			method: "post",
       	 			data : {

@@ -49,7 +49,7 @@ if(id==currId){
         </div> 
      
     <div class="layui-form-item" style="text-align: center;margin-top:10px;">
-        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-submit="" lay-filter="addForm">保存</button>
+        <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-submit="" lay-filter="addForm">保存</button>
         &nbsp;&nbsp;
         <button class="layui-btn layui-btn-sm layui-btn-normal" id="close">取消</button>
     </div>
@@ -106,8 +106,8 @@ if(id==currId){
         			async:false,
         			success:function(result){
         				if(result){
-        					var data = result.data;
-                        	if(data>0){  
+        				
+                        	if(result.status>0){  
                         		//关闭窗口 并给父页面传值
                                 var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
                                 parent.layer.msg('修改成功！请重新登录！', {title:'提示消息',icon: 1, time: 1500}); //1s后自动关闭);      
@@ -116,6 +116,7 @@ if(id==currId){
                 	             if(statusRole==1){     	          
                 	            	 top.location.href='/hsms/logout';  
                             	}else{
+                            		
                             		 parent.reloadTable(1);
                             	}
                 	             parent.layer.close(index);	         
